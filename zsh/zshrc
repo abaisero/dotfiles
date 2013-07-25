@@ -54,30 +54,29 @@ then
   export PATH="$PATH:$HOME/bin"
 fi
 
-# BAIS - adjust brightness
-#function sb() {
-#  local d
-#  case $1 in
-#    up)
-#      d=5
-#      ;;
-#    down)
-#      d=-5
-#      ;;
-#    *)
-#      echo "Option must be [ up | down ]."
-#      return 1
-#      ;;
-#  esac
-#  
-#  local curr=$(cat /sys/class/backlight/acpi_video0/brightness)
-#  local new=$(( $curr + $d ))
-#
-#  if [[ $new -gt 100 ]] then
-#    new=100
-#  elif [[ $new -lt 0 ]] then
-#    new=0
-#  fi
-#
-#  echo $(( $curr + $d )) > /sys/class/backlight/acpi_video0/brightness
-#}
+# BAIS - aliases
+source ~/.bash_aliases
+
+# BAIS - keyboard layout options
+setxkbmap -option 'grp:shifts_toggle' 'it,de'
+
+# BAIS - Completion for ..
+zstyle ':completion:*' special-dirs true
+
+# BAIS - vi key bindings
+bindkey -v
+# BAIS - fixes certain key bindings to adhere to vim
+bindkey "^?" backward-delete-char
+bindkey "^W" backward-kill-word
+bindkey "^H" backward-delete-char
+bindkey "^U" kill-line
+
+# BAIS - xterm colors for vim solarized colorscheme
+export TERM="xterm-256color"
+
+export SVN_EDITOR="vim"
+ulimit -c unlimited
+
+# BAIS - my env variables
+export MLR_D=$HOME/mlr
+export GIT_D=$HOME/git

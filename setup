@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd ~
+
+# zsh
+ln -s git/dotfiles/zsh/zshrc .zshrc
+ln -s git/dotfiles/zsh/aliases .bash_aliases
+
+# vim
+ln -s git/dotfiles/vim .vim
+ln -s git/dotfiles/vim/vimrc .vimrc

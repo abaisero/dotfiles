@@ -1,0 +1,444 @@
+########################
+## FACILITY SHORTCUTS ##
+########################
+
+alias g4src_cfg='CreateSrcCfg'
+alias g4hub_cfg='~/bin/G4DevCfg'
+
+# easy stuff
+alias h='history | grep'    # greps from history
+alias j='jobs -l'           # lists background jobs
+alias k='kill'              # kills jobs
+alias o='gnome-open'        # opens file
+alias s='sudo'              # sudos
+alias u='source ~/.zshrc'   # updates zshrc
+alias x='exit'              # exits
+alias nt='gnome-terminal .'
+alias sman='man -k'         # searches in the man pages
+alias up='sudo apt-get update && sudo apt-get upgrade'
+alias -s enull='2>/dev/null'
+
+alias ipython='\ipython --pylab'
+alias ipython-notebook='\ipython notebook --pylab=inline'
+alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
+alias nautilus='nautilus --no-desktop'
+
+alias ls='ls -hl --color=auto'
+alias dev='ls /dev/sd*'
+function copy() {
+  cat $1 | xclip -i -selection clipboard
+}
+
+alias ximea='rmmod xhci-hcd; sudo modprobe xhci-hcd'
+
+alias newline='echo'
+
+alias infvpn='sudo openconnect asa1.informatik.uni-stuttgart.de \
+  -u baiseraa'
+  # --script /etc/vpnc/vpnc-script'
+
+# called after each cd
+function chpwd() {
+  emulate -L zsh
+  local nfiles
+  let "nfiles = $(ls -Al | wc -l) - 1"
+  if [[ $nfiles -le 20 ]]
+  then
+    ls -Al
+  else
+    echo "Number of files: $nfiles"
+  fi
+}
+
+alias df='df -hT --total'
+alias du='du -h --total'
+alias free='free -m'
+
+# easy mod for this and other files
+alias valias='vim ~/.bash_aliases'  # opens ~/.bash_aliases
+alias vbash='vim ~/.bashrc'         # opens ~/.bashrc
+alias vzsh='vim ~/.zshrc'           # opens ~/.zshrc
+alias vvim='vim ~/.vimrc'           # opens ~/.vimrc
+                                    # opens awesome config file
+alias vawesome='vim ~/.config/awesome/rc.lua'
+alias vawesome.new='vim ~/.config/awesome/rc.lua.new'
+alias cvim='cd ~/.vim'
+alias cawesome='cd ~/.config/awesome'
+
+# command-line matlab
+alias methlab='matlab -nodesktop -nosplash'
+
+# Staking a log file or other..
+alias stalk='tail -f'
+
+# alert comand. Visualizes alert window when command ends.
+# Use like so:
+#   sleep 3 | alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# t commands
+export T_DIR=~/Dropbox/Tasks
+alias t='python $GIT_D/t/t.py --task-dir $T_DIR --list tasks'
+alias mlr='python $GIT_D/t/t.py --task-dir $T_DIR --list mlr'
+alias task_cmds='cat ~/.bash_aliases | awk '\''/^alias.*python.*--list/ { split($2,A,"="); if(A[1]!="task_cmds") print A[1]; }'\'
+
+function task_list() {
+    echo $(cat ~/.bash_aliases | awk "/^alias $1=/ {split(\$0,A);print A[NF]}") | sed "s/'//g"
+}
+
+function num_tasks() {
+    echo $(cat $T_DIR/$(echo $(task_list $1)) 2>/dev/null | wc -l)
+}
+
+function task_lists() {
+    for i in $(task_cmds)
+    do
+        echo $(cat ~/.bash_aliases | awk '/^alias '$i'=/ { split($0,A); print A[NF] }') | sed s/\'//g
+    done
+}
+
+# top ten commands
+function topten() {
+    history | awk '{print $2}' | awk 'BEGIN {FS="|"}{print $1}' | sort | uniq -c | sort -nr | head
+}
+
+###################
+## MLR Utilities ##
+###################
+
+alias timecheat-help='$GIT_D/timecheat/timecheat.py -h'
+
+function timecheat() {
+  local DIR=/tmp/timecheat
+  local FILENAME=$(date +timesheet_%m_%y_%R)
+  local TEX=$FILENAME.tex
+  local PDF=$FILENAME.pdf
+  mkdir -p $DIR
+  $GIT_D/timecheat/timecheat.py --start 9.5 --pausestart 12.5 \
+    --variance .2 --holidays $GIT_D/timecheat/holidays* \
+    --unholidays $GIT_D/timecheat/unholidays* --output template \
+    --template $GIT_D/timecheat/worksheet.tex $@ > $DIR/$TEX
+  pdflatex -output-directory $DIR $TEX
+  mv $DIR/$PDF $MLR_D/timesheet/
+}
+
+function mlr_all() {
+    cat *.markdown | pandoc -o all.html;
+    gnome-open all.html &
+}
+
+function mlr_new() {
+    FILE=`date +%y`.markdown
+    cp -f $FILE $FILE.bak
+    echo '# ' `date '+%b %e, %Y, %H:%M'` > $FILE
+    cat $FILE.bak >> $FILE
+    vim $FILE
+}
+
+############################
+## COMMAND LINE UTILITIES ##
+############################
+
+# repeats a command a number of times
+function repeat() {
+    echo $#
+    echo $@
+    if [ $# -gt 1 ]
+    then
+        n=$1
+        shift
+        while [ n-- -ge 0 ]
+        do
+            "$@"
+        done
+    fi
+}
+
+# extracts a compressed file based on the extension
+ex() {
+    if [ -f $1 ]
+    then
+        case $1 in
+            *.tar.bz2)   tar xvjf $1    ;;
+            *.tar.gz)    tar xvzf $1    ;;
+            *.bz2)       bunzip2 $1     ;;
+            *.rar)       unrar x $1     ;;
+            *.gz)        gunzip $1      ;;
+            *.tar)       tar xvf $1     ;;
+            *.tbz2)      tar xvjf $1    ;;
+            *.tgz)       tar xvzf $1    ;;
+            *.zip)       unzip $1       ;;
+            *.Z)         uncompress $1  ;;
+            *.7z)        7z x $1        ;;
+            *.exe)       cabextract $1  ;;
+            *)           echo "'$1': unrecognized file compression" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
+
+##############
+## NETWORKS ##
+##############
+
+# sets up internet for HTML login
+# (could be improved in terms of user and password)
+internet() {
+    cd ~/Scripts/clientSSL
+    java ClientSSL
+}
+
+# easy access to KTH computers (mynada and ddcr)
+alias kinit='kinit baisero@NADA.KTH.SE'
+alias mynada='ssh mynada'
+alias super='ssh -t mynada "ssh -t super \"cd /NOBACKUP/baisero;bash\""'
+
+# send file to ddcr
+supero() {
+    if [ $# -ne 1 ]
+    then
+        echo 'Usage: super_snd <file>'
+        exit 1
+    fi
+
+    scp $1 mynada:~
+    ssh -t mynada scp $1 baisero@ddcr-calc:/NOBACKUP/baisero/
+}
+
+# receive file from ddcr
+superi() {
+    if [ $# -ne 1 ]
+    then
+        echo 'Usage: super_rec <file>'
+        exit 1
+    fi
+
+    p=$(dirname $1)
+    f=$(basename $1)
+
+    ssh -t mynada scp baisero@ddcr-calc:/NOBACKUP/baisero/$1 .
+    scp mynada:$f .
+}
+
+#############################
+## COMMAND LINE NAVIGATION ##
+#############################
+
+# Improve this stuff
+# copy and paste from the command line
+ccopy() {
+    cp $1 /tmp/ccopy.$1;
+}
+
+#WAS LIKE THIS
+#alias cpaste="ls /tmp/ccopy* | sed 's|[^\.]*.\.||' | xargs -I % mv /tmp/ccopy.% ./%"  
+cpaste() {
+    ls /tmp/ccopy* | sed 's|[^\.]*.\.||' | xargs -I % mv /tmp/ccopy.% ./%
+}
+
+# NB the next functions are supposed to work together
+# change to a new dir, pushing the current dir onto the stack
+pushd() {
+    export DS = "$PWD:$DS"
+    if [ -n "$1" ]
+    then
+        cd "$1"
+    else
+        cd
+    fi
+    if [ $? -ne 0 ]
+    then
+        export DS="${DS#*:}"
+    fi
+}
+
+# pop top dir off stack and cd to it
+popd() {
+    if [ "$DS" ]
+    then
+        cd "${DS%%:*}"
+        export DS="${DS#*:}"
+    else
+        echo "$FUNCNAME: empty directory stack" >&2
+    fi
+}
+
+# print directory stack
+printd() {
+    IFS = :;
+    for each in $DS
+    do
+        echo $each;
+    done
+}
+
+# flip back-and-forth between current dir and top of stack (like "cd -")
+flipd() {
+    if [ "$DS" ]
+    then
+        cd "${DS%%:*}"
+        export DS="$OLDPWD:${DS#*:}"
+    else
+        echo "$FUNCNAME: empty directory stack" >&2
+    fi
+}
+
+# rotate through directory stack (from bottom to top)
+rotd() {
+    if [ "$DS" ]
+    then
+        typeset DSr="${DS%:*:}"
+        [ "${DSr}" = "${DS}" ] || export DS="${DS##${DSr}:}$DSr:"
+        flipd
+    else
+        echo "$FUNCNAME: directory stack is empty" >&2
+    fi
+}
+
+# NB next two functions are unrelated with the above
+# save current directory for in between sessions
+saved() {
+    if [ ${PWD} != ${HOME} ]
+    then
+        pwd >~/.lastdir;
+    fi
+}
+
+# load and move to last saved directory
+lastd() {
+    cd $(cat ~/.lastdir)
+}
+
+# edit directory stack
+editd() {
+    export EDITDNO = $(${EDITDNO:=0} + 1)
+    typeset FiLe = /tmp/$(basename -- $0)$$.${EDITDNO}
+    printd >${FiLe}
+    vim ${FiLe}
+    DS=$(while read ea; do echo -n "$ea:"; done <${FiLe})
+    rm -f ${FiLe}
+}
+
+########################
+## SCREEN ORIENTATION ##
+########################
+
+# Also requires
+#   Option "RandRRotation" "on"
+# in /etc/X11/xorg.conf
+
+alias topup='xrandr -o normal'
+alias topdown='xrandr -o inverted'
+alias topright='xrandr -o right'
+alias topleft='xrandr -o left'
+
+##################
+## USELESS SHIT ##
+##################
+
+# fun-fact of the day
+alias today='grep -h -d skip $(date +%m/%d) /usr/share/calendar/*'
+
+###########
+## MISC. ##
+###########
+
+# autolimit number of pings
+alias ping='ping -c 5'
+alias google='ping www.google.com'
+
+# toggles touchpad
+tp () {
+  if [[ $# -gt 1 ]]
+  then
+    echo "Usage: tp [ on | off | toggle ]"
+    return
+  fi
+
+  if [[ $# -eq 0 ]]
+  then
+    1=toggle
+  fi
+
+  case $1 in
+    on)
+      tpo=0;
+      ;;
+    off)
+      tpo=1;
+      ;;
+    toggle)
+      let "tpo = 1 - $(synclient -l | fgrep TouchpadOff | sed 's/^.*= //')"
+      ;;
+    *)
+      echo "Usage: tp [ on | off | toggle ]"
+      return
+      ;;
+  esac
+  
+  onoff=("on" "off")
+  echo "Turning touchpad $onoff[$tpo+1]."
+  synclient TouchpadOff=$tpo
+}
+
+
+###################
+## Print at work ##
+###################
+
+mlr_print() {
+  set -A opt_printer "-p" "bw"
+
+  zparseopts -K -D -- p:=opt_printer h=opt_help
+  if [[ $? != 0 || "$opt_help" != "" || "$*" == "" ]]
+  then
+    echo Usage: $(basename "$0") "[-p PRINTER] FILES"
+    return -1
+  fi
+
+  case $opt_printer[2] in
+    bw)
+      echo Printer: B/W.
+      printer=""
+      ;;
+    c)
+      echo Printer: Color.
+      printer="-P php19c"
+      ;;
+    carola)
+      echo Printer: Carola\'s.
+      printer="-P pbvise"
+      ;;
+    *)
+      echo "Error: Selected printer '$opt_printer[2]' does not exist."
+      echo "       Select one of: bw, c, carola."
+      return -2
+      ;;
+  esac
+
+  echo Files to print: "$#*"
+  let "e = 0"
+  for i in $*
+  do
+    newline
+    echo Sending file \'$i\' to printer.
+    if [[ ! -f $i ]]
+    then
+      echo Error: not a file.
+      let "e++"
+      continue
+    fi
+    cat $i | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de \
+      "lpr $printer -o sides=two-sided-long-edge"
+    echo Sent.
+    newline
+  done
+
+  if [[ $e > 0 ]]
+  then
+    echo Files not printed: $e
+  fi
+
+  return $e
+}

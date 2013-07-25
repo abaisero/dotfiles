@@ -1,2 +1,164 @@
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+" BAIS - change leader
+let mapleader = " "
+
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" let Vundle manage Vundle
+" required! 
+Bundle 'gmarik/vundle'
+
+" My Bundles here:
+"
+" preinstalled original repos on github
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+Bundle 'tpope/vim-rails.git'
+
+" BAIS - my added repos
+Bundle 'tpope/vim-fugitive'
+Bundle 'Valloric/YouCompleteMe.git'
+Bundle 'scrooloose/syntastic.git'
+Bundle 'scrooloose/nerdtree.git'
+Bundle 'fholgado/minibufexpl.vim'
+Bundle 'ctags.vim'
+Bundle 'majutsushi/tagbar.git'
+Bundle 'altercation/vim-colors-solarized'
+
+" vim-scripts repos
+Bundle 'L9'
+Bundle 'FuzzyFinder'
+" non github repos
+Bundle 'git://git.wincent.com/command-t.git'
+" ...
+
+filetype plugin indent on     " required!
+"
+" Brief help
+" :BundleList          - list configured bundles
+" :BundleInstall(!)    - install(update) bundles
+" :BundleSearch(!) foo - search(or refresh cache first) for foo
+" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+"
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
+ 
+set tabstop=2
+set shiftwidth=2
+
+" expand tabs as white-spaces
+set expandtab
+
+" shows partial command when commanding stuff
+set showcmd
+
+" number of characters to scroll horizontally
+" probably not useful, since we're wrapping (although there is
+" no wrap option set..)
+set sidescroll=3
+
+" sets cursor always at the middle of the screen
+set scrolloff=999
+
+" when searching, get partial results live
+set incsearch
+
+" indenting options
+set autoindent
+set smartindent
+
+" Should be default, but something else breakes this
+set backspace=indent,eol,start
+
+" cool colorscheme
+set background=dark
+let g:solarized_termtrans=1
+let g:solarized_termcolors=256
+let g:solarized_contrast="high"
+let g:solarized_visibility="high"
+colorscheme solarized
+
+" syntax recognition stuff
+filetype indent on
+syntax on
+
+" prints line number
+set number
+set ruler
+
+" To save even write protected files
+noremap <Leader>W :w !sudo tee % > /dev/null
+
+" to move around through 'graphical' lines
+map j gj
+map k gk
+"map A g$a
+"map I g^i
+
+" checks spelling
+"set spell
+
+" avoids weird message when executing some stuff
+set errorformat=""
+
+" to execute bash commands
+set shell=/bin/zsh
+
+" resize current buffer by +/- 5 
+nnoremap <C-y> :vertical resize -1<cr>
+nnoremap <C-o> :vertical resize +1<cr>
+
+" moves through tabs (replaces resizes)
+nnoremap <C-u> :bp<cr>
+nnoremap <C-i> :bn<cr>
+
+nnoremap <C-1> 1gt
+nnoremap <C-2> 2gt
+nnoremap <C-3> 3gt
+nnoremap <C-4> 4gt
+nnoremap <C-5> 5gt
+nnoremap <C-6> 6gt
+nnoremap <C-7> 7gt
+nnoremap <C-9> 9gt
+nnoremap <C-0> 10gt
+
+" spell command
+map <leader>s :set spell<cr>
+
+" visually see the 81st column
+set colorcolumn=81
+set textwidth=80
+" and enable/disable automatic wrapping
+map <leader>h :set textwidth=80<cr>
+map <leader>g :set textwidth=0<cr>
+
+" syntastic does not correct C++11 errors
+let g:syntastic_cpp_compiler_options = ' -std=c++11'
+
+" NERDTree starts automatically
+" autocmd vimenter * NERDTree
+
+" vim closes if only NERDTree is on
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType")
+            \ && b:NERDTreeType == "primary") | q | endif
+
+" toggle MiniBufExpler
+map <leader>m :TMiniBufExplorer<cr>
+let g:miniBufExplModSelTarget = 1
+let g:miniBufExplMapWindowNavVim = 1
+"let g:miniBufExplShowBufNumbers = 0
+
+" toggle NERDTree
+map <leader>n :NERDTreeToggle<cr>
+
+"compile pdflatex
+map <leader>l :!pdflatex %<cr>
+
+" points to the ctags folder, for the Taglist plugin
+nmap <leader>t :TagbarToggle<cr>
+"map <C-t> :TlistToggle<CR>
+
+" TODO remove Tlist, clean vundle
