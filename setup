@@ -4,9 +4,15 @@
 cd ~
 
 # zsh
+git clone git@github.com:robbyrussell/oh-my-zsh.git git/oh-my-zsh
 ln -f -s git/dotfiles/zsh/zshrc .zshrc
 ln -f -s git/dotfiles/zsh/aliases .bash_aliases
+ln -f -s git/oh-my-zsh .oh-my-zsh
 
 # vim
 ln -f -s git/dotfiles/vim .vim
 ln -f -s git/dotfiles/vim/vimrc .vimrc
+
+git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+vim +BundleInstall +qall!
+
