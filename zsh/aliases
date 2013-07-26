@@ -59,6 +59,7 @@ alias valias='vim ~/.bash_aliases'  # opens ~/.bash_aliases
 alias vbash='vim ~/.bashrc'         # opens ~/.bashrc
 alias vzsh='vim ~/.zshrc'           # opens ~/.zshrc
 alias vvim='vim ~/.vimrc'           # opens ~/.vimrc
+alias vtmux='vim ~/.tmux.conf'      # opens ~/.tmux.conf
                                     # opens awesome config file
 alias vawesome='vim ~/.config/awesome/rc.lua'
 alias vawesome.new='vim ~/.config/awesome/rc.lua.new'
