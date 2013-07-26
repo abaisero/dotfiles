@@ -102,7 +102,7 @@ map k gk
 "set spell
 
 " avoids weird message when executing some stuff
-set errorformat=""
+"set errorformat=""
 
 " to execute bash commands
 set shell=/bin/zsh
@@ -156,6 +156,12 @@ map <leader>n :NERDTreeToggle<cr>
 
 "compile pdflatex
 map <leader>l :!pdflatex %<cr>
+
+" make with makefile
+map <leader>m :make<cr>
+
+" execute x.exe
+map <leader>x :!./x.exe<cr>
 
 " points to the ctags folder, for the Taglist plugin
 nmap <leader>t :TagbarToggle<cr>
