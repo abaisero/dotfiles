@@ -115,6 +115,12 @@ nnoremap <C-o> :vertical resize +1<cr>
 nnoremap <C-u> :bp<cr>
 nnoremap <C-i> :bn<cr>
 
+" moves cursor through tabs
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 nnoremap <C-1> 1gt
 nnoremap <C-2> 2gt
 nnoremap <C-3> 3gt
