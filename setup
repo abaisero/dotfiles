@@ -17,6 +17,12 @@ ln -f -s git/dotfiles/vim .vim
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 vim +BundleInstall +qall!
 
+if [ -f ycm_core.so ]; then
+  cd .vim/bundle/YouCompleteMe
+  ./install.sh --clang-completer
+  cd -
+fi
+
 # tmux
 rm -r .tmux.conf
 ln -f -s git/dotfiles/tmux/tmux.conf .tmux.conf
