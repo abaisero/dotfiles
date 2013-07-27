@@ -29,8 +29,6 @@ function copy() {
   cat $1 | xclip -i -selection clipboard
 }
 
-alias ximea='rmmod xhci-hcd; sudo modprobe xhci-hcd'
-
 alias newline='echo'
 
 alias infvpn='sudo openconnect asa1.informatik.uni-stuttgart.de \
@@ -84,23 +82,23 @@ alias mlr='python $GIT_D/t/t.py --task-dir $T_DIR --list mlr'
 alias task_cmds='cat ~/.bash_aliases | awk '\''/^alias.*python.*--list/ { split($2,A,"="); if(A[1]!="task_cmds") print A[1]; }'\'
 
 function task_list() {
-    echo $(cat ~/.bash_aliases | awk "/^alias $1=/ {split(\$0,A);print A[NF]}") | sed "s/'//g"
+  echo $(cat ~/.bash_aliases | awk "/^alias $1=/ {split(\$0,A);print A[NF]}") | sed "s/'//g"
 }
 
 function num_tasks() {
-    echo $(cat $T_DIR/$(echo $(task_list $1)) 2>/dev/null | wc -l)
+  echo $(cat $T_DIR/$(echo $(task_list $1)) 2>/dev/null | wc -l)
 }
 
 function task_lists() {
-    for i in $(task_cmds)
-    do
-        echo $(cat ~/.bash_aliases | awk '/^alias '$i'=/ { split($0,A); print A[NF] }') | sed s/\'//g
-    done
+  for i in $(task_cmds)
+  do
+    echo $(cat ~/.bash_aliases | awk '/^alias '$i'=/ { split($0,A); print A[NF] }') | sed s/\'//g
+  done
 }
 
 # top ten commands
 function topten() {
-    history | awk '{print $2}' | awk 'BEGIN {FS="|"}{print $1}' | sort | uniq -c | sort -nr | head
+  history | awk '{print $2}' | awk 'BEGIN {FS="|"}{print $1}' | sort | uniq -c | sort -nr | head
 }
 
 ###################
@@ -124,16 +122,16 @@ function timecheat() {
 }
 
 function mlr_all() {
-    cat *.markdown | pandoc -o all.html;
-    gnome-open all.html &
+  cat *.markdown | pandoc -o all.html;
+  gnome-open all.html &
 }
 
 function mlr_new() {
-    FILE=`date +%y`.markdown
-    cp -f $FILE $FILE.bak
-    echo '# ' `date '+%b %e, %Y, %H:%M'` > $FILE
-    cat $FILE.bak >> $FILE
-    vim $FILE
+  FILE=`date +%y`.markdown
+  cp -f $FILE $FILE.bak
+  echo '# ' `date '+%b %e, %Y, %H:%M'` > $FILE
+  cat $FILE.bak >> $FILE
+  vim $FILE
 }
 
 ############################
@@ -142,41 +140,41 @@ function mlr_new() {
 
 # repeats a command a number of times
 function repeat() {
-    echo $#
-    echo $@
-    if [ $# -gt 1 ]
-    then
-        n=$1
-        shift
-        while [ n-- -ge 0 ]
-        do
-            "$@"
-        done
-    fi
+  echo $#
+  echo $@
+  if [ $# -gt 1 ]
+  then
+    n=$1
+    shift
+    while [ n-- -ge 0 ]
+    do
+      "$@"
+    done
+  fi
 }
 
 # extracts a compressed file based on the extension
 ex() {
-    if [ -f $1 ]
-    then
-        case $1 in
-            *.tar.bz2)   tar xvjf $1    ;;
-            *.tar.gz)    tar xvzf $1    ;;
-            *.bz2)       bunzip2 $1     ;;
-            *.rar)       unrar x $1     ;;
-            *.gz)        gunzip $1      ;;
-            *.tar)       tar xvf $1     ;;
-            *.tbz2)      tar xvjf $1    ;;
-            *.tgz)       tar xvzf $1    ;;
-            *.zip)       unzip $1       ;;
-            *.Z)         uncompress $1  ;;
-            *.7z)        7z x $1        ;;
-            *.exe)       cabextract $1  ;;
-            *)           echo "'$1': unrecognized file compression" ;;
-        esac
-    else
-        echo "'$1' is not a valid file"
-    fi
+  if [ -f $1 ]
+  then
+    case $1 in
+      *.tar.bz2)   tar xvjf $1    ;;
+      *.tar.gz)    tar xvzf $1    ;;
+      *.bz2)       bunzip2 $1     ;;
+      *.rar)       unrar x $1     ;;
+      *.gz)        gunzip $1      ;;
+      *.tar)       tar xvf $1     ;;
+      *.tbz2)      tar xvjf $1    ;;
+      *.tgz)       tar xvzf $1    ;;
+      *.zip)       unzip $1       ;;
+      *.Z)         uncompress $1  ;;
+      *.7z)        7z x $1        ;;
+      *.exe)       cabextract $1  ;;
+      *)           echo "'$1': unrecognized file compression" ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
 }
 
 ##############
@@ -186,8 +184,8 @@ ex() {
 # sets up internet for HTML login
 # (could be improved in terms of user and password)
 internet() {
-    cd ~/Scripts/clientSSL
-    java ClientSSL
+  cd ~/Scripts/clientSSL
+  java ClientSSL
 }
 
 # easy access to KTH computers (mynada and ddcr)
@@ -197,29 +195,29 @@ alias super='ssh -t mynada "ssh -t super \"cd /NOBACKUP/baisero;bash\""'
 
 # send file to ddcr
 supero() {
-    if [ $# -ne 1 ]
-    then
-        echo 'Usage: super_snd <file>'
-        exit 1
-    fi
+  if [ $# -ne 1 ]
+  then
+    echo 'Usage: super_snd <file>'
+    exit 1
+  fi
 
-    scp $1 mynada:~
-    ssh -t mynada scp $1 baisero@ddcr-calc:/NOBACKUP/baisero/
+  scp $1 mynada:~
+  ssh -t mynada scp $1 baisero@ddcr-calc:/NOBACKUP/baisero/
 }
 
 # receive file from ddcr
 superi() {
-    if [ $# -ne 1 ]
-    then
-        echo 'Usage: super_rec <file>'
-        exit 1
-    fi
+  if [ $# -ne 1 ]
+  then
+    echo 'Usage: super_rec <file>'
+    exit 1
+  fi
 
-    p=$(dirname $1)
-    f=$(basename $1)
+  p=$(dirname $1)
+  f=$(basename $1)
 
-    ssh -t mynada scp baisero@ddcr-calc:/NOBACKUP/baisero/$1 .
-    scp mynada:$f .
+  ssh -t mynada scp baisero@ddcr-calc:/NOBACKUP/baisero/$1 .
+  scp mynada:$f .
 }
 
 #############################
@@ -229,96 +227,96 @@ superi() {
 # Improve this stuff
 # copy and paste from the command line
 ccopy() {
-    cp $1 /tmp/ccopy.$1;
+  cp $1 /tmp/ccopy.$1;
 }
 
 #WAS LIKE THIS
 #alias cpaste="ls /tmp/ccopy* | sed 's|[^\.]*.\.||' | xargs -I % mv /tmp/ccopy.% ./%"  
 cpaste() {
-    ls /tmp/ccopy* | sed 's|[^\.]*.\.||' | xargs -I % mv /tmp/ccopy.% ./%
+  ls /tmp/ccopy* | sed 's|[^\.]*.\.||' | xargs -I % mv /tmp/ccopy.% ./%
 }
 
 # NB the next functions are supposed to work together
 # change to a new dir, pushing the current dir onto the stack
 pushd() {
-    export DS = "$PWD:$DS"
-    if [ -n "$1" ]
-    then
-        cd "$1"
-    else
-        cd
-    fi
-    if [ $? -ne 0 ]
-    then
-        export DS="${DS#*:}"
-    fi
+  export DS = "$PWD:$DS"
+  if [ -n "$1" ]
+  then
+    cd "$1"
+  else
+    cd
+  fi
+  if [ $? -ne 0 ]
+  then
+    export DS="${DS#*:}"
+  fi
 }
 
 # pop top dir off stack and cd to it
 popd() {
-    if [ "$DS" ]
-    then
-        cd "${DS%%:*}"
-        export DS="${DS#*:}"
-    else
-        echo "$FUNCNAME: empty directory stack" >&2
-    fi
+  if [ "$DS" ]
+  then
+    cd "${DS%%:*}"
+    export DS="${DS#*:}"
+  else
+    echo "$FUNCNAME: empty directory stack" >&2
+  fi
 }
 
 # print directory stack
 printd() {
-    IFS = :;
-    for each in $DS
-    do
-        echo $each;
-    done
+  IFS = :;
+  for each in $DS
+  do
+    echo $each;
+  done
 }
 
 # flip back-and-forth between current dir and top of stack (like "cd -")
 flipd() {
-    if [ "$DS" ]
-    then
-        cd "${DS%%:*}"
-        export DS="$OLDPWD:${DS#*:}"
-    else
-        echo "$FUNCNAME: empty directory stack" >&2
-    fi
+  if [ "$DS" ]
+  then
+    cd "${DS%%:*}"
+    export DS="$OLDPWD:${DS#*:}"
+  else
+    echo "$FUNCNAME: empty directory stack" >&2
+  fi
 }
 
 # rotate through directory stack (from bottom to top)
 rotd() {
-    if [ "$DS" ]
-    then
-        typeset DSr="${DS%:*:}"
-        [ "${DSr}" = "${DS}" ] || export DS="${DS##${DSr}:}$DSr:"
-        flipd
-    else
-        echo "$FUNCNAME: directory stack is empty" >&2
-    fi
+  if [ "$DS" ]
+  then
+    typeset DSr="${DS%:*:}"
+    [ "${DSr}" = "${DS}" ] || export DS="${DS##${DSr}:}$DSr:"
+    flipd
+  else
+    echo "$FUNCNAME: directory stack is empty" >&2
+  fi
 }
 
 # NB next two functions are unrelated with the above
 # save current directory for in between sessions
 saved() {
-    if [ ${PWD} != ${HOME} ]
-    then
-        pwd >~/.lastdir;
-    fi
+  if [ ${PWD} != ${HOME} ]
+  then
+    pwd >~/.lastdir;
+  fi
 }
 
 # load and move to last saved directory
 lastd() {
-    cd $(cat ~/.lastdir)
+  cd $(cat ~/.lastdir)
 }
 
 # edit directory stack
 editd() {
-    export EDITDNO = $(${EDITDNO:=0} + 1)
-    typeset FiLe = /tmp/$(basename -- $0)$$.${EDITDNO}
-    printd >${FiLe}
-    vim ${FiLe}
-    DS=$(while read ea; do echo -n "$ea:"; done <${FiLe})
-    rm -f ${FiLe}
+  export EDITDNO = $(${EDITDNO:=0} + 1)
+  typeset FiLe = /tmp/$(basename -- $0)$$.${EDITDNO}
+  printd >${FiLe}
+  vim ${FiLe}
+  DS=$(while read ea; do echo -n "$ea:"; done <${FiLe})
+  rm -f ${FiLe}
 }
 
 ########################
@@ -349,97 +347,3 @@ alias today='grep -h -d skip $(date +%m/%d) /usr/share/calendar/*'
 alias ping='ping -c 5'
 alias google='ping www.google.com'
 
-# toggles touchpad
-tp () {
-  if [[ $# -gt 1 ]]
-  then
-    echo "Usage: tp [ on | off | toggle ]"
-    return
-  fi
-
-  if [[ $# -eq 0 ]]
-  then
-    1=toggle
-  fi
-
-  case $1 in
-    on)
-      tpo=0;
-      ;;
-    off)
-      tpo=1;
-      ;;
-    toggle)
-      let "tpo = 1 - $(synclient -l | fgrep TouchpadOff | sed 's/^.*= //')"
-      ;;
-    *)
-      echo "Usage: tp [ on | off | toggle ]"
-      return
-      ;;
-  esac
-  
-  onoff=("on" "off")
-  echo "Turning touchpad $onoff[$tpo+1]."
-  synclient TouchpadOff=$tpo
-}
-
-
-###################
-## Print at work ##
-###################
-
-mlr_print() {
-  set -A opt_printer "-p" "bw"
-
-  zparseopts -K -D -- p:=opt_printer h=opt_help
-  if [[ $? != 0 || "$opt_help" != "" || "$*" == "" ]]
-  then
-    echo Usage: $(basename "$0") "[-p PRINTER] FILES"
-    return -1
-  fi
-
-  case $opt_printer[2] in
-    bw)
-      echo Printer: B/W.
-      printer=""
-      ;;
-    c)
-      echo Printer: Color.
-      printer="-P php19c"
-      ;;
-    carola)
-      echo Printer: Carola\'s.
-      printer="-P pbvise"
-      ;;
-    *)
-      echo "Error: Selected printer '$opt_printer[2]' does not exist."
-      echo "       Select one of: bw, c, carola."
-      return -2
-      ;;
-  esac
-
-  echo Files to print: "$#*"
-  let "e = 0"
-  for i in $*
-  do
-    newline
-    echo Sending file \'$i\' to printer.
-    if [[ ! -f $i ]]
-    then
-      echo Error: not a file.
-      let "e++"
-      continue
-    fi
-    cat $i | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de \
-      "lpr $printer -o sides=two-sided-long-edge"
-    echo Sent.
-    newline
-  done
-
-  if [[ $e > 0 ]]
-  then
-    echo Files not printed: $e
-  fi
-
-  return $e
-}

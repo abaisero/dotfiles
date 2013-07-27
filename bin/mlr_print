@@ -1,0 +1,56 @@
+#!/usr/bin/zsh
+
+set -A opt_printer "-p" "bw"
+
+zparseopts -K -D -- p:=opt_printer h=opt_help
+if [[ $? != 0 || "$opt_help" != "" || "$*" == "" ]]
+then
+  echo Usage: $(basename "$0") "[-p PRINTER] FILES"
+  return -1
+fi
+
+case $opt_printer[2] in
+  bw)
+    echo Printer: B/W.
+    printer=""
+    ;;
+  c)
+    echo Printer: Color.
+    printer="-P php19c"
+    ;;
+  carola)
+    echo Printer: Carola\'s.
+    printer="-P pbvise"
+    ;;
+  *)
+    echo "Error: Selected printer '$opt_printer[2]' does not exist."
+    echo "       Select one of: bw, c, carola."
+    return -2
+    ;;
+esac
+
+echo Files to print: "$#*"
+let "e = 0"
+for i in $*
+do
+  newline
+  echo Sending file \'$i\' to printer.
+  if [[ ! -f $i ]]
+  then
+    echo Error: not a file.
+    let "e++"
+    continue
+  fi
+  cat $i | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de \
+    "lpr $printer -o sides=two-sided-long-edge"
+  echo Sent.
+  newline
+done
+
+if [[ $e > 0 ]]
+then
+  echo Files not printed: $e
+fi
+
+return $e
+

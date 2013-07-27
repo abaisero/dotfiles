@@ -1,0 +1,34 @@
+#!/usr/bin/zsh
+
+usage_msg="Usage: trackpoint [ on | off | toggle ]"
+if [[ $# -gt 1 ]]
+then
+  echo $usage_msg
+  return
+fi
+
+if [[ $# -eq 0 ]]
+then
+  1=toggle
+fi
+
+case $1 in
+  on)
+    tpo=1;
+    ;;
+  off)
+    tpo=0;
+    ;;
+  toggle)
+    let "tpo = 1 - $(xinput list-props 'TPPS/2 IBM TrackPoint' | fgrep 'Device Enabled' | sed 's/^.*\t//')"
+    ;;
+  *)
+    echo $usage_msg
+    return
+    ;;
+esac
+
+onoff=("off" "on")
+echo "Turning touchpad $onoff[$tpo+1]."
+xinput set-prop "TPPS/2 IBM TrackPoint" "Device Enabled" $tpo
+
