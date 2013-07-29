@@ -72,6 +72,7 @@ bindkey "^H" backward-delete-char
 bindkey "^U" kill-line
 
 # BAIS - xterm colors for vim solarized colorscheme
+#[ -z "$TMUX" ] && export TERM="xterm-256color"
 export TERM="xterm-256color"
 
 export SVN_EDITOR="vim"
