@@ -166,6 +166,9 @@ map <leader>l :!pdflatex %<cr>
 " make with makefile
 map <leader>m :make<cr>
 
+" execute with python
+map <leader>p :!python %<cr>
+
 " execute x.exe
 map <leader>x :!./x.exe<cr>
 
