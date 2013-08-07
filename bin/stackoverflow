@@ -1,0 +1,22 @@
+#!/usr/bin/zsh
+
+usage_msg="Usage: stackoverflow <file>"
+
+if [ $# -ne 1 ]
+then
+  echo $usage_msg
+  echo 
+  echo "Must have one (and only one) argument."
+  return
+fi
+
+if [ ! -f $1 ]
+then
+  echo $usage_msg
+  echo
+  echo "The argument must be a file."
+  return
+fi
+
+cat $1 | sed 's/^/    /g' | xclip -i -sel clipboard
+echo "File copied into clipboard."
