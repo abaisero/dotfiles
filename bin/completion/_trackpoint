@@ -1,0 +1,3 @@
+#compdef trackpoint
+
+_arguments "1: :((on:\Turn\ on\ trackpoint off:\Turn\ off\ trackpoint toggle:\Toggle\ trackpoint))"

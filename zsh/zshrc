@@ -81,3 +81,10 @@ ulimit -c unlimited
 # BAIS - my env variables
 export MLR_D=$HOME/mlr
 export GIT_D=$HOME/git
+
+# BAIS - update fpath for completion scripts
+fpath=(~/bin/completion/ $fpath)
+autoload -U compinit
+compinit
+zstyle ':completion:*' menu select=2
+zstyle ":completion:*:descriptions" format "%B%d%b"
