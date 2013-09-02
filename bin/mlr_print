@@ -33,7 +33,7 @@ echo Files to print: "$#*"
 let "e = 0"
 for i in $*
 do
-  newline
+  echo
   echo Sending file \'$i\' to printer.
   if [[ ! -f $i ]]
   then
@@ -44,7 +44,7 @@ do
   cat $i | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de \
     "lpr $printer -o sides=two-sided-long-edge"
   echo Sent.
-  newline
+  echo
 done
 
 if [[ $e > 0 ]]
