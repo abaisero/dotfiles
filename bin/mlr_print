@@ -12,7 +12,7 @@ fi
 case $opt_printer[2] in
   bw)
     echo Printer: B/W.
-    printer=""
+    printer="-P php18"
     ;;
   c)
     echo Printer: Color.

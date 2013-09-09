@@ -21,6 +21,8 @@ alias sman='man -k'         # searches in the man pages
 alias up='sudo apt-get update && sudo apt-get upgrade'
 alias -s enull='2>/dev/null'
 
+alias ncores='cat /proc/cpuinfo | grep processor | wc -l'
+
 alias ipython='\ipython --pylab'
 alias ipython-notebook='\ipython notebook'
 alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
