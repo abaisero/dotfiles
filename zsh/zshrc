@@ -81,3 +81,4 @@ ulimit -c unlimited
 # BAIS - my env variables
 export MLR_D=$HOME/mlr
 export GIT_D=$HOME/git
+export AB_D=$GIT_D/mlr/usr/AB

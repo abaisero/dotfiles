@@ -4,8 +4,16 @@
 cd ~
 
 # bin
-rm -r bin
+echo "## bin"
+if [ -d bin ]
+then
+  echo "~/bin folder already exists. Check its contents."
+fi
 ln -f -s git/dotfiles/bin bin
+
+# git
+rm .gitconfig
+ln -f -s git/dotfiles/git/gitconfig .gitconfig
 
 # zsh
 rm .zshrc .bash_aliases

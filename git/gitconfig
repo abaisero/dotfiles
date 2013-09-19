@@ -1,0 +1,14 @@
+[user]
+	email = andrea.baisero@gmail.com
+  name = bigblindbais
+[core]
+	editor = vim
+[merge]
+	tool = vimdiff
+[credential]
+	helper = cache --timeout=3600
+[alias]
+  co = checkout
+  ci = commit
+  br = branch
+  st = status
