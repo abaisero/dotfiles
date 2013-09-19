@@ -82,3 +82,10 @@ ulimit -c unlimited
 export MLR_D=$HOME/mlr
 export GIT_D=$HOME/git
 export AB_D=$GIT_D/mlr/usr/AB
+
+# BAIS - update fpath for completion scripts
+fpath=(~/bin/completion/ $fpath)
+autoload -U compinit
+compinit
+zstyle ':completion:*' menu select=2
+zstyle ":completion:*:descriptions" format "%B%d%b"

@@ -1,4 +1,4 @@
-" BAIS - change leader
+" change leader
 let mapleader = " "
 
 set nocompatible               " be iMproved
@@ -100,9 +100,6 @@ map k gk
 
 " checks spelling
 "set spell
-
-" avoids weird message when executing some stuff
-"set errorformat=""
 
 " to execute bash commands
 set shell=/bin/zsh

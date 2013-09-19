@@ -1,0 +1,3 @@
+#compdef touchpad
+
+_arguments "1: :((on:\Turn\ on\ touchpad off:\Turn\ off\ touchpad toggle:\Toggle\ touchpad))"
