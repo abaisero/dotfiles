@@ -8,7 +8,10 @@
 [credential]
 	helper = cache --timeout=3600
 [alias]
+  br = branch
   co = checkout
   ci = commit
-  br = branch
+  mt = mergetool
   st = status
+[color]
+	ui = true
