@@ -1,0 +1,29 @@
+#!/bin/zsh
+
+list=()
+echo "suspending:"
+for device in $(ls /sys/bus/usb/devices/*/product)
+do
+  grep "WestBridge" $device
+  if [[ $? == 0 ]]
+  then
+    list+=$device
+    echo -n "auto" > $(dirname $device)/power/control
+    echo -n "0" > $(dirname $device)/power/autosuspend_delay_ms
+    #echo "suspend" | sudo tee $(dirname $device)/power/level
+  fi
+done
+
+echo "suspended:" $list
+
+sudo /etc/init.d/ueyeusbdrc force-stop
+sudo /etc/init.d/ueyeusbdrc start
+
+for device in $list
+do
+  echo -n "on" > $(dirname $device)/power/control
+  echo -n "2000" > $(dirname $device)/power/autosuspend_delay_ms
+  #echo "on" | sudo tee $(dirname $device)/power/level
+done
+
+echo "on:" $list

@@ -1,0 +1,8 @@
+#!/usr/bin/zsh
+
+tmux new -s ueye
+tmux split-window -v -p 70 -t ueye
+
+tmux send-keys -t ueye:1.1 'cd ~/git/mlr/usr/AB/ueye/' C-m
+tmux send-keys -t ueye:1.2 'htop' C-m
+
