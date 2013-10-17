@@ -1,0 +1,46 @@
+#!/usr/bin/zsh
+
+echo "========================="
+echo "Installing basic packages"
+echo "========================="
+sudo apt-get install vim zsh git git-core
+sudo apt-get install build-essential
+sudo apt-get install g++ gdb cmake
+sudo apt-get install libgnome2-0
+
+echo "========================="
+echo "Setting zsh"
+echo "========================="
+sudo usermod -s zsh bais
+sudo chsh -s zsh bais
+
+echo "========================="
+echo "Installing awesome-wm"
+echo "========================="
+sudo apt-get build-dep awesome awesome-extra
+sudo apt-get install autoconf automake libtool gperf xmlto
+sudo apt-get install lua5.2 lua-lgi gir1.2-pango-1.0
+sudo apt-get install libxcb-util0-dev libxcb1-dev libxcb-randr0-dev libxcb-xinerama0-dev libxcb-xtest0-dev libxcb-shape0-dev libglib2.0-dev libstartup-notification0-dev libxcb-icccm4-dev libxcb-keysym1-dev 
+#sudo apt-get install awesome awesome-extra // install from git for 3.5
+
+echo "========================="
+echo "Fixing awesome startup bug"
+echo "========================="
+cd /usr/share/xsessions/
+sudo cp awesome.desktop awesome.desktop.BK
+sed 's/NoDisplay=true/#NoDisplay=true/g' awesome.desktop.BK | sudo tee awesome.desktop
+
+echo "========================="
+echo "Installing skype"
+echo "========================="
+sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
+sudo apt-get update 
+sudo apt-get install skype
+
+echo "========================="
+echo "Installing other packages"
+echo "========================="
+sudo apt-get install thunderbird chromium-browser
+sudo apt-get install tmux arandr
+sudo apt-get install sparkleshare
+
