@@ -21,6 +21,9 @@ alias ack='ack-grep'
 alias sman='man -k'         # searches in the man pages
 alias up='sudo apt-get update && sudo apt-get upgrade'
 
+alias pstop='sudo killall -s SIGKILL -u'
+alias pcont='sudo killall -s SIGCONT -u'
+
 alias ueye_daemon='sudo /etc/init.d/ueyeusbdrc'
 alias ueye_daemon_restart='ueye_daemon force-stop; ueye_daemon start'
 
