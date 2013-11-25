@@ -78,12 +78,6 @@ export TERM="xterm-256color"
 export SVN_EDITOR="vim"
 ulimit -c unlimited
 
-# BAIS - my env variables
-export MLR_D=$HOME/mlr
-export GIT_D=$HOME/git
-export SHARE_D=$GIT_D/mlr/share
-export AB_D=$GIT_D/mlr/usr/AB
-
 # BAIS - update fpath for completion scripts
 fpath=(~/bin/completion/ $fpath)
 autoload -U compinit

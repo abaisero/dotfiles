@@ -35,6 +35,7 @@ alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
 alias nautilus='nautilus --no-desktop'
 
 alias ls='ls -hl --color=auto'
+alias lt='ls -rt'
 alias dev='ls /dev/sd*'
 function copy() {
   cat $1 | xclip -i -selection clipboard
@@ -90,8 +91,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # t commands
 export T_DIR=~/Dropbox/Tasks
-alias t='python $GIT_D/t/t.py --task-dir $T_DIR --list tasks'
-alias mlr='python $GIT_D/t/t.py --task-dir $T_DIR --list mlr'
+alias t='python ~/git/t/t.py --task-dir $T_DIR --list tasks'
+alias mlr='python ~/git/t/t.py --task-dir $T_DIR --list mlr'
 alias task_cmds='cat ~/.bash_aliases | awk '\''/^alias.*python.*--list/ { split($2,A,"="); if(A[1]!="task_cmds") print A[1]; }'\'
 
 function task_list() {
@@ -118,7 +119,7 @@ function topten() {
 ## MLR Utilities ##
 ###################
 
-alias timecheat-help='$GIT_D/timecheat/timecheat.py -h'
+alias timecheat-help='~/git/timecheat/timecheat.py -h'
 
 function timecheat() {
   local DIR=/tmp/timecheat
@@ -126,12 +127,12 @@ function timecheat() {
   local TEX=$FILENAME.tex
   local PDF=$FILENAME.pdf
   mkdir -p $DIR
-  $GIT_D/timecheat/timecheat.py --start 9.5 --pausestart 12.5 \
-    --variance .2 --holidays $GIT_D/timecheat/holidays* \
-    --unholidays $GIT_D/timecheat/unholidays* --output template \
-    --template $GIT_D/timecheat/worksheet.tex $@ > $DIR/$TEX
+  ~/git/timecheat/timecheat.py --start 9.5 --pausestart 12.5 \
+    --variance .2 --holidays ~/git/timecheat/holidays* \
+    --unholidays ~/git/timecheat/unholidays* --output template \
+    --template ~/git/timecheat/worksheet.tex $@ > $DIR/$TEX
   pdflatex -output-directory $DIR $TEX
-  mv $DIR/$PDF $MLR_D/timesheet/
+  mv $DIR/$PDF ~/git/timesheet/
 }
 
 function mlr_all() {

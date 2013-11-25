@@ -86,8 +86,10 @@ filetype indent on
 syntax on
 
 " prints line number
+set relativenumber
 set number
 set ruler
+" nmap <C-n> :exe &number==0? "set number" : "se relativenumber"<CR>
 
 " To save even write protected files
 noremap <Leader>W :w !sudo tee % > /dev/null
@@ -95,22 +97,24 @@ noremap <Leader>W :w !sudo tee % > /dev/null
 " to move around through 'graphical' lines
 map j gj
 map k gk
-"map A g$a
-"map I g^i
+noremap J <C-D>
+noremap K <C-U>
 
-" checks spelling
-"set spell
+" to join and reformat a line with the next
+map y :join<CR>gqq<CR>
 
 " to execute bash commands
 set shell=/bin/zsh
 
 " resize current buffer by +/- 5 
-nnoremap <C-y> :vertical resize -1<cr>
-nnoremap <C-o> :vertical resize +1<cr>
+noremap <C-y> :vertical resize -1<cr>
+noremap <C-o> :vertical resize +1<cr>
 
 " moves through tabs (replaces resizes)
-nnoremap <C-u> :bp<cr>
-nnoremap <C-i> :bn<cr>
+noremap <C-u> :bp<cr>
+noremap <C-i> :bn<cr>
+noremap <C-m> :split<cr>
+noremap <C-n> :vsplit<cr>
 
 " moves cursor through tabs
 nnoremap <C-h> <C-w>h
@@ -129,14 +133,14 @@ nnoremap <C-9> 9gt
 nnoremap <C-0> 10gt
 
 " spell command
-map <leader>s :set spell<cr>
+nmap <leader>s :set spell<cr>
 
 " visually see the 81st column
 set colorcolumn=81
 set textwidth=80
 " and enable/disable automatic wrapping
-map <leader>h :set textwidth=80<cr>
-map <leader>g :set textwidth=0<cr>
+nmap <leader>h :set textwidth=80<cr>
+nmap <leader>g :set textwidth=0<cr>
 
 " syntastic does not correct C++11 errors
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
@@ -149,25 +153,25 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType")
             \ && b:NERDTreeType == "primary") | q | endif
 
 " toggle MiniBufExpler
-map <leader>m :TMiniBufExplorer<cr>
+nmap <leader>m :TMiniBufExplorer<cr>
 let g:miniBufExplModSelTarget = 1
 let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplShowBufNumbers = 0
 
 " toggle NERDTree
-map <leader>n :NERDTreeToggle<cr>
+nmap <leader>n :NERDTreeToggle<cr>
 
 "compile pdflatex
-map <leader>l :!pdflatex %<cr>
+nmap <leader>l :!pdflatex %<cr>
 
 " make with makefile
-map <leader>m :make<cr>
+nmap <leader>m :make<cr>
 
 " execute with python
-map <leader>p :!python %<cr>
+nmap <leader>p :!python %<cr>
 
 " execute x.exe
-map <leader>x :!./x.exe<cr>
+nmap <leader>x :!./x.exe<cr>
 
 " points to the ctags folder, for the Taglist plugin
 nmap <leader>t :TagbarToggle<cr>

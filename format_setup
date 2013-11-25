@@ -3,13 +3,16 @@
 echo "===================================="
 echo "Installing basic packages"
 echo "===================================="
+
+# TODO remove vim, install from source..
 sudo apt-get install vim vim-gnome zsh git git-core \
                       build-essential g++ gdb clang cmake \
                       python python-numpy python-scipy python-matplotlib \
                       ipython ipython-notebook ipython-qtconsole \
                       openjdk-7-jdk icedtea-7-plugin \
                       octave \
-                      livetex-full \
+                      livetex-full, biblatex \
+                      pdftk \
                       libgnome2-0
 
 echo
