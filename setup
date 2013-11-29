@@ -8,6 +8,7 @@ echo "## bin"
 if [ -d bin ]
 then
   echo "~/bin folder already exists. Check its contents."
+  return
 fi
 ln -f -s git/dotfiles/bin bin
 
@@ -49,3 +50,9 @@ fi
 echo "## tmux"
 rm -r .tmux.conf
 ln -f -s git/dotfiles/tmux/tmux.conf .tmux.conf
+
+# gdb
+echo "## gdb"
+rm -f .gdbinit
+ln -f -s git/dotfiles/gdb/gdbinit .gdbinit
+

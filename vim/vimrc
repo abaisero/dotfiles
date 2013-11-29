@@ -1,6 +1,9 @@
 " change leader
 let mapleader = " "
 
+"{{{
+"
+"}}}
 set nocompatible               " be iMproved
 filetype off                   " required!
 
@@ -20,9 +23,11 @@ Bundle 'tpope/vim-rails.git'
 
 " BAIS - my added repos
 Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-git'
 Bundle 'Valloric/YouCompleteMe.git'
 Bundle 'scrooloose/syntastic.git'
 Bundle 'scrooloose/nerdtree.git'
+Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'ctags.vim'
 Bundle 'majutsushi/tagbar.git'
@@ -46,14 +51,33 @@ filetype plugin indent on     " required!
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
  
+" history and undo
+set history=1000
+set undolevels=1000
+" backspace over anything in insert
+set backspace=indent,eol,start
+" quick tty update
+set ttyfast
+set title
+" shows partial command while typing
+set showcmd
+" enables copy/paste between vim instances
+set clipboard=unnamed
+" when searching, get partial results live
+set showmatch
+set hlsearch
+set incsearch
+set ignorecase
+set smartcase
+" expand tabs as white-spaces
 set tabstop=2
 set shiftwidth=2
-
-" expand tabs as white-spaces
+set softtabstop=2
 set expandtab
-
-" shows partial command when commanding stuff
-set showcmd
+" folding
+set foldlevelstart=0
+set foldmethod=indent
+set foldnestmax=2
 
 " number of characters to scroll horizontally
 " probably not useful, since we're wrapping (although there is
@@ -63,36 +87,40 @@ set sidescroll=3
 " sets cursor always at the middle of the screen
 set scrolloff=999
 
-" when searching, get partial results live
-set incsearch
+" prints line number
+set relativenumber
+set number
+set ruler
 
 " indenting options
 set autoindent
 set smartindent
 
-" Should be default, but something else breakes this
-set backspace=indent,eol,start
-
 " cool colorscheme
-set background=dark
-let g:solarized_termtrans=1
-let g:solarized_termcolors=256
 let g:solarized_contrast="high"
 let g:solarized_visibility="high"
+let g:solarized_diffmode="high"
+let g:solarized_hitrail=0
+let g:solarized_termtrans=1
+let g:solarized_termcolors=256
+set background=dark
 colorscheme solarized
+
+" python syntax
+let python_highlight_all=1
 
 " syntax recognition stuff
 filetype indent on
 syntax on
 
-" prints line number
-set relativenumber
-set number
-set ruler
-" nmap <C-n> :exe &number==0? "set number" : "se relativenumber"<CR>
-
 " To save even write protected files
 noremap <Leader>W :w !sudo tee % > /dev/null
+
+" git fugitive
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gw :Gwrite<cr>
+nnoremap <leader>gc :Gcommit<cr>
 
 " to move around through 'graphical' lines
 map j gj
@@ -101,10 +129,14 @@ noremap J <C-D>
 noremap K <C-U>
 
 " to join and reformat a line with the next
-map y :join<CR>gqq<CR>
+nmap y :join<CR>gqql
 
 " to execute bash commands
 set shell=/bin/zsh
+
+" toggle folds
+nnoremap f za
+vnoremap f za
 
 " resize current buffer by +/- 5 
 noremap <C-y> :vertical resize -1<cr>
@@ -138,12 +170,27 @@ nmap <leader>s :set spell<cr>
 " visually see the 81st column
 set colorcolumn=81
 set textwidth=80
-" and enable/disable automatic wrapping
-nmap <leader>h :set textwidth=80<cr>
-nmap <leader>g :set textwidth=0<cr>
+" and enable/disable automatic wrapping (now NERDcommenter)
+"nmap <leader>h :set textwidth=80<cr>
+"nmap <leader>g :set textwidth=0<cr>
 
 " syntastic does not correct C++11 errors
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
+let g:syntastic_check_on_open = 1
+let g:syntastic_always_populate_loc_list = 1
+map [[ :prev<cr>
+map ]] :next<cr>
+
+" you complete me doesn't ask for comfirmation
+let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*', '~/git/master/share/*']
+nmap <cr> :YcmCompleter GoToDefinition<cr>
+
+" NERDcommenter
+map <leader>c :call NERDComment(0, 'toggle')<cr>
+"map <leader>cA :call NERDComment( TODO finish
+
+" commant-t
+
 
 " NERDTree starts automatically
 " autocmd vimenter * NERDTree
@@ -174,7 +221,7 @@ nmap <leader>p :!python %<cr>
 nmap <leader>x :!./x.exe<cr>
 
 " points to the ctags folder, for the Taglist plugin
-nmap <leader>t :TagbarToggle<cr>
+"nmap <leader>t :TagbarToggle<cr>
 "map <C-t> :TlistToggle<CR>
 
 " TODO remove Tlist, clean vundle

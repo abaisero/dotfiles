@@ -49,9 +49,16 @@ source $ZSH/oh-my-zsh.sh
 # Customize to your needs...
 
 # BAIS - bin in path
-if [ -d "$HOME/bin" ]
+homebin="$HOME/bin"
+if [[ -d $homebin && ! ":$PATH:" == *":$homebin:"* ]]
 then
-  export PATH="$PATH:$HOME/bin"
+  export PATH="$PATH:$homebin"
+fi
+
+mlrgdbaddons="$HOME/git/mlr/tools/gdb-addons"
+if [[ -d $mlrgdbaddons && ! ":$PATH:" == *":$mlrgdbaddons:"* ]]
+then
+  export PATH="$PATH:$mlrgdbaddons"
 fi
 
 # BAIS - aliases

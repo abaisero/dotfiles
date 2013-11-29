@@ -1,0 +1,10 @@
+set auto-load safe-path /
+set auto-load local-gdbinit on
+
+python
+import sys
+sys.path.insert(0, '/home/bais/git/mlr/tools/gdb-addons')
+from arrayPrettyPrinter import build_mlr_pretty_printers
+build_mlr_pretty_printers()
+end
+
