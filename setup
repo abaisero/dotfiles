@@ -8,9 +8,9 @@ echo "## bin"
 if [ -d bin ]
 then
   echo "~/bin folder already exists. Check its contents."
-  return
+else
+  ln -f -s git/dotfiles/bin bin
 fi
-ln -f -s git/dotfiles/bin bin
 
 # git
 echo "## git"
@@ -31,7 +31,8 @@ ln -f -s git/oh-my-zsh .oh-my-zsh
 
 # vim
 echo "## vim"
-mv .vim .vim.BK
+mv .vimrc .vimrc.BK
+rm -r .vim
 ln -f -s git/dotfiles/vim/vimrc .vimrc
 ln -f -s git/dotfiles/vim .vim
 if [ ! -d .vim/bundle/vundle ]
