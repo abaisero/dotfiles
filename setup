@@ -14,12 +14,13 @@ ln -f -s git/dotfiles/bin bin
 
 # git
 echo "## git"
-rm .gitconfig
+mv .gitconfig .gitconfig.BK
 ln -f -s git/dotfiles/git/gitconfig .gitconfig
 
 # zsh
 echo "## zsh"
-rm .zshrc .bash_aliases
+mv .zshrc .zshrcBK
+mv .bash_aliases .bash_aliases.BK
 ln -f -s git/dotfiles/zsh/zshrc .zshrc
 ln -f -s git/dotfiles/zsh/aliases .bash_aliases
 if [ ! -d git/oh-my-zsh ]
@@ -30,7 +31,7 @@ ln -f -s git/oh-my-zsh .oh-my-zsh
 
 # vim
 echo "## vim"
-rm -r .vim .vimrc
+mv .vim .vim.BK
 ln -f -s git/dotfiles/vim/vimrc .vimrc
 ln -f -s git/dotfiles/vim .vim
 if [ ! -d .vim/bundle/vundle ]
@@ -48,11 +49,11 @@ fi
 
 # tmux
 echo "## tmux"
-rm -r .tmux.conf
+mv .tmux.conf .tmux.conf.BK
 ln -f -s git/dotfiles/tmux/tmux.conf .tmux.conf
 
 # gdb
 echo "## gdb"
-rm -f .gdbinit
+mv .gdbinit .gdbinitBK
 ln -f -s git/dotfiles/gdb/gdbinit .gdbinit
 
