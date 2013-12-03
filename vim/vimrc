@@ -1,9 +1,7 @@
 " change leader
 let mapleader = " "
 
-"{{{
-"
-"}}}
+" Bundle stuff {{{
 set nocompatible               " be iMproved
 filetype off                   " required!
 
@@ -32,6 +30,7 @@ Bundle 'fholgado/minibufexpl.vim'
 Bundle 'ctags.vim'
 Bundle 'majutsushi/tagbar.git'
 Bundle 'altercation/vim-colors-solarized'
+Bundle 'flazz/vim-colorschemes'
 
 " vim-scripts repos
 Bundle 'L9'
@@ -50,17 +49,24 @@ filetype plugin indent on     " required!
 "
 " see :h vundle for more details or wiki for FAQ
 " NOTE: comments after Bundle command are not allowed..
+"}}}
  
+" Options {{{
 " history and undo
 set history=1000
 set undolevels=1000
 " backspace over anything in insert
 set backspace=indent,eol,start
+" automatically reload changed buffers
+set autoread
 " quick tty update
 set ttyfast
 set title
 " shows partial command while typing
 set showcmd
+" show row and col of cursor
+set ruler
+set cursorline
 " enables copy/paste between vim instances
 set clipboard=unnamed
 " when searching, get partial results live
@@ -74,27 +80,50 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-" folding
-set foldlevelstart=0
-set foldmethod=indent
-set foldnestmax=2
-
-" number of characters to scroll horizontally
-" probably not useful, since we're wrapping (although there is
-" no wrap option set..)
-set sidescroll=3
-
 " sets cursor always at the middle of the screen
 set scrolloff=999
-
 " prints line number
 set relativenumber
 set number
-set ruler
-
+" folding
+set foldlevelstart=0
+set foldmethod=marker
+set foldnestmax=2
 " indenting options
 set autoindent
 set smartindent
+" visually see the 81st column
+set colorcolumn=81
+set textwidth=80
+" to execute bash commands
+set shell=/bin/zsh
+" Tab-completion behaves as in the terminal
+set wildmenu
+" Fold-text
+function! MyFoldText()
+  let line = getline(v:foldstart)
+
+  let nucolwidth = &fdc + &number * &numberwidth
+  let windowwidth = winwidth(0) - nucolwidth - 3
+  let foldedlinecount = v:foldend - v:foldstart
+
+  " expand tabs into spaces
+  let onetab = strpart('  ', 0, &tabstop)
+  let line = substitute(line, '\t', onetab, 'g')
+
+  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+  return foldedlinecount. " lines: ". line
+endfunction
+set foldtext=MyFoldText()
+"}}}
+set laststatus=2
+set statusline=%f
+set cmdheight=2
+
+" syntax recognition stuff
+filetype indent on
+syntax on
 
 " cool colorscheme
 let g:solarized_contrast="high"
@@ -103,122 +132,107 @@ let g:solarized_diffmode="high"
 let g:solarized_hitrail=0
 let g:solarized_termtrans=1
 let g:solarized_termcolors=256
-set background=dark
 colorscheme solarized
-
+set background=dark
+"hi normal   ctermfg=black  ctermbg=white
 " python syntax
 let python_highlight_all=1
 
-" syntax recognition stuff
-filetype indent on
-syntax on
 
-" To save even write protected files
-noremap <Leader>W :w !sudo tee % > /dev/null
-
-" git fugitive
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gd :Gdiff<cr>
-nnoremap <leader>gw :Gwrite<cr>
-nnoremap <leader>gc :Gcommit<cr>
-
+" Custom commands {{{
+" Moving {{{
 " to move around through 'graphical' lines
 map j gj
 map k gk
 noremap J <C-D>
 noremap K <C-U>
-
+"}}}
+" Formatting {{{
 " to join and reformat a line with the next
-nmap y :join<CR>gqql
-
-" to execute bash commands
-set shell=/bin/zsh
-
-" toggle folds
-nnoremap f za
-vnoremap f za
-
-" resize current buffer by +/- 5 
-noremap <C-y> :vertical resize -1<cr>
-noremap <C-o> :vertical resize +1<cr>
-
+nmap y :join<CR>gqq
+"}}}
+" Folds {{{
+" to next/prev fold
+noremap fj zj
+noremap fk zk
+" to beginning/end of fold
+noremap fJ ]z
+noremap fK [z
+" to open/close fold
+noremap fl zo
+noremap fh zm
+" }}}
+" Tabs {{{
 " moves through tabs (replaces resizes)
 noremap <C-u> :bp<cr>
 noremap <C-i> :bn<cr>
 noremap <C-m> :split<cr>
 noremap <C-n> :vsplit<cr>
-
 " moves cursor through tabs
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+" resize current window by +/- 1
+noremap <C-y> :vertical resize -1<cr>
+noremap <C-o> :vertical resize +1<cr>
+" }}}
+" Misc {{{
+" To save even write-protected files
+noremap <Leader>w :w !sudo tee % > /dev/null
+" Spell command {{{
+let b:myLang=0
+let g:myLangList=["nospell","en_us"]
+function! ToggleSpell()
+  let b:myLang=b:myLang+1
+  if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
+  if b:myLang==0
+    setlocal nospell
+  else
+    execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
+  endif
+  echo "spell checking language:" g:myLangList[b:myLang]
+endfunction "}}}
+nmap <silent> <leader>s :call ToggleSpell()<CR>
+"compile pdflatex
+nmap <leader>l :!pdflatex %<cr>
+" make with makefile
+nmap <leader>m :make<cr>
+" execute x.exe
+nmap <leader>x :!./x.exe<cr>
+" execute with python
+nmap <leader>p :!python %<cr>
+"}}}
+"}}}
 
-nnoremap <C-1> 1gt
-nnoremap <C-2> 2gt
-nnoremap <C-3> 3gt
-nnoremap <C-4> 4gt
-nnoremap <C-5> 5gt
-nnoremap <C-6> 6gt
-nnoremap <C-7> 7gt
-nnoremap <C-9> 9gt
-nnoremap <C-0> 10gt
-
-" spell command
-nmap <leader>s :set spell<cr>
-
-" visually see the 81st column
-set colorcolumn=81
-set textwidth=80
-" and enable/disable automatic wrapping (now NERDcommenter)
-"nmap <leader>h :set textwidth=80<cr>
-"nmap <leader>g :set textwidth=0<cr>
-
-" syntastic does not correct C++11 errors
+" Git-Fugitive {{{
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gw :Gwrite<cr>
+nnoremap <leader>gc :Gcommit<cr>
+"}}}
+" Syntastic {{{
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_check_on_open = 1
 let g:syntastic_always_populate_loc_list = 1
 map [[ :prev<cr>
 map ]] :next<cr>
+"}}}
+" NERDCommenter {{{
+map cc :call NERDComment(0, 'toggle')<cr>
+"}}}
 
 " you complete me doesn't ask for comfirmation
 let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*', '~/git/master/share/*']
-nmap <cr> :YcmCompleter GoToDefinition<cr>
-
-" NERDcommenter
-map <leader>c :call NERDComment(0, 'toggle')<cr>
-"map <leader>cA :call NERDComment( TODO finish
+"nmap <cr> :YcmCompleter GoToDefinition<cr>
 
 " commant-t
 
-
-" NERDTree starts automatically
-" autocmd vimenter * NERDTree
-
-" vim closes if only NERDTree is on
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType")
-            \ && b:NERDTreeType == "primary") | q | endif
-
 " toggle MiniBufExpler
-nmap <leader>m :TMiniBufExplorer<cr>
+nmap <leader>m :MBEToggle<cr>
 let g:miniBufExplModSelTarget = 1
 let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplShowBufNumbers = 0
-
-" toggle NERDTree
-nmap <leader>n :NERDTreeToggle<cr>
-
-"compile pdflatex
-nmap <leader>l :!pdflatex %<cr>
-
-" make with makefile
-nmap <leader>m :make<cr>
-
-" execute with python
-nmap <leader>p :!python %<cr>
-
-" execute x.exe
-nmap <leader>x :!./x.exe<cr>
 
 " points to the ctags folder, for the Taglist plugin
 "nmap <leader>t :TagbarToggle<cr>

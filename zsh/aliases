@@ -11,7 +11,6 @@ alias h='history | grep'    # greps from history
 alias j='jobs -l'           # lists background jobs
 alias k='kill'              # kills jobs
 alias o='gnome-open'        # opens file
-alias s='sudo'              # sudos
 alias u='source ~/.zshrc'   # updates zshrc
 alias x='exit'              # exits
 alias gt='gnome-terminal .'
