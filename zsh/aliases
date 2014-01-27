@@ -7,18 +7,21 @@ alias g4hub_cfg='~/bin/G4DevCfg'
 
 alias tn='tmux new -s'
 # easy stuff
-alias h='history | grep'    # greps from history
-alias j='jobs -l'           # lists background jobs
-alias k='kill'              # kills jobs
-alias o='gnome-open'        # opens file
-alias u='source ~/.zshrc'   # updates zshrc
-alias x='exit'              # exits
+alias h='history | grep'
+alias j='jobs -l'
+alias k='kill'
+alias o='gnome-open'
+alias u='source ~/.zshrc'
+alias x='exit'
+alias q='exit'
 alias gt='gnome-terminal .'
 alias nt='gnome-terminal .; exit'
 alias ack='ack-grep'
 alias sman='man -k'         # searches in the man pages
 alias up='sudo apt-get update && sudo apt-get upgrade'
 alias audio='sudo alsa force-reload'
+alias linux='lsb_release -a'
+alias help='apropos'
 
 alias pstop='sudo killall -s SIGKILL -u'
 alias pcont='sudo killall -s SIGCONT -u'
@@ -27,6 +30,7 @@ alias ueye_daemon='sudo /etc/init.d/ueyeusbdrc'
 alias ueye_daemon_restart='ueye_daemon force-stop; ueye_daemon start'
 
 alias ncores='cat /proc/cpuinfo | grep processor | wc -l'
+alias nusers='who | cut -f1 -d\ | sort -u | wc -l'
 
 alias ipython='\ipython --pylab'
 alias ipython-notebook='\ipython notebook --pylab=inline'
@@ -47,17 +51,17 @@ alias infvpn='sudo openconnect asa1.informatik.uni-stuttgart.de \
   # --script /etc/vpnc/vpnc-script'
 
 # called after each cd
-function chpwd() {
-  emulate -L zsh
-  local nfiles
-  let "nfiles = $(ls -Al | wc -l) - 1"
-  if [[ $nfiles -le 20 ]]
-  then
-    ls -Al
-  else
-    echo "Number of files: $nfiles"
-  fi
-}
+#function chpwd() {
+  #emulate -L zsh
+  #local nfiles
+  #let "nfiles = $(ls -Al | wc -l) - 1"
+  #if [[ $nfiles -le 20 ]]
+  #then
+    #ls -Al
+  #else
+    #echo "Number of files: $nfiles"
+  #fi
+#}
 
 alias df='df -hT --total'
 alias du='du -h --total'
@@ -70,6 +74,7 @@ alias vzsh='vim ~/.zshrc'           # opens ~/.zshrc
 alias vvim='vim ~/.vimrc'           # opens ~/.vimrc
 alias vtmux='vim ~/.tmux.conf'      # opens ~/.tmux.conf
 alias vgit='vim ~/.gitconfig'
+alias vgdb='vim ~/.gdbinit'
 
                                     # opens awesome config file
 alias vawesome='vim ~/.config/awesome/rc.lua'
@@ -131,7 +136,7 @@ function timecheat() {
     --unholidays ~/git/timecheat/unholidays* --output template \
     --template ~/git/timecheat/worksheet.tex $@ > $DIR/$TEX
   pdflatex -output-directory $DIR $TEX
-  mv $DIR/$PDF ~/git/timesheet/
+  mv $DIR/$PDF ~/mlr/timesheet/
 }
 
 function mlr_all() {

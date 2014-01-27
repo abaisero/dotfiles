@@ -94,3 +94,7 @@ zstyle ":completion:*:descriptions" format "%B%d%b"
 
 # BAIS - MLR ENV VARIABLES
 export MLR_EDITOR_CMD='vim <fname>'
+
+# BAIS - ROS setup
+source /opt/ros/hydro/setup.zsh
+

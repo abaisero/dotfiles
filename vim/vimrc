@@ -223,7 +223,7 @@ map cc :call NERDComment(0, 'toggle')<cr>
 "}}}
 
 " you complete me doesn't ask for comfirmation
-let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*', '~/git/master/share/*']
+"let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*', '~/git/master/share/*']
 "nmap <cr> :YcmCompleter GoToDefinition<cr>
 
 " commant-t
