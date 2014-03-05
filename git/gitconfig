@@ -13,7 +13,11 @@
   ci = commit
   mt = mergetool
   st = status
+  l = log --stat --graph
 [color]
 	ui = true
 [push]
 	default = simple
+[log]
+	stat = true
+  graph = true

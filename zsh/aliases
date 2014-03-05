@@ -22,6 +22,10 @@ alias up='sudo apt-get update && sudo apt-get upgrade'
 alias audio='sudo alsa force-reload'
 alias linux='lsb_release -a'
 alias help='apropos'
+alias screen_off='xset dpms force off'
+
+alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
+alias cmake-release='\cmake -DCMAKE_BUILD_TYPE=Release'
 
 alias pstop='sudo killall -s SIGKILL -u'
 alias pcont='sudo killall -s SIGCONT -u'
@@ -52,15 +56,15 @@ alias infvpn='sudo openconnect asa1.informatik.uni-stuttgart.de \
 
 # called after each cd
 #function chpwd() {
-  #emulate -L zsh
-  #local nfiles
-  #let "nfiles = $(ls -Al | wc -l) - 1"
-  #if [[ $nfiles -le 20 ]]
-  #then
-    #ls -Al
-  #else
-    #echo "Number of files: $nfiles"
-  #fi
+#  emulate -L zsh
+#  local nfiles
+#  let "nfiles = $(ls -Al | wc -l) - 1"
+#  if [[ $nfiles -le 20 ]]
+#  then
+#    ls -Al
+#  else
+#    echo "Number of files: $nfiles"
+#  fi
 #}
 
 alias df='df -hT --total'

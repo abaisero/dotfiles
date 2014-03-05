@@ -1,3 +1,5 @@
+" LEARN VIMSCRIPT THE HARD WAY EXERCISES
+
 " change leader
 let mapleader = " "
 
@@ -94,7 +96,7 @@ set autoindent
 set smartindent
 " visually see the 81st column
 set colorcolumn=81
-set textwidth=80
+"set textwidth=80
 " to execute bash commands
 set shell=/bin/zsh
 " Tab-completion behaves as in the terminal
@@ -117,6 +119,7 @@ function! MyFoldText()
 endfunction
 set foldtext=MyFoldText()
 "}}}
+
 set laststatus=2
 set statusline=%f
 set cmdheight=2
@@ -138,18 +141,24 @@ set background=dark
 " python syntax
 let python_highlight_all=1
 
-
 " Custom commands {{{
+" Modes {{{
+" exit insert mode
+inoremap kj <esc>
+inoremap <esc> <nop>
+"}}}
 " Moving {{{
 " to move around through 'graphical' lines
-map j gj
-map k gk
+noremap j gj
+noremap k gk
 noremap J <C-D>
 noremap K <C-U>
+noremap H 0
+noremap L $
 "}}}
 " Formatting {{{
 " to join and reformat a line with the next
-nmap y :join<CR>gqq
+nnoremap y :join<CR>gqq
 "}}}
 " Folds {{{
 " to next/prev fold
@@ -160,7 +169,11 @@ noremap fJ ]z
 noremap fK [z
 " to open/close fold
 noremap fl zo
-noremap fh zm
+noremap fh zc
+noremap ff za
+" to open/close all
+noremap fH zM
+noremap fL zR
 " }}}
 " Tabs {{{
 " moves through tabs (replaces resizes)
@@ -193,18 +206,24 @@ function! ToggleSpell()
   endif
   echo "spell checking language:" g:myLangList[b:myLang]
 endfunction "}}}
-nmap <silent> <leader>s :call ToggleSpell()<CR>
+nnoremap <silent> <leader>s :call ToggleSpell()<CR>
 "compile pdflatex
-nmap <leader>l :!pdflatex %<cr>
+nnoremap <leader>l :!pdflatex %<cr>
 " make with makefile
-nmap <leader>m :make<cr>
+nnoremap <leader>m :make<cr>
 " execute x.exe
-nmap <leader>x :!./x.exe<cr>
+nnoremap <leader>x :!./x.exe<cr>
 " execute with python
-nmap <leader>p :!python %<cr>
+nnoremap <leader>p :!python %<cr>
 "}}}
+" Open files {{{
+nnoremap <leader>ev :split $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+" }}}
+" Typos & other abbreviations {{{
+iabbrev teh the
+" }}}
 "}}}
-
 " Git-Fugitive {{{
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gd :Gdiff<cr>
@@ -215,11 +234,11 @@ nnoremap <leader>gc :Gcommit<cr>
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_check_on_open = 1
 let g:syntastic_always_populate_loc_list = 1
-map [[ :prev<cr>
-map ]] :next<cr>
+noremap [[ :prev<cr>
+noremap ]] :next<cr>
 "}}}
 " NERDCommenter {{{
-map cc :call NERDComment(0, 'toggle')<cr>
+noremap cc :call NERDComment(0, 'toggle')<cr>
 "}}}
 
 " you complete me doesn't ask for comfirmation
@@ -229,7 +248,7 @@ map cc :call NERDComment(0, 'toggle')<cr>
 " commant-t
 
 " toggle MiniBufExpler
-nmap <leader>m :MBEToggle<cr>
+nnoremap <leader>m :MBEToggle<cr>
 let g:miniBufExplModSelTarget = 1
 let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplShowBufNumbers = 0
