@@ -85,6 +85,17 @@ alias methlab='matlab -nodesktop -nosplash'
 # Staking a log file or other..
 alias stalk='tail -f'
 
+# create timestamped directory
+function mkdate() {
+  if [ $# -ne 1 ]
+  then
+    echo "Usage: mkdate <dirname>"
+    return 1
+  fi
+
+  folder=$(date +$1.%F@%T.%N)
+  mkdir $folder
+}
 # take the backup of a set of files
 function backup() {
   if [ $# = 0 ]
@@ -93,7 +104,7 @@ function backup() {
     return 1
   fi
 
-  folder=$(date +BK.%F@%T.%N)
+  folder=$(date +backup.%F@%T.%N)
   mkdir $folder
   cp -rv $@ $folder
 
