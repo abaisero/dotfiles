@@ -61,6 +61,9 @@ then
   export PATH="$PATH:$mlrgdbaddons"
 fi
 
+# BAIS - libfreenect
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+
 # BAIS - aliases
 source ~/.bash_aliases
 

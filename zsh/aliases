@@ -23,6 +23,8 @@ alias audio='sudo alsa force-reload'
 alias linux='lsb_release -a'
 alias help='apropos'
 
+alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
+
 alias pstop='sudo killall -s SIGKILL -u'
 alias pcont='sudo killall -s SIGCONT -u'
 
@@ -43,8 +45,6 @@ alias dev='ls /dev/sd*'
 function copy() {
   cat $1 | xclip -i -selection clipboard
 }
-
-alias newline='echo'
 
 alias infvpn='sudo openconnect asa1.informatik.uni-stuttgart.de \
   -u baiseraa'
@@ -75,18 +75,35 @@ alias vvim='vim ~/.vimrc'           # opens ~/.vimrc
 alias vtmux='vim ~/.tmux.conf'      # opens ~/.tmux.conf
 alias vgit='vim ~/.gitconfig'
 alias vgdb='vim ~/.gdbinit'
-
                                     # opens awesome config file
 alias vawesome='vim ~/.config/awesome/rc.lua'
 alias vawesome.new='vim ~/.config/awesome/rc.lua.new'
-alias cvim='cd ~/.vim'
-alias cawesome='cd ~/.config/awesome'
 
 # command-line matlab
 alias methlab='matlab -nodesktop -nosplash'
 
 # Staking a log file or other..
 alias stalk='tail -f'
+
+# take the backup of a set of files
+function backup() {
+  if [ $# = 0 ]
+  then
+    echo "Files missing. Aborting."
+    return 1
+  fi
+
+  folder=$(date +BK.%F@%T.%N)
+  mkdir $folder
+  cp -rv $@ $folder
+
+  if [ $? -ne 0 ]
+  then
+    echo "Error copying. Removing backup folder."
+    rm -r $folder
+    return 2
+  fi
+}
 
 # alert comand. Visualizes alert window when command ends.
 # Use like so:
