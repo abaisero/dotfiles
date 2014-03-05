@@ -93,7 +93,7 @@ function mkdate() {
     return 1
   fi
 
-  folder=$(date +$1.%F@%T.%N)
+  folder=$(date +$1.%F@%T.%N | rev | cut --complement -b -5 | rev)
   mkdir $folder
 }
 # take the backup of a set of files
