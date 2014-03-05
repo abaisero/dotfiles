@@ -27,8 +27,6 @@ alias screen_off='xset dpms force off'
 alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='\cmake -DCMAKE_BUILD_TYPE=Release'
 
-alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
-
 alias pstop='sudo killall -s SIGKILL -u'
 alias pcont='sudo killall -s SIGCONT -u'
 
@@ -238,38 +236,6 @@ internet() {
   java ClientSSL
 }
 
-# easy access to KTH computers (mynada and ddcr)
-alias kinit='kinit baisero@NADA.KTH.SE'
-alias mynada='ssh mynada'
-alias super='ssh -t mynada "ssh -t super \"cd /NOBACKUP/baisero;bash\""'
-
-# send file to ddcr
-supero() {
-  if [ $# -ne 1 ]
-  then
-    echo 'Usage: super_snd <file>'
-    exit 1
-  fi
-
-  scp $1 mynada:~
-  ssh -t mynada scp $1 baisero@ddcr-calc:/NOBACKUP/baisero/
-}
-
-# receive file from ddcr
-superi() {
-  if [ $# -ne 1 ]
-  then
-    echo 'Usage: super_rec <file>'
-    exit 1
-  fi
-
-  p=$(dirname $1)
-  f=$(basename $1)
-
-  ssh -t mynada scp baisero@ddcr-calc:/NOBACKUP/baisero/$1 .
-  scp mynada:$f .
-}
-
 #############################
 ## COMMAND LINE NAVIGATION ##
 #############################
@@ -381,13 +347,6 @@ alias topup='xrandr -o normal'
 alias topdown='xrandr -o inverted'
 alias topright='xrandr -o right'
 alias topleft='xrandr -o left'
-
-##################
-## USELESS SHIT ##
-##################
-
-# fun-fact of the day
-alias today='grep -h -d skip $(date +%m/%d) /usr/share/calendar/*'
 
 ###########
 ## MISC. ##
