@@ -22,8 +22,10 @@ alias up='sudo apt-get update && sudo apt-get upgrade'
 alias audio='sudo alsa force-reload'
 alias linux='lsb_release -a'
 alias help='apropos'
+alias screen_off='xset dpms force off'
 
 alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
+alias cmake-release='\cmake -DCMAKE_BUILD_TYPE=Release'
 
 alias pstop='sudo killall -s SIGKILL -u'
 alias pcont='sudo killall -s SIGCONT -u'
@@ -52,15 +54,15 @@ alias infvpn='sudo openconnect asa1.informatik.uni-stuttgart.de \
 
 # called after each cd
 #function chpwd() {
-  #emulate -L zsh
-  #local nfiles
-  #let "nfiles = $(ls -Al | wc -l) - 1"
-  #if [[ $nfiles -le 20 ]]
-  #then
-    #ls -Al
-  #else
-    #echo "Number of files: $nfiles"
-  #fi
+#  emulate -L zsh
+#  local nfiles
+#  let "nfiles = $(ls -Al | wc -l) - 1"
+#  if [[ $nfiles -le 20 ]]
+#  then
+#    ls -Al
+#  else
+#    echo "Number of files: $nfiles"
+#  fi
 #}
 
 alias df='df -hT --total'
@@ -75,6 +77,7 @@ alias vvim='vim ~/.vimrc'           # opens ~/.vimrc
 alias vtmux='vim ~/.tmux.conf'      # opens ~/.tmux.conf
 alias vgit='vim ~/.gitconfig'
 alias vgdb='vim ~/.gdbinit'
+alias vssh='vim ~/.ssh/config'
                                     # opens awesome config file
 alias vawesome='vim ~/.config/awesome/rc.lua'
 alias vawesome.new='vim ~/.config/awesome/rc.lua.new'
@@ -234,38 +237,6 @@ internet() {
   java ClientSSL
 }
 
-# easy access to KTH computers (mynada and ddcr)
-alias kinit='kinit baisero@NADA.KTH.SE'
-alias mynada='ssh mynada'
-alias super='ssh -t mynada "ssh -t super \"cd /NOBACKUP/baisero;bash\""'
-
-# send file to ddcr
-supero() {
-  if [ $# -ne 1 ]
-  then
-    echo 'Usage: super_snd <file>'
-    exit 1
-  fi
-
-  scp $1 mynada:~
-  ssh -t mynada scp $1 baisero@ddcr-calc:/NOBACKUP/baisero/
-}
-
-# receive file from ddcr
-superi() {
-  if [ $# -ne 1 ]
-  then
-    echo 'Usage: super_rec <file>'
-    exit 1
-  fi
-
-  p=$(dirname $1)
-  f=$(basename $1)
-
-  ssh -t mynada scp baisero@ddcr-calc:/NOBACKUP/baisero/$1 .
-  scp mynada:$f .
-}
-
 #############################
 ## COMMAND LINE NAVIGATION ##
 #############################
@@ -377,13 +348,6 @@ alias topup='xrandr -o normal'
 alias topdown='xrandr -o inverted'
 alias topright='xrandr -o right'
 alias topleft='xrandr -o left'
-
-##################
-## USELESS SHIT ##
-##################
-
-# fun-fact of the day
-alias today='grep -h -d skip $(date +%m/%d) /usr/share/calendar/*'
 
 ###########
 ## MISC. ##

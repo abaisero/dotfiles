@@ -1,5 +1,10 @@
+" LEARN VIMSCRIPT THE HARD WAY EXERCISES
+
 " change leader
 let mapleader = " "
+" syntax recognition stuff
+filetype indent on
+syntax on
 
 " Bundle stuff {{{
 set nocompatible               " be iMproved
@@ -23,7 +28,7 @@ Bundle 'tpope/vim-rails.git'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-git'
 Bundle 'Valloric/YouCompleteMe.git'
-Bundle 'scrooloose/syntastic.git'
+"Bundle 'scrooloose/syntastic.git'
 Bundle 'scrooloose/nerdtree.git'
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'fholgado/minibufexpl.vim'
@@ -59,6 +64,10 @@ set undolevels=1000
 set backspace=indent,eol,start
 " automatically reload changed buffers
 set autoread
+" buffer-specific status info, under each window
+set laststatus=1
+set statusline=%5l/%L\ %y\ %f\ %m
+set cmdheight=2
 " quick tty update
 set ttyfast
 set title
@@ -94,7 +103,7 @@ set autoindent
 set smartindent
 " visually see the 81st column
 set colorcolumn=81
-set textwidth=80
+"set textwidth=80
 " to execute bash commands
 set shell=/bin/zsh
 " Tab-completion behaves as in the terminal
@@ -117,13 +126,6 @@ function! MyFoldText()
 endfunction
 set foldtext=MyFoldText()
 "}}}
-set laststatus=2
-set statusline=%f
-set cmdheight=2
-
-" syntax recognition stuff
-filetype indent on
-syntax on
 
 " cool colorscheme
 let g:solarized_contrast="high"
@@ -138,18 +140,31 @@ set background=dark
 " python syntax
 let python_highlight_all=1
 
-
 " Custom commands {{{
+" Modes {{{
+" exit insert mode
+inoremap kj <esc>
+inoremap <esc> <nop>
+"}}}
 " Moving {{{
 " to move around through 'graphical' lines
-map j gj
-map k gk
+noremap j gj
+noremap k gk
 noremap J <C-D>
 noremap K <C-U>
+noremap H 0
+noremap L $
+" Movement Mappings
+onoremap ip i(
+onoremap ap a(
+onoremap is i[
+onoremap as a[
+onoremap ib i{
+onoremap ab a{
 "}}}
 " Formatting {{{
 " to join and reformat a line with the next
-nmap y :join<CR>gqq
+nnoremap y :join<CR>gqq
 "}}}
 " Folds {{{
 " to next/prev fold
@@ -160,7 +175,11 @@ noremap fJ ]z
 noremap fK [z
 " to open/close fold
 noremap fl zo
-noremap fh zm
+noremap fh zc
+noremap ff za
+" to open/close all
+noremap fH zM
+noremap fL zR
 " }}}
 " Tabs {{{
 " moves through tabs (replaces resizes)
@@ -180,31 +199,31 @@ noremap <C-o> :vertical resize +1<cr>
 " Misc {{{
 " To save even write-protected files
 noremap <Leader>w :w !sudo tee % > /dev/null
-" Spell command {{{
-let b:myLang=0
-let g:myLangList=["nospell","en_us"]
-function! ToggleSpell()
-  let b:myLang=b:myLang+1
-  if b:myLang>=len(g:myLangList) | let b:myLang=0 | endif
-  if b:myLang==0
-    setlocal nospell
-  else
-    execute "setlocal spell spelllang=".get(g:myLangList, b:myLang)
-  endif
-  echo "spell checking language:" g:myLangList[b:myLang]
-endfunction "}}}
-nmap <silent> <leader>s :call ToggleSpell()<CR>
 "compile pdflatex
-nmap <leader>l :!pdflatex %<cr>
+nnoremap <leader>l :!pdflatex %<cr>
 " make with makefile
-nmap <leader>m :make<cr>
+nnoremap <leader>m :make<cr>
 " execute x.exe
-nmap <leader>x :!./x.exe<cr>
+nnoremap <leader>x :!./x.exe<cr>
 " execute with python
-nmap <leader>p :!python %<cr>
+nnoremap <leader>p :!python %<cr>
 "}}}
+" Open files {{{
+nnoremap <leader>ev :split $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+" }}}
+" Typos & other abbreviations {{{
+iabbrev teh the
+" }}}
 "}}}
-
+" Auto-Commands {{{
+" spelling in tex files
+augroup texgroup
+  autocmd!
+  autocmd FileType tex setlocal spell spelllang=en_us
+  autocmd FileType tex syntax spell toplevel
+augroup END
+" }}}
 " Git-Fugitive {{{
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gd :Gdiff<cr>
@@ -215,27 +234,30 @@ nnoremap <leader>gc :Gcommit<cr>
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_check_on_open = 1
 let g:syntastic_always_populate_loc_list = 1
-map [[ :prev<cr>
-map ]] :next<cr>
+noremap [[ :prev<cr>
+noremap ]] :next<cr>
 "}}}
 " NERDCommenter {{{
-map cc :call NERDComment(0, 'toggle')<cr>
+noremap cc :call NERDComment(0, 'toggle')<cr>
 "}}}
 
 " you complete me doesn't ask for comfirmation
-"let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*', '~/git/master/share/*']
-"nmap <cr> :YcmCompleter GoToDefinition<cr>
+let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
+noremap gf :YcmCompleter GoToDefinition<cr>
+noremap gd :YcmCompleter GoToDeclaration<cr>
 
 " commant-t
 
 " toggle MiniBufExpler
-nmap <leader>m :MBEToggle<cr>
+"nnoremap <leader>m :MBEToggle<cr>
 let g:miniBufExplModSelTarget = 1
 let g:miniBufExplMapWindowNavVim = 1
 "let g:miniBufExplShowBufNumbers = 0
 
+" latex stuff
+let g:tex_flavor='latex'
 " points to the ctags folder, for the Taglist plugin
-"nmap <leader>t :TagbarToggle<cr>
-"map <C-t> :TlistToggle<CR>
+"noremap <leader>t :TagbarToggle<cr>
+"noremap <C-t> :TlistToggle<CR>
 
 " TODO remove Tlist, clean vundle

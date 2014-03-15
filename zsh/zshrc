@@ -55,6 +55,13 @@ then
   export PATH="$PATH:$homebin"
 fi
 
+# BAIS - git/mlr/share/bin in path
+mlrbin="$HOME/git/mlr/share/bin"
+if [[ -d $mlrbin && ! ":$PATH:" == *":$mlrbin:"* ]]
+then
+  export PATH="$PATH:$mlrbin"
+fi
+
 mlrgdbaddons="$HOME/git/mlr/tools/gdb-addons"
 if [[ -d $mlrgdbaddons && ! ":$PATH:" == *":$mlrgdbaddons:"* ]]
 then
