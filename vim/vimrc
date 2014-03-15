@@ -215,6 +215,9 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " Typos & other abbreviations {{{
 iabbrev teh the
 " }}}
+" ctags {{{
+map <F12> :!ctags --verbose -R --sort=yes --c++-kinds=+p --fields=iaS --extra=+q .<cr>
+" }}}
 "}}}
 " Auto-Commands {{{
 " spelling in tex files
@@ -222,6 +225,13 @@ augroup texgroup
   autocmd!
   autocmd FileType tex setlocal spell spelllang=en_us
   autocmd FileType tex syntax spell toplevel
+augroup END
+augroup returntolastline
+  autocmd!
+  autocmd BufReadPost *
+  \ if line("'\"") > 0 && line("'\"") <= line("$") |
+  \   execute 'normal! g`"zvzz' |
+  \ endif
 augroup END
 " }}}
 " Git-Fugitive {{{
@@ -243,6 +253,7 @@ noremap cc :call NERDComment(0, 'toggle')<cr>
 
 " you complete me doesn't ask for comfirmation
 let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
+let g:ycm_collect_identifiers_from_tags_files = 1
 noremap gf :YcmCompleter GoToDefinition<cr>
 noremap gd :YcmCompleter GoToDeclaration<cr>
 
