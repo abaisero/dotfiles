@@ -1,12 +1,10 @@
-" LEARN VIMSCRIPT THE HARD WAY EXERCISES
-
-" change leader
+" leader
 let mapleader = " "
 " syntax recognition stuff
 filetype indent on
 syntax on
 
-" Bundle stuff {{{
+" Bundles {{{
 set nocompatible               " be iMproved
 filetype off                   " required!
 
@@ -108,7 +106,7 @@ set colorcolumn=81
 set shell=/bin/zsh
 " Tab-completion behaves as in the terminal
 set wildmenu
-" Fold-text
+" Fold-text function {{{
 function! MyFoldText()
   let line = getline(v:foldstart)
 
@@ -124,6 +122,7 @@ function! MyFoldText()
   let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
   return foldedlinecount. " lines: ". line
 endfunction
+"}}}
 set foldtext=MyFoldText()
 "}}}
 
@@ -159,8 +158,8 @@ onoremap ip i(
 onoremap ap a(
 onoremap is i[
 onoremap as a[
-onoremap ib i{
-onoremap ab a{
+onoremap ic i{
+onoremap ac a{
 "}}}
 " Formatting {{{
 " to join and reformat a line with the next
@@ -216,17 +215,27 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 iabbrev teh the
 " }}}
 " ctags {{{
-map <F12> :!ctags --verbose -R --sort=yes --c++-kinds=+p --fields=iaS --extra=+q .<cr>
+"map <F12> :!ctags --verbose -R --sort=yes --c++-kinds=+p --fields=iaS --extra=+q .<cr>
+set tagstack
+set tags=$HOME/git/mlr/share/tags
 " }}}
 "}}}
 " Auto-Commands {{{
 " spelling in tex files
-augroup texgroup
+augroup tex
   autocmd!
   autocmd FileType tex setlocal spell spelllang=en_us
   autocmd FileType tex syntax spell toplevel
 augroup END
-augroup returntolastline
+augroup ft_ors
+  autocmd!
+  autocmd BufRead,BufNewFile *.ors setlocal filetype=ors
+augroup END
+augroup ft_kvg
+  autocmd!
+  autocmd BufRead,BufNewFile *.kvg setlocal filetype=kvg
+augroup END
+augroup latest_line
   autocmd!
   autocmd BufReadPost *
   \ if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -234,11 +243,16 @@ augroup returntolastline
   \ endif
 augroup END
 " }}}
+" MLR {{{
+source ~/git/mlr/tools/ors.vim
+source ~/git/mlr/tools/kvg.vim
+" }}}
 " Git-Fugitive {{{
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gd :Gdiff<cr>
-nnoremap <leader>gw :Gwrite<cr>
-nnoremap <leader>gc :Gcommit<cr>
+noremap <leader>gs :Gstatus<cr>
+noremap <leader>gd :Gdiff<cr>
+noremap <leader>gb :Gblame<cr>
+noremap <leader>gw :Gwrite<cr>
+noremap <leader>gc :Gcommit<cr>
 "}}}
 " Syntastic {{{
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
@@ -250,25 +264,28 @@ noremap ]] :next<cr>
 " NERDCommenter {{{
 noremap cc :call NERDComment(0, 'toggle')<cr>
 "}}}
-
-" you complete me doesn't ask for comfirmation
-let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
-let g:ycm_collect_identifiers_from_tags_files = 1
-noremap gf :YcmCompleter GoToDefinition<cr>
-noremap gd :YcmCompleter GoToDeclaration<cr>
-
-" commant-t
-
-" toggle MiniBufExpler
-"nnoremap <leader>m :MBEToggle<cr>
+" MiniBufExpl {{{
 let g:miniBufExplModSelTarget = 1
 let g:miniBufExplMapWindowNavVim = 1
-"let g:miniBufExplShowBufNumbers = 0
-
-" latex stuff
+let g:miniBufExplShowBufNumbers = 0
+"}}}
+" YouCompleteMe {{{
+let g:ycm_server_keep_logfiles = 1
+let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
+let g:ycm_collect_identifiers_from_tags_files = 1
+"noremap gd :YcmCompleter GoToDeclaration<cr>
+"}}}
+" TagBar {{{
+"noremap <leader>t :TagbarOpenAutoClose<cr>
+noremap <leader>t :TagbarToggle<cr>
+noremap gf <c-]>
+noremap gn :tn<cr>
+noremap gp :tp<cr>
+noremap gl :ts<cr>
+"nnoremap <C-h> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+"nnoremap <C-]> :tjump <C-r><C-w><CR>
+" }}}
+" Latex {{{
 let g:tex_flavor='latex'
-" points to the ctags folder, for the Taglist plugin
-"noremap <leader>t :TagbarToggle<cr>
-"noremap <C-t> :TlistToggle<CR>
+" }}}
 
-" TODO remove Tlist, clean vundle
