@@ -48,11 +48,18 @@ source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
 
+# BAIS - local in path
+localbin="$HOME/.local/bin"
+if [[ -d $localbin && ! ":$PATH:" == *":$localbin:"* ]]
+then
+  export PATH="$localbin:$PATH"
+fi
+
 # BAIS - bin in path
 homebin="$HOME/bin"
 if [[ -d $homebin && ! ":$PATH:" == *":$homebin:"* ]]
 then
-  export PATH="$PATH:$homebin"
+  export PATH="$homebin:$PATH"
 fi
 
 # BAIS - git/mlr/share/bin in path
