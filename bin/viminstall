@@ -15,7 +15,9 @@ hg clone https://code.google.com/p/vim
 
 # compile & install
 cd vim
-./configure --with-features=huge --enable-rubyinterp --enable-pythoninterp \
+./configure --with-features=huge \
+  --enable-rubyinterp \
+  --enable-pythoninterp \
   --with-python-config-dir=/usr/lib/python2.7-config \
   --enable-perlinterp \
   --enable-gui=gtk2 \
