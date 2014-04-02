@@ -88,6 +88,10 @@ alias methlab='matlab -nodesktop -nosplash'
 # Staking a log file or other..
 alias stalk='tail -f'
 
+function tomp4() {
+  avconv -i $1 -c:v copy $1.mp4
+}
+
 # create timestamped directory
 function mkdate() {
   if [ $# -ne 1 ]
