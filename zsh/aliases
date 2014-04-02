@@ -41,6 +41,13 @@ alias ipython-notebook='\ipython notebook --pylab=inline'
 alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
 alias nautilus='nautilus --no-desktop'
 
+function nframes() {
+  ffmpeg -i $1 -vcodec copy -an -f null /dev/null 2>&1 | \
+    grep 'frame=' |\
+    cut -f 2 -d = |\
+    cut -f 1 -d ' '
+}
+
 alias ls='ls -hl --color=auto'
 alias lt='ls -rt'
 alias dev='ls /dev/sd*'
