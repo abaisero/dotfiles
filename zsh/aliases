@@ -41,11 +41,23 @@ alias ipython-notebook='\ipython notebook --pylab=inline'
 alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
 alias nautilus='nautilus --no-desktop'
 
+function timesheet_format() {
+  pdfcrop --margins "20 0 20 0" $1 porcodio.pdf
+  gs -o $1 -sDEVICE=pdfwrite -sPAPERSIZE=a4 -dFIXEDMEDIA -dPDFFitPage -dCompatibilityLevel=1.4 porcodio.pdf
+  rm porcodio.pdf
+}
+
 function nframes() {
-  ffmpeg -i $1 -vcodec copy -an -f null /dev/null 2>&1 | \
+  avconv -i $1 -vcodec copy -an -f null /dev/null 2>&1 | \
     grep 'frame=' |\
     cut -f 2 -d = |\
-    cut -f 1 -d ' '
+    awk '{print $1}'
+}
+
+alias packets='avprobe -show_packets'
+alias stream='avprobe -show_streams'
+function npackets() {
+  echo $(avprobe -show_packets $1 2&>/dev/null | grep PACKET | wc -l)/2 | bc
 }
 
 alias ls='ls -hl --color=auto'
@@ -214,14 +226,14 @@ ex() {
   if [ -f $1 ]
   then
     case $1 in
-      *.tar.bz2)   tar xvjf $1    ;;
-      *.tar.gz)    tar xvzf $1    ;;
+      *.tar.bz2)   tar -xvjf $1    ;;
+      *.tar.gz)    tar -xvzf $1    ;;
       *.bz2)       bunzip2 $1     ;;
       *.rar)       unrar x $1     ;;
       *.gz)        gunzip $1      ;;
-      *.tar)       tar xvf $1     ;;
-      *.tbz2)      tar xvjf $1    ;;
-      *.tgz)       tar xvzf $1    ;;
+      *.tar)       tar -xvf $1     ;;
+      *.tbz2)      tar -xvjf $1    ;;
+      *.tgz)       tar -xvzf $1    ;;
       *.zip)       unzip $1       ;;
       *.Z)         uncompress $1  ;;
       *.7z)        7z x $1        ;;
