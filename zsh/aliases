@@ -41,11 +41,18 @@ alias ipython-notebook='\ipython notebook --pylab=inline'
 alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
 alias nautilus='nautilus --no-desktop'
 
+function mount_samba_mlr() {
+  mp=$HOME/mlr_misc
+  [[ ! -e $mp ]] && mkdir $mp
+  [[ ! -d $mp ]] && exit 1
+  sudo mount -o user=baiseraa,uid=$UID,gid=$GID -t cifs //sambamlr/mlr_misc/ $mp
+}
+
 function nframes() {
-  ffmpeg -i $1 -vcodec copy -an -f null /dev/null 2>&1 | \
+  avconv -i $1 -vcodec copy -an -f null /dev/null 2>&1 | \
     grep 'frame=' |\
     cut -f 2 -d = |\
-    cut -f 1 -d ' '
+    awk '{print $1}'
 }
 
 alias ls='ls -hl --color=auto'
