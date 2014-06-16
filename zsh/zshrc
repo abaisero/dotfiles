@@ -55,6 +55,20 @@ then
   export PATH="$localbin:$PATH"
 fi
 
+# BAIS - external libraries
+externdir="$HOME/extern"
+if [[ -d $externdir ]]
+then
+  externdirs=$(find $externdir -mindepth 1 -maxdepth 1 -type d)
+  for libdir in $(find $externdir -mindepth 1 -maxdepth 1 -type d)
+  do
+    if [[ -d $libdir && ! ":$PATH:" == *":$libdir:"* ]]
+    then
+      export PATH="$libdir:$PATH"
+    fi
+  done
+fi
+
 # BAIS - bin in path
 homebin="$HOME/bin"
 if [[ -d $homebin && ! ":$PATH:" == *":$homebin:"* ]]
@@ -96,8 +110,10 @@ bindkey "^H" backward-delete-char
 bindkey "^U" kill-line
 
 # BAIS - xterm colors for vim solarized colorscheme
-#[ -z "$TMUX" ] && export TERM="xterm-256color"
-export TERM="xterm-256color"
+#[ -z "$TMUX" ] && export TERM="xterm-256color-bce "
+# export TERM="xterm-256color"
+# export TERM="screen-256color-bce"
+# [[ -z $TMUX ]] && exec tmux -2
 
 export SVN_EDITOR="vim"
 ulimit -c unlimited
@@ -110,9 +126,14 @@ zstyle ':completion:*' menu select=2
 zstyle ":completion:*:descriptions" format "%B%d%b"
 
 # BAIS - MLR ENV VARIABLES
+export MLR_PATH='~/git/mlr'
 export MLR_EDITOR_CMD='vim <fname>'
 
 # BAIS - ROS setup
 
 ros_file='/opt/ros/hydro/setup.zsh'
 [ -f $ros_file ] && source $ros_file
+export ROS_PACKAGE_PATH="${HOME}/git/mlr/share/src/pr2:${ROS_PACKAGE_PATH}"
+# only to run local stuff
+export ROS_HOSTNAME=localhost
+export ROS_MASTER_URI=http://localhost:11311

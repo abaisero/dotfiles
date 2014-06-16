@@ -5,55 +5,70 @@ filetype indent on
 syntax on
 
 " Bundles {{{
-set nocompatible               " be iMproved
-filetype off                   " required!
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-" let Vundle manage Vundle
-" required! 
-Bundle 'gmarik/vundle'
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
 
-" My Bundles here:
-"
-" preinstalled original repos on github
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
-Bundle 'tpope/vim-rails.git'
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+" Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Avoid a name conflict with L9
+" Plugin 'user/L9', {'name': 'newL9'}
 
 " BAIS - my added repos
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-git'
-Bundle 'Valloric/YouCompleteMe.git'
-"Bundle 'scrooloose/syntastic.git'
-Bundle 'scrooloose/nerdtree.git'
-Bundle 'scrooloose/nerdcommenter.git'
-Bundle 'fholgado/minibufexpl.vim'
-Bundle 'ctags.vim'
-Bundle 'majutsushi/tagbar.git'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'flazz/vim-colorschemes'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'Lokaltog/powerline'
+
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-notes'
+
+Plugin 'Valloric/YouCompleteMe.git'
+" Plugin 'scrooloose/syntastic.git'
+Plugin 'fholgado/minibufexpl.vim'
+Plugin 'ctags.vim'
+Plugin 'altercation/vim-colors-solarized'
+" Plugin 'flazz/vim-colorschemes'
 
 " vim-scripts repos
-Bundle 'L9'
-Bundle 'FuzzyFinder'
-" non github repos
-Bundle 'git://git.wincent.com/command-t.git'
+Plugin 'L9'
+Plugin 'FuzzyFinder'
 " ...
 
-filetype plugin indent on     " required!
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
 "
 " Brief help
-" :BundleList          - list configured bundles
-" :BundleInstall(!)    - install(update) bundles
-" :BundleSearch(!) foo - search(or refresh cache first) for foo
-" :BundleClean(!)      - confirm(or auto-approve) removal of unused bundles
+" :PluginList          - list configured plugins
+" :PluginInstall(!)    - install (update) plugins
+" :PluginSearch(!) foo - search (or refresh cache first) for foo
+" :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
 "
 " see :h vundle for more details or wiki for FAQ
-" NOTE: comments after Bundle command are not allowed..
+
 "}}}
- 
 " Options {{{
 " history and undo
 set history=1000
@@ -63,7 +78,7 @@ set backspace=indent,eol,start
 " automatically reload changed buffers
 set autoread
 " buffer-specific status info, under each window
-set laststatus=1
+set laststatus=2
 set statusline=%5l/%L\ %y\ %f\ %m
 set cmdheight=2
 " quick tty update
@@ -82,6 +97,8 @@ set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+" ignore case when looking for files to open
+set wildignorecase
 " expand tabs as white-spaces
 set tabstop=2
 set shiftwidth=2
@@ -126,16 +143,17 @@ endfunction
 set foldtext=MyFoldText()
 "}}}
 
-" cool colorscheme
-let g:solarized_contrast="high"
-let g:solarized_visibility="high"
-let g:solarized_diffmode="high"
-let g:solarized_hitrail=0
-let g:solarized_termtrans=1
+" powerline?
+" set encoding=utf-8
+" set termencoding=
+" solarized {{{
+set term=xterm-256color
+let g:solarized_termtrans=0
 let g:solarized_termcolors=256
-colorscheme solarized
 set background=dark
-"hi normal   ctermfg=black  ctermbg=white
+colorscheme solarized
+
+" }}}
 " python syntax
 let python_highlight_all=1
 
@@ -163,7 +181,7 @@ onoremap ac a{
 "}}}
 " Formatting {{{
 " to join and reformat a line with the next
-nnoremap y :join<CR>gqq
+nnoremap y :join<CR>
 "}}}
 " Folds {{{
 " to next/prev fold
@@ -200,10 +218,6 @@ noremap <C-o> :vertical resize +1<cr>
 noremap <Leader>w :w !sudo tee % > /dev/null
 "compile pdflatex
 nnoremap <leader>l :!pdflatex %<cr>
-" make with makefile
-nnoremap <leader>m :make<cr>
-" execute x.exe
-nnoremap <leader>x :!./x.exe<cr>
 " execute with python
 nnoremap <leader>p :!python %<cr>
 "}}}
@@ -219,6 +233,8 @@ iabbrev teh the
 set tagstack
 set tags=$HOME/git/mlr/share/tags
 " }}}
+" programming {{{
+nnoremap <F5> :Make<cr>
 "}}}
 " Auto-Commands {{{
 " spelling in tex files
@@ -227,14 +243,17 @@ augroup tex
   autocmd FileType tex setlocal spell spelllang=en_us
   autocmd FileType tex syntax spell toplevel
 augroup END
+" set filetype for Ors files
 augroup ft_ors
   autocmd!
   autocmd BufRead,BufNewFile *.ors setlocal filetype=ors
 augroup END
+" set filetype for KeyValueGraphs
 augroup ft_kvg
   autocmd!
   autocmd BufRead,BufNewFile *.kvg setlocal filetype=kvg
 augroup END
+" return to last line when reopening file
 augroup latest_line
   autocmd!
   autocmd BufReadPost *
@@ -261,9 +280,17 @@ let g:syntastic_always_populate_loc_list = 1
 noremap [[ :prev<cr>
 noremap ]] :next<cr>
 "}}}
-" NERDCommenter {{{
-noremap cc :call NERDComment(0, 'toggle')<cr>
-"}}}
+" vim-commentary {{{
+autocmd FileType ors    set commentstring=#\ %s
+autocmd FileType cf     set commentstring=#\ %s
+autocmd FileType kvg    set commentstring=#\ %s
+autocmd FileType cmake  set commentstring=#\ %s
+" }}}
+" vim-notes {{{
+let g:notes_directories = ['~/notes']
+let g:notes_suffix = '.vim-note'
+let g:notes_list_bullets = ['•', '▸', '▪']
+" }}}
 " MiniBufExpl {{{
 let g:miniBufExplModSelTarget = 1
 let g:miniBufExplMapWindowNavVim = 1
@@ -275,16 +302,6 @@ let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
 let g:ycm_collect_identifiers_from_tags_files = 1
 "noremap gd :YcmCompleter GoToDeclaration<cr>
 "}}}
-" TagBar {{{
-"noremap <leader>t :TagbarOpenAutoClose<cr>
-noremap <leader>t :TagbarToggle<cr>
-noremap gf <c-]>
-noremap gn :tn<cr>
-noremap gp :tp<cr>
-noremap gl :ts<cr>
-"nnoremap <C-h> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
-"nnoremap <C-]> :tjump <C-r><C-w><CR>
-" }}}
 " Latex {{{
 let g:tex_flavor='latex'
 " }}}

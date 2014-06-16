@@ -41,6 +41,15 @@ alias ipython-notebook='\ipython notebook --pylab=inline'
 alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
 alias nautilus='nautilus --no-desktop'
 
+function note() {
+  if [[ $# > 0 ]]
+  then
+    vim note:$1
+  else
+    basename -a $(find ~/notes -name '*.vim-note')
+  fi
+}
+
 function timesheet_format() {
   pdfcrop --margins "20 0 20 0" $1 porcodio.pdf
   gs -o $1 -sDEVICE=pdfwrite -sPAPERSIZE=a4 -dFIXEDMEDIA -dPDFFitPage -dCompatibilityLevel=1.4 porcodio.pdf
