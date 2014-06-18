@@ -31,21 +31,35 @@ esac
 
 echo Files to print: "$#*"
 let "e = 0"
+
+# creating blank page
+blank="/tmp/blank.pdf"
+echo "" | ps2pdf -sPAPERSIZE=a4 - $blank
+
+# selecting PDF files
+pdffiles=()
 for i in $*
 do
-  echo
-  echo Sending file \'$i\' to printer.
-  if [[ ! -f $i ]]
+  # if [[ -f $i ]]
+  if [[ $(file $i | grep -q "PDF") -eq 0 ]]
   then
-    echo Error: not a file.
+    pdffiles+=($i)
+    # adding blank page if odd number of pages
+    npages=$(pdftk $i dump_data | grep NumberOfPages | sed 's/[^0-9]*//')
+    [ $(($npages % 2)) -ne 0 ] && pdffiles+=($blank)
+  else
+    echo Error: "$i" not a PDF file. Ignoring.
     let "e++"
-    continue
   fi
-  cat $i | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de \
-    "lpr $printer -o sides=two-sided-long-edge"
-  echo Sent.
-  echo
 done
+
+# concatenating all pdf (with blank pages) into one file
+fullfile=/tmp/fullfile.pdf
+pdftk $pdffiles cat output $fullfile
+
+# printing fullfile
+cat $fullfile | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de "lpr $printer -o sides=two-sided-long-edge"
+echo Sent.
 
 if [[ $e > 0 ]]
 then
