@@ -113,7 +113,7 @@ bindkey "^U" kill-line
 #[ -z "$TMUX" ] && export TERM="xterm-256color-bce "
 # export TERM="xterm-256color"
 # export TERM="screen-256color-bce"
-# [[ -z $TMUX ]] && exec tmux -2
+[[ -z $TMUX ]] && exec tmux -2
 
 export SVN_EDITOR="vim"
 ulimit -c unlimited
