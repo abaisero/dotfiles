@@ -23,6 +23,7 @@ alias audio='sudo alsa force-reload'
 alias linux='lsb_release -a'
 alias help='apropos'
 alias screen_off='xset dpms force off'
+alias lock='gnome-screensaver-command -l'
 
 alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='\cmake -DCMAKE_BUILD_TYPE=Release'
@@ -40,6 +41,12 @@ alias ipython='\ipython --pylab'
 alias ipython-notebook='\ipython notebook --pylab=inline'
 alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
 alias nautilus='nautilus --no-desktop'
+
+function tmux-colors() {
+  for i in {0..255} ; do
+      printf "\x1b[38;5;${i}mcolour${i}\n"
+  done
+}
 
 function note() {
   if [[ $# > 0 ]]

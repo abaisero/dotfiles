@@ -7,7 +7,7 @@ ZSH=$HOME/.oh-my-zsh
 # time that oh-my-zsh is loaded.
 #ZSH_THEME="robbyrussell"
 ZSH_THEME="agnoster"
-#DEFAULT_USER="bais"
+# DEFAULT_USER="bais"
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -110,9 +110,6 @@ bindkey "^H" backward-delete-char
 bindkey "^U" kill-line
 
 # BAIS - xterm colors for vim solarized colorscheme
-#[ -z "$TMUX" ] && export TERM="xterm-256color-bce "
-# export TERM="xterm-256color"
-# export TERM="screen-256color-bce"
 [[ -z $TMUX ]] && exec tmux -2
 
 export SVN_EDITOR="vim"
@@ -133,7 +130,7 @@ export MLR_EDITOR_CMD='vim <fname>'
 
 ros_file='/opt/ros/hydro/setup.zsh'
 [ -f $ros_file ] && source $ros_file
-export ROS_PACKAGE_PATH="${HOME}/git/mlr/share/src/pr2:${ROS_PACKAGE_PATH}"
+export ROS_PACKAGE_PATH="${HOME}/git/mlr2/share/src/pr2:${ROS_PACKAGE_PATH}"
 # only to run local stuff
 export ROS_HOSTNAME=localhost
 export ROS_MASTER_URI=http://localhost:11311

@@ -281,6 +281,9 @@ noremap [[ :prev<cr>
 noremap ]] :next<cr>
 "}}}
 " vim-commentary {{{
+autocmd FileType cpp    set commentstring=//\ %s
+autocmd FileType h      set commentstring=//\ %s
+autocmd FileType c      set commentstring=//\ %s
 autocmd FileType ors    set commentstring=#\ %s
 autocmd FileType cf     set commentstring=#\ %s
 autocmd FileType kvg    set commentstring=#\ %s
@@ -306,3 +309,6 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let g:tex_flavor='latex'
 " }}}
 
+" to organize {{{
+command D execute "read !date '+\\#\\#\\# \\%F' . read !date"
+" }}}
