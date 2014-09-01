@@ -127,8 +127,7 @@ export MLR_PATH='~/git/mlr'
 export MLR_EDITOR_CMD='vim <fname>'
 
 # BAIS - ROS setup
-
-ros_file='/opt/ros/hydro/setup.zsh'
+ros_file='/opt/ros/indigo/setup.zsh'
 [ -f $ros_file ] && source $ros_file
 export ROS_PACKAGE_PATH="${HOME}/git/mlr2/share/src/pr2:${ROS_PACKAGE_PATH}"
 # only to run local stuff

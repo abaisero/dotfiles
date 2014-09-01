@@ -38,12 +38,22 @@ Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'Lokaltog/powerline'
+Plugin 'vim-scripts/delimitMate.vim'
+Plugin 'vim-scripts/argtextobj.vim'
+" Plugin 'vim-scripts/a.vim'
+Plugin 'kana/vim-textobj-user'
+Plugin 'kana/vim-textobj-line'
+Plugin 'kana/vim-textobj-indent'
+Plugin 'Julian/vim-textobj-brace'
+Plugin 'Julian/vim-textobj-variable-segment'
 
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-notes'
 
-Plugin 'Valloric/YouCompleteMe.git'
-" Plugin 'scrooloose/syntastic.git'
+" Plugin 'Valloric/YouCompleteMe.git'
+Plugin 'SirVer/ultisnips'
+Plugin 'bigblindbais/vim-snippets.git'
+Plugin 'scrooloose/syntastic.git'
 Plugin 'fholgado/minibufexpl.vim'
 Plugin 'ctags.vim'
 Plugin 'altercation/vim-colors-solarized'
@@ -157,6 +167,12 @@ colorscheme solarized
 " python syntax
 let python_highlight_all=1
 
+" UltiSnips
+set runtimepath+=~/.vim/bundle/vim-snippets/UltiSnips
+" let g:UltiSnipsExpandTrigger="\\"
+" let g:UltiSnipsJumpForwardTrigger="<c-j>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
 " Custom commands {{{
 " Modes {{{
 " exit insert mode
@@ -221,6 +237,10 @@ nnoremap <leader>l :!pdflatex %<cr>
 " execute with python
 nnoremap <leader>p :!python %<cr>
 "}}}
+
+" . should act as expected (repeat) in visual mode
+vnoremap . :norm.<CR>
+
 " Open files {{{
 nnoremap <leader>ev :split $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
@@ -274,11 +294,24 @@ noremap <leader>gw :Gwrite<cr>
 noremap <leader>gc :Gcommit<cr>
 "}}}
 " Syntastic {{{
+" let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
-let g:syntastic_check_on_open = 1
+let g:syntastic_cpp_check_header = 1
+let g:syntastic_cpp_include_dirs = [ '/home/bais/git/mlr/share/src/' ]
+
+" set to 1 if you want to check on open..
+" for now, just check when you press F6 or something..
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_highlighting = 0
 let g:syntastic_always_populate_loc_list = 1
-noremap [[ :prev<cr>
-noremap ]] :next<cr>
+" let g:syntastic_debug = 1
+" let g:syntastic_error_symbol = "E"
+" let g:syntastic_style_error_symbol = "e"
+" let g:syntastic_warning_symbol = "W"
+" let g:syntastic_style_warning_symbol = "w"
+noremap <C-[> :lprev<cr>
+noremap <C-]> :lnext<cr>
 "}}}
 " vim-commentary {{{
 autocmd FileType cpp    set commentstring=//\ %s
@@ -300,15 +333,52 @@ let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplShowBufNumbers = 0
 "}}}
 " YouCompleteMe {{{
-let g:ycm_server_keep_logfiles = 1
-let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
-let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_server_keep_logfiles = 1
+" let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
+" let g:ycm_collect_identifiers_from_tags_files = 1
+" let g:ycm_show_diagnostics_ui = 0
 "noremap gd :YcmCompleter GoToDeclaration<cr>
-"}}}
+" let g:ycm_semantic_triggers =  {
+"   \   'c' : ['->', '.'],
+"   \   'objc' : ['->', '.'],
+"   \   'cpp,objcpp' : ['->', '.', '::'],
+"   \   'lua' : ['.', ':'],
+"   \ }
+" }}}
 " Latex {{{
 let g:tex_flavor='latex'
 " }}}
 
 " to organize {{{
-command D execute "read !date '+\\#\\#\\# \\%F' . read !date"
+" command! D execute "read !date '+\\#\\#\\# \\%F' . read !date"
 " }}}
+"
+" line as text object
+" call textobj#user#plugin('line', {
+" \   '-': {
+" \     'select-a-function': 'CurrentLineA',
+" \     'select-a': 'aP',
+" \     'select-i-function': 'CurrentLineI',
+" \     'select-i': 'iP',
+" \   },
+" \ })
+
+" function! CurrentLineA()
+"   normal! 0
+"   let head_pos = getpos('.')
+"   normal! $
+"   let tail_pos = getpos('.')
+"   return ['v', head_pos, tail_pos]
+" endfunction
+
+" function! CurrentLineI()
+"   normal! ^
+"   let head_pos = getpos('.')
+"   normal! g_
+"   let tail_pos = getpos('.')
+"   let non_blank_char_exists_p = getline('.')[head_pos[2] - 1] !~# '\s'
+"   return
+"   \ non_blank_char_exists_p
+"   \ ? ['v', head_pos, tail_pos]
+"   \ : 0
+" endfunction

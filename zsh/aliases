@@ -27,6 +27,17 @@ alias lock='gnome-screensaver-command -l'
 
 alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='\cmake -DCMAKE_BUILD_TYPE=Release'
+alias cmake-releasewithdebuginfo='\cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo'
+
+alias callgrind='valgrind --tool=callgrind'
+
+# ROS
+function ros() {
+  shell=$(basename $SHELL)
+  ros_setup="/opt/ros/indigo/setup.$shell"
+  [[ -f $ros_setup ]] && source $ros_setup; echo "ROS loaded." || echo "Can not load ROS: $ros_setup does not exist."
+}
+alias rviz='rosrun rviz rviz'
 
 alias pstop='sudo killall -s SIGKILL -u'
 alias pcont='sudo killall -s SIGCONT -u'
