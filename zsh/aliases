@@ -2,6 +2,12 @@
 ## FACILITY SHORTCUTS ##
 ########################
 
+function reminder() {
+  sleep $1 && zenity --info --text "$2" &
+}
+
+alias fpdb='~/git/fpdb/run_fpdb.py'
+
 alias g4src_cfg='CreateSrcCfg'
 alias g4hub_cfg='~/bin/G4DevCfg'
 
@@ -17,7 +23,7 @@ alias q='exit'
 alias gt='gnome-terminal .'
 alias nt='gnome-terminal .; exit'
 alias ack='ack-grep'
-alias sman='man -k'         # searches in the man pages
+alias mans='man -k'         # searches in the man pages
 alias up='sudo apt-get update && sudo apt-get upgrade'
 alias audio='sudo alsa force-reload'
 alias linux='lsb_release -a'
@@ -94,8 +100,12 @@ function npackets() {
   echo $(avprobe -show_packets $1 2&>/dev/null | grep PACKET | wc -l)/2 | bc
 }
 
+alias mkdir='mkdir -p'
+alias cp='cp -v'
 alias ls='ls -hl --color=auto'
 alias lt='ls -rt'
+alias lsd='ls -l | grep \^d'
+
 alias dev='ls /dev/sd*'
 function copy() {
   cat $1 | xclip -i -selection clipboard
