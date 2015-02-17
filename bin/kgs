@@ -1,0 +1,5 @@
+#!/usr/bin/zsh
+
+javaws $HOME/bin/cgoban.jnlp
+
+exit $?

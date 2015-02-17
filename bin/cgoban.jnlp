@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  JNLP File for CGoban 3
+
+  $URL: svn+ssh://svn.igoweb.org/svn/kgs/trunk/launchers/javaws/cgoban.jnlp $
+  $Revision: 11566 $
+  $Date: 2014-11-02 15:59:19 -0500 (Sun, 02 Nov 2014) $
+-->
+
+<jnlp codebase="http://files.gokgs.com" href="javaBin/cgoban.jnlp">
+  <information>
+    <title>CGoban 3</title>
+    <vendor>KGS Online</vendor>
+    <homepage href="http://www.gokgs.com/"/>
+    <description>CGoban 3</description>
+    <description kind="short">CGoban 3 can connect to the KGS go server and can view and edit SGF (go game record) files.</description>
+    <icon href="images/cgobanIcon.jpg"/>
+    <offline-allowed/>
+    <association mime-type="x-go-sgf" extensions="sgf"/>
+    <shortcut online="true">
+      <desktop/>
+      <menu submenu="KGS Online"/>
+    </shortcut>
+  </information>
+  <security>
+    <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.5+"/>
+    <jar href="javaBin/cgoban.jar" main="true"/>
+    <!-- Needed for Apple system 10.4.11 or older. -->
+    <property name="apple.awt.textantialiasing" value="on"/>
+  </resources>
+  <application-desc main-class="org.igoweb.cgoban.CGoban"/>
+</jnlp>
