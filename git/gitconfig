@@ -18,9 +18,7 @@
   st = status
   l = log --stat --graph
 [color]
-	ui = true
-[push]
-	default = simple
+  ui = true
 [log]
-	stat = true
+  stat = true
   graph = true
