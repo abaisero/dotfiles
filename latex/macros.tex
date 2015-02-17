@@ -1,0 +1,164 @@
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+% \usepackage{amsthm}
+\usepackage{mathtools}
+\usepackage{paralist}
+\usepackage{xspace}
+\usepackage{todonotes}
+% \usepackage{algorithm}
+% \usepackage{algpseudocode}
+
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+\usepackage{wasysym}
+\usepackage{comment}
+% \usepackage{tikz}
+% \usepackage{tikz-qtree}
+% \usetikzlibrary{arrows}
+
+% TODO complete todo commands..
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Document options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\nosubsubcounter}{\setcounter{secnumdepth}{2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Custom commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% TikZ
+\newcommand{\inputTikZ}[1]{
+  \input{{#1}.tex}
+}
+
+% Custom TODO commands
+\newcommand{\intodo}[1]{\todo[inline]{{#1}}}
+\newcommand{\todopage}{
+  \ifnum\value{@todonotes@numberoftodonotes}>0
+    \newpage\listoftodos
+  \fi
+}
+
+% Q & A commands
+\newcommand{\q}[1]{\todo[inline]{Q. {#1}}}
+\newcommand{\qna}[2]{\todo[inline]{Q. {#1}\\A. {#2}}}
+
+%%% Environments
+
+% Inline list
+\newenvironment{inlist}
+{\begin{inparaenum}[\itshape a\upshape)]}
+{\end{inparaenum}}
+
+% Example environment, section numbering
+\newtheorem{example}{Example}[section]
+
+%%% Reference commands
+
+\newcommand{\EXREF}[1]{\ref{ex:#1}}
+\newcommand{\EX}[1]{Ex.~\EXREF{#1}}
+\newcommand{\EXAMPLE}[1]{Example~\EXREF{#1}}
+
+\newcommand{\EQREF}[1]{\eqref{eq:#1}}
+\newcommand{\EQ}[1]{Eq.~\EQREF{#1}}
+\newcommand{\EQUATION}[1]{Equation~\EQREF{#1}}
+
+\newcommand{\SECREF}[1]{\ref{sec:#1}}
+\newcommand{\SEC}[1]{Sec.~\SECREF{#1}}
+\newcommand{\SECTION}[1]{Section~\SECREF{#1}}
+\newcommand{\SECTIONS}[2]{Sections~\SECREF{#1} and \SECREF{#2}}
+
+\newcommand{\FIGREF}[1]{\ref{fig:#1}}
+\newcommand{\FIG}[1]{Fig.~\FIGREF{#1}}
+\newcommand{\FIGURE}[1]{Figure~\FIGREF{#1}}
+
+\newcommand{\SUBFIGREF}[1]{\subref{fig:#1}}
+\newcommand{\SUBFIG}[1]{Fig.~\SUBFIGREF{#1}}
+\newcommand{\SUBFIGURE}[1]{Figure~\SUBFIGREF{#1}}
+
+\newcommand{\TABREF}[1]{\ref{tab:#1}}
+\newcommand{\TAB}[1]{Tab.~\TABREF{#1}}
+\newcommand{\TABLE}[1]{Table~\TABREF{#1}}
+
+%%% Textual modifiers
+\newcommand{\quotes}[1]{``#1''}
+
+%%% Pros and Cons
+\newcommand{\pro}{\item[$\oplus$]}
+\newcommand{\con}{\item[$\ominus$]}
+\newcommand{\neut}{\item[$\ocircle$]}
+\newcommand{\spro}{\item[\smiley{}]}
+\newcommand{\scon}{\item[\frownie{}]}
+
+%%% Common texts
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\etal}{et al\xspace}
+\newcommand{\iid}{i.i.d.\xspace}
+\newcommand{\ie}{i.e.\xspace}
+\newcommand{\Ie}{I.e.\xspace}
+\newcommand{\eg}{e.g.\xspace}
+\newcommand{\Eg}{E.g.\xspace}
+\newcommand{\wrt}{w.r.t.\xspace}
+\newcommand{\ifff}{iff}
+\newcommand{\etc}{etc\xspace}
+\newcommand{\dash}{--}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Math Environment Common Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Common operators
+\DeclareMathOperator*{\trace}{tr}
+\DeclareMathOperator*{\rank}{rank}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\sig}{sig}
+\DeclareMathOperator*{\Var}{Var}
+\DeclareMathOperator*{\Cov}{Cov}
+\DeclareMathOperator*{\colspace}{\mathbf{col}}
+\DeclareMathOperator*{\spanspace}{\mathbf{Span}}
+
+\newcommand{\abs}[1]{\left|\,#1\,\right|}
+\newcommand{\norm}[2][]{\left\|{#2}\right\|_{#1}}
+\newcommand{\dotp}[2]{\langle\,#1,#2\,\rangle}
+\newcommand{\cond}{~ | ~ }
+
+% Common symbols
+\newcommand{\E}{\rm E}
+
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\JJ}{\mathcal{J}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\XX}{\mathcal{X}}
+\newcommand{\YY}{\mathcal{Y}}
+\newcommand{\ZZ}{\mathcal{Z}}
+
+\newcommand{\RRR}{\mathbb{R}}
+\newcommand{\III}{\mathbb{I}}
+
+\newcommand{\STAR}{^\ast}
+\newcommand{\T}{^\intercal}
+\newcommand{\I}{^{-1}}
+% \newcommand{\defeq}{\ensuremath{\mathrel{\stackrel{\mathrm{def}}{=}}}}
+\newcommand{\defeq}{\vcentcolon=}
+
+% Symbol modifiers
+\newcommand{\vv}[1]{\boldsymbol{#1}}
+\newcommand{\mm}[1]{\boldsymbol{#1}}
+\newcommand{\seq}[1]{\boldsymbol{#1}}
+\newcommand{\alt}[1]{\tilde{#1}}
+
+% Derivatives
+\newcommand{\der}[2]{\frac{\partial #1}{\partial #2}}
+
+% Text in Formula commands
+\newcommand{\st}{\text{ s.t.\xspace}}
+
