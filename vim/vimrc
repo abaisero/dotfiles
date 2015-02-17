@@ -37,7 +37,11 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
+" Plugin 'tpope/vim-markdown'
+Plugin 'plasticboy/vim-markdown'
+Plugin 'groenewege/vim-less'
 Plugin 'sjl/splice.vim'
+Plugin 'sjl/gundo.vim'
 Plugin 'Lokaltog/powerline'
 Plugin 'vim-scripts/delimitMate.vim'
 Plugin 'vim-scripts/argtextobj.vim'
@@ -81,6 +85,14 @@ filetype plugin indent on    " required
 
 "}}}
 " Options {{{
+" hidden allows you to change buffer without closing the previous one
+set hidden
+" don't create backup files, and relocate swap and undo files
+set nobackup
+set directory=~/.vim_swap//
+set undodir=~/.vim_undo//
+" (consider removing swap files too)
+" set noswapfile
 " history and undo
 set history=1000
 set undolevels=1000
@@ -180,25 +192,25 @@ set runtimepath+=~/.vim/bundle/vim-snippets/UltiSnips
 inoremap kj <esc>
 inoremap <esc> <nop>
 "}}}
+" reselect just pasted text
+nnoremap <leader>y V`]
+" clean search highlight
+nnoremap <leader>7 :noh<cr>
 " Moving {{{
-" to move around through 'graphical' lines
+" move around through 'graphical' lines
 noremap j gj
 noremap k gk
 noremap J <C-D>
 noremap K <C-U>
 noremap H 0
 noremap L $
-" Movement Mappings
-onoremap ip i(
-onoremap ap a(
-onoremap is i[
-onoremap as a[
-onoremap ic i{
-onoremap ac a{
 "}}}
 " Formatting {{{
 " to join and reformat a line with the next
-nnoremap y :join<CR>
+nnoremap <leader>j J
+nnoremap <leader>k vipgq
+" set nojoinspaces
+set cpo+=J
 "}}}
 " Folds {{{
 " to next/prev fold
@@ -232,7 +244,7 @@ noremap <C-o> :vertical resize +1<cr>
 " }}}
 " Misc {{{
 " To save even write-protected files
-noremap <Leader>w :w !sudo tee % > /dev/null
+cnoremap w!! w !sudo tee % > /dev/null
 "compile pdflatex
 nnoremap <leader>l :!pdflatex %<cr>
 " execute with python
@@ -240,14 +252,11 @@ nnoremap <leader>p :!python %<cr>
 "}}}
 
 " . should act as expected (repeat) in visual mode
-vnoremap . :norm.<CR>
+vnoremap . :normal! .<cr>
 
-" Open files {{{
-nnoremap <leader>ev :split $MYVIMRC<cr>
+" edit / source vimrc {{{
+nnoremap <leader>ev :edit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
-" }}}
-" Typos & other abbreviations {{{
-iabbrev teh the
 " }}}
 " ctags {{{
 "map <F12> :!ctags --verbose -R --sort=yes --c++-kinds=+p --fields=iaS --extra=+q .<cr>
@@ -263,6 +272,16 @@ augroup tex
   autocmd!
   autocmd FileType tex setlocal spell spelllang=en_us
   autocmd FileType tex syntax spell toplevel
+augroup END
+" set filetype for MT.cfg files
+augroup ft_mtcfg
+  autocmd!
+  autocmd BufRead,BufNewFile MT.cfg setlocal filetype=mtcfg
+augroup END
+" set filetype for less files
+augroup ft_less
+  autocmd!
+  autocmd BufRead,BufNewFile *.less setlocal filetype=less
 augroup END
 " set filetype for Ors files
 augroup ft_ors
@@ -298,7 +317,7 @@ noremap <leader>gc :Gcommit<cr>
 " let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_include_dirs = [ '/home/bais/git/mlr/share/src/' ]
+let g:syntastic_cpp_include_dirs = [ '/home/bais/git/mlr/share/src/', '/home/bais/git/mlr/share/projects/temporal_segmentation/dist/' ]
 
 " set to 1 if you want to check on open..
 " for now, just check when you press F6 or something..
@@ -315,24 +334,40 @@ noremap <C-[> :lprev<cr>
 noremap <C-]> :lnext<cr>
 "}}}
 " vim-commentary {{{
-autocmd FileType cpp    set commentstring=//\ %s
-autocmd FileType h      set commentstring=//\ %s
-autocmd FileType c      set commentstring=//\ %s
-autocmd FileType ors    set commentstring=#\ %s
-autocmd FileType cf     set commentstring=#\ %s
-autocmd FileType kvg    set commentstring=#\ %s
-autocmd FileType cmake  set commentstring=#\ %s
+augroup comments
+  autocmd!
+  autocmd FileType cpp    set commentstring=//\ %s
+  autocmd FileType h      set commentstring=//\ %s
+  autocmd FileType c      set commentstring=//\ %s
+  autocmd FileType css    set commentstring=//\ %s
+  autocmd FileType less   set commentstring=//\ %s
+  autocmd FileType mtcfg  set commentstring=#\ %s
+  autocmd FileType ors    set commentstring=#\ %s
+  autocmd FileType cf     set commentstring=#\ %s
+  autocmd FileType kvg    set commentstring=#\ %s
+  autocmd FileType cmake  set commentstring=#\ %s
+  autocmd FileType notes  set commentstring=#\ %s
+  autocmd FileType matlab set commentstring=%\ %s
+augroup END
 " }}}
 " vim-notes {{{
 let g:notes_directories = ['~/notes']
 let g:notes_suffix = '.vim-note'
 let g:notes_list_bullets = ['•', '▸', '▪']
 " }}}
+" vim-markdown {{{
+let g:vim_markdown_frontmatter=1
+let g:vim_markdown_math=1
+let g:vim_markdown_folding_disabled=1
+" }}}
+" Gundo {{{
+nnoremap <C-z> :GundoToggle<cr>
+" }}}
 " MiniBufExpl {{{
 let g:miniBufExplModSelTarget = 1
 let g:miniBufExplMapWindowNavVim = 1
 let g:miniBufExplShowBufNumbers = 0
-"}}}
+" }}}
 " YouCompleteMe {{{
 " let g:ycm_server_keep_logfiles = 1
 " let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
@@ -351,7 +386,7 @@ let g:tex_flavor='latex'
 " }}}
 
 " to organize {{{
-" command! D execute "read !date '+\\#\\#\\# \\%F' . read !date"
+nnoremap <leader>d :read !date '+\#\#\# \%d-\%m-\%Y @ \%T'<cr>
 " }}}
 "
 " line as text object
@@ -383,3 +418,9 @@ let g:tex_flavor='latex'
 "   \ ? ['v', head_pos, tail_pos]
 "   \ : 0
 " endfunction
+
+" insert mode, ctrl-u => capitalize word
+inoremap <c-u> <esc>viwUe
+
+" insert semi-colon at the end of the line
+nnoremap ; m`A;<esc>``

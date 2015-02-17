@@ -46,7 +46,9 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-# Customize to your needs...
+# BAIS - hist size
+# export HISTFILESIZE=
+# export HISTSIZE=
 
 # BAIS - local in path
 localbin="$HOME/.local/bin"
@@ -127,9 +129,14 @@ export MLR_PATH='~/git/mlr'
 export MLR_EDITOR_CMD='vim <fname>'
 
 # BAIS - ROS setup
-ros_file='/opt/ros/indigo/setup.zsh'
+ros_file='/opt/ros/groovy/setup.zsh'
 [ -f $ros_file ] && source $ros_file
-export ROS_PACKAGE_PATH="${HOME}/git/mlr2/share/src/pr2:${ROS_PACKAGE_PATH}"
+ws_file='/home/bais/catkin_ws/devel/setup.zsh'
+[ -f $ws_file ] && source $ws_file
 # only to run local stuff
-export ROS_HOSTNAME=localhost
 export ROS_MASTER_URI=http://localhost:11311
+export ROS_HOSTNAME=localhost
+export ROS_IP=$(hostname -I | awk '{print $(1)}')
+
+# BAIS location of the dotfiles folder
+export DOTFILES_DIR=/home/bais/git/dotfiles

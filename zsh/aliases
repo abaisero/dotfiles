@@ -2,6 +2,9 @@
 ## FACILITY SHORTCUTS ##
 ########################
 
+alias cm='catkin_make'
+alias ccp='catkin_create_pkg'
+
 function reminder() {
   sleep $1 && zenity --info --text "$2" &
 }
@@ -11,13 +14,17 @@ alias fpdb='~/git/fpdb/run_fpdb.py'
 alias g4src_cfg='CreateSrcCfg'
 alias g4hub_cfg='~/bin/G4DevCfg'
 
+function bk() {
+  cp $1 $1.BK.$(date +%F@%T.%N)
+}
+
 alias tn='tmux new -s'
 # easy stuff
 alias h='history | grep'
 alias j='jobs -l'
 alias k='kill'
 alias o='gnome-open'
-alias u='source ~/.zshrc'
+alias u='source $HOME/.zshrc'
 alias x='exit'
 alias q='exit'
 alias gt='gnome-terminal .'
@@ -28,13 +35,20 @@ alias up='sudo apt-get update && sudo apt-get upgrade'
 alias audio='sudo alsa force-reload'
 alias linux='lsb_release -a'
 alias help='apropos'
-alias screen_off='xset dpms force off'
+alias soff='xset dpms force off'
 alias lock='gnome-screensaver-command -l'
+alias trash='sudo rm -rf $HOME/.local/share/Trash/*'
 
+alias makegof='\make -f Makefile.gof'
 alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='\cmake -DCMAKE_BUILD_TYPE=Release'
 alias cmake-releasewithdebuginfo='\cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo'
 
+alias catkin_make-debug='\catkin_make -DCMAKE_BUILD_TYPE=Debug'
+alias catkin_make-release='\catkin_make -DCMAKE_BUILD_TYPE=Release'
+alias catkin_make-releasewithdebuginfo='\cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo'
+
+alias cts='cd ~/git/mlr/share/projects/temporal_segmentation'
 alias callgrind='valgrind --tool=callgrind'
 
 # ROS
@@ -54,6 +68,7 @@ alias ueye_daemon_restart='ueye_daemon force-stop; ueye_daemon start'
 alias ncores='cat /proc/cpuinfo | grep processor | wc -l'
 alias nusers='who | cut -f1 -d\ | sort -u | wc -l'
 
+alias arandr='arandr --force-version'
 alias ipython='\ipython --pylab'
 alias ipython-notebook='\ipython notebook --pylab=inline'
 alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
@@ -102,11 +117,14 @@ function npackets() {
 
 alias mkdir='mkdir -p'
 alias cp='cp -v'
+alias mv='mv -v'
 alias ls='ls -hl --color=auto'
 alias lt='ls -rt'
-alias lsd='ls -l | grep \^d'
+alias ld='ls -l | grep \^d'
 
 alias dev='ls /dev/sd*'
+alias wan='dig +short myip.opendns.com @resolver1.opendns.com'
+
 function copy() {
   cat $1 | xclip -i -selection clipboard
 }
@@ -128,9 +146,10 @@ alias infvpn='sudo openconnect asa1.informatik.uni-stuttgart.de \
 #  fi
 #}
 
-alias df='df -hT --total'
-alias du='du -h --total'
-alias free='free -m'
+alias df='\df -hT --total'
+alias du='\du -xh --total'
+alias files='\du -xh -all -d 1 | sort -h'
+alias free='\free -m'
 
 # easy mod for this and other files
 alias valias='vim ~/.bash_aliases'  # opens ~/.bash_aliases
@@ -192,10 +211,7 @@ function backup() {
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # t commands
-export T_DIR=~/Dropbox/Tasks
-alias t='python ~/git/t/t.py --task-dir $T_DIR --list tasks'
-alias mlr='python ~/git/t/t.py --task-dir $T_DIR --list mlr'
-alias task_cmds='cat ~/.bash_aliases | awk '\''/^alias.*python.*--list/ { split($2,A,"="); if(A[1]!="task_cmds") print A[1]; }'\'
+alias t='python ~/git/t/t.py --task-dir ~/Dropbox/todo --list todo --delete-if-empty'
 
 function task_list() {
   echo $(cat ~/.bash_aliases | awk "/^alias $1=/ {split(\$0,A);print A[NF]}") | sed "s/'//g"
