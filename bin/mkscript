@@ -1,0 +1,13 @@
+#!/usr/bin/zsh
+
+usage="Usage: mkscript <script> ..."
+[ $# -eq 0 ] && echo $usage && exit 1
+
+for script in "$@"
+do
+  [[ -e "$script" ]] && echo "File '$script' already exists. Skipping." && continue
+
+  echo Creating $script.
+  echo "#!$SHELL\n\nexit 0" > $script
+  chmod +x $script
+done
