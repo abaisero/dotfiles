@@ -1,0 +1,10 @@
+#!/usr/bin/zsh
+
+energy_now=$(cat /sys/class/power_supply/BAT0/energy_now)
+energy_full=$(cat /sys/class/power_supply/BAT0/energy_full)
+energy_status=$(cat /sys/class/power_supply/BAT0/status)
+
+energy_perc=$(gnome-calculator -s "100*$energy_now/$energy_full" 2&>/dev/null)
+echo $energy_status $energy_perc | awk '{printf("Status: %s\nCurrent: %.2f%%\n", $1, $2)}'
+
+exit 0

@@ -1,0 +1,42 @@
+#!/usr/bin/zsh
+
+SESSION_NAME="thp"
+rossource=". ros thp"
+
+function load_ros_thp() {
+  tmux send-keys -t ${SESSION_NAME} '. ros thp' C-m
+}
+
+tmux has-session -t ${SESSION_NAME}
+if [ $? != 0 ]
+then
+  # Core and launch window
+  tmux new-session -n core -s ${SESSION_NAME} -d
+  load_ros_thp
+  tmux send-keys -t ${SESSION_NAME} 'roscore' C-m
+
+  tmux split-window -v -t ${SESSION_NAME}
+  load_ros_thp
+  tmux send-keys -t ${SESSION_NAME} 'roslaunch relational_machine_dispatcher demo.launch'
+
+  # Vim window
+  tmux new-window -t ${SESSION_NAME} -n RM_vim
+  load_ros_thp
+  tmux send-keys -t ${SESSION_NAME} 'cd '$HOME'/catkin/3rdhand_ws/src/relational_machine_dispatcher/' C-m
+  tmux send-keys -t ${SESSION_NAME} 'vim *.py' C-m
+
+  tmux split-window -v -t ${SESSION_NAME}
+  load_ros_thp
+  tmux send-keys -t ${SESSION_NAME} 'cd '$HOME'/catkin/3rdhand_ws/src/relational_machine/' C-m
+  tmux send-keys -t ${SESSION_NAME} 'vim *.py' C-m
+
+  # Vim window
+  tmux new-window -t ${SESSION_NAME} -n Robot_vim
+  tmux send-keys -t ${SESSION_NAME} 'cd '$HOME'/catkin/3rdhand_ws/src/robot_system/' C-m
+  tmux send-keys -t ${SESSION_NAME} 'vim *.py' C-m
+
+  tmux select-window -t core
+fi
+tmux -2 attach -t ${SESSION_NAME}
+
+exit 0

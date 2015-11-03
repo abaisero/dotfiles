@@ -1,0 +1,5 @@
+#!/usr/bin/zsh
+
+amixer get Master | awk 'NR==5 { print $6 }' | head -c -2 | tail -c +2
+
+exit 0
