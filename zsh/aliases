@@ -15,8 +15,8 @@ alias fpdb='~/git/fpdb/run_fpdb.py'
 
 alias g4src_cfg='CreateSrcCfg'
 alias g4hub_cfg='~/bin/G4DevCfg'
-alias pr2lansetup='source /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2lansetup'
-alias pr2wlansetup='source /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2wifisetup'
+alias pr2lansetup='. /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2lansetup'
+alias pr2wlansetup='. /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2wifisetup'
 alias pr2dashboard='rosrun rqt_pr2_dashboard rqt_pr2_dashboard'
 alias pr2teleop='roslaunch pr2_teleop teleop_joystick.launch'
 
@@ -34,7 +34,7 @@ alias tn='tmux new -s'
 # easy stuff
 alias k='kill'
 alias o='gnome-open'
-alias u='source $HOME/.zshrc'
+alias u='. $HOME/.zshrc'
 alias x='exit'
 alias gt='gnome-terminal .'
 alias nt='gnome-terminal .; exit'
@@ -436,3 +436,10 @@ alias nexus-disconnect="fusermount -u /media/nexus"
 ### funny telnets
 
 alias nyan='telnet nyancat.dakko.us'
+
+################
+## CONDA ENVS ##
+################
+
+alias eyespy='. activate eyespy'
+alias pytk='. activate pytk'
