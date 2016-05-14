@@ -1,98 +1,35 @@
-" leader
-let mapleader = " "
-" syntax recognition stuff
-filetype indent on
-syntax on
-
-" Bundles {{{
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
+"" vundle
+set nocompatible
+filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-" Plugin 'user/L9', {'name': 'newL9'}
-
-" BAIS - my added repos
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-" Plugin 'tpope/vim-markdown'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'groenewege/vim-less'
-Plugin 'sjl/splice.vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'Lokaltog/powerline'
-Plugin 'vim-scripts/delimitMate.vim'
-Plugin 'vim-scripts/argtextobj.vim'
-" Plugin 'vim-scripts/a.vim'
-Plugin 'kana/vim-textobj-user'
-Plugin 'kana/vim-textobj-line'
-Plugin 'kana/vim-textobj-indent'
-Plugin 'Julian/vim-textobj-brace'
-Plugin 'Julian/vim-textobj-variable-segment'
-
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-notes'
-
-" Plugin 'Valloric/YouCompleteMe.git'
-Plugin 'SirVer/ultisnips'
-Plugin 'bigblindbais/vim-snippets.git'
+"" plugins
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/syntastic.git'
-Plugin 'fholgado/minibufexpl.vim'
-Plugin 'ctags.vim'
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-dispatch'
+Plugin 'tell-k/vim-autopep8'
 Plugin 'altercation/vim-colors-solarized'
-" Plugin 'flazz/vim-colorschemes'
-
-" vim-scripts repos
-Plugin 'L9'
-Plugin 'FuzzyFinder'
-" ...
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList          - list configured plugins
-" :PluginInstall(!)    - install (update) plugins
-" :PluginSearch(!) foo - search (or refresh cache first) for foo
-" :PluginClean(!)      - confirm (or auto-approve) removal of unused plugins
-"
-" see :h vundle for more details or wiki for FAQ
-
-"}}}
-" Options {{{
-" hidden allows you to change buffer without closing the previous one
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'argtextobj.vim'
+""
+call vundle#end()
+filetype plugin indent on
+""
+"" options
+syntax on
+let mapleader = ' '
+" change buffer without closing the previous ones
 set hidden
-" don't create backup files, and relocate swap and undo files
-set nobackup
-set directory=~/.vim_swap//
+" backup files
+set backupdir=~/.vim_backup//
+set noswapfile
 set undodir=~/.vim_undo//
-" (consider removing swap files too)
-" set noswapfile
 " history and undo
 set history=1000
 set undolevels=1000
@@ -100,21 +37,18 @@ set undolevels=1000
 set backspace=indent,eol,start
 " automatically reload changed buffers
 set autoread
-" buffer-specific status info, under each window
+" status-line
 set laststatus=2
 set statusline=%5l/%L\ %y\ %f\ %m
 set cmdheight=2
-" quick tty update
-set ttyfast
-set title
-" shows partial command while typing
+" show partial command while typing
 set showcmd
-" show row and col of cursor
+" show cursor position
 set ruler
 set cursorline
 " enables copy/paste between vim instances
 set clipboard=unnamed
-" when searching, get partial results live
+" search options
 set showmatch
 set hlsearch
 set incsearch
@@ -127,173 +61,104 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
-" sets cursor always at the middle of the screen
+" cursor always in the middle of the screen
 set scrolloff=999
-" prints line number
+" line numbers
 set relativenumber
 set number
-" folding
-set foldlevelstart=0
-set foldmethod=marker
-set foldnestmax=2
-" indenting options
-set autoindent
-set smartindent
-" visually see the 81st column
-set colorcolumn=81
-"set textwidth=80
 " to execute bash commands
 set shell=/bin/zsh
-" Tab-completion behaves as in the terminal
+" indentation
+set autoindent
+" set smartindent
+set cindent
+" visually see the 81st column
+set colorcolumn=81
+" tab-completion behaves as in the terminal
 set wildmenu
-" Fold-text function {{{
-function! MyFoldText()
-  let line = getline(v:foldstart)
-
-  let nucolwidth = &fdc + &number * &numberwidth
-  let windowwidth = winwidth(0) - nucolwidth - 3
-  let foldedlinecount = v:foldend - v:foldstart
-
-  " expand tabs into spaces
-  let onetab = strpart('  ', 0, &tabstop)
-  let line = substitute(line, '\t', onetab, 'g')
-
-  let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-  let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-  return foldedlinecount. " lines: ". line
-endfunction
-"}}}
-set foldtext=MyFoldText()
-"}}}
-
-" powerline?
-" set encoding=utf-8
-" set termencoding=
-" solarized {{{
-set term=screen-256color
-let g:solarized_termtrans=0
-let g:solarized_termcolors=256
-set background=dark
-colorscheme solarized
-
-" }}}
-" python syntax
-let python_highlight_all=1
-
-" UltiSnips
-set runtimepath+=~/.vim/bundle/vim-snippets/UltiSnips
-" let g:UltiSnipsExpandTrigger="\\"
-" let g:UltiSnipsJumpForwardTrigger="<c-j>"
-" let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
-" Custom commands {{{
-" Modes {{{
+" tex_flavor
+let g:tex_flavor='latex'
+""
+"" mappings
+" edit/re-load vimrc file
+nnoremap <leader>ev :edit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+" never go in ex mode again
+noremap Q <nop>
 " exit insert mode
 inoremap kj <esc>
 inoremap <esc> <nop>
-"}}}
-" reselect just pasted text
-nnoremap <leader>y V`]
-" clean search highlight
-nnoremap <leader>7 :noh<cr>
-" Moving {{{
-" move around through 'graphical' lines
+" file movement
 noremap j gj
 noremap k gk
-noremap J <C-D>
-noremap K <C-U>
-noremap H 0
-noremap L $
-"}}}
-" Formatting {{{
-" to join and reformat a line with the next
+noremap J <C-d>
+noremap K <C-u>
+"noremap J <C-D>
+"noremap K <C-U>
+" line formatting
 nnoremap <leader>j J
 nnoremap <leader>k vipgq
-" set nojoinspaces
 set cpo+=J
-"}}}
-" Folds {{{
-" to next/prev fold
-noremap fj zj
-noremap fk zk
-" to beginning/end of fold
-noremap fJ ]z
-noremap fK [z
-" to open/close fold
-noremap fl zo
-noremap fh zc
-noremap ff za
-" to open/close all
-noremap fH zM
-noremap fL zR
-" }}}
-" Tabs {{{
-" moves through tabs (replaces resizes)
+" tab movements
 noremap <C-u> :bp<cr>
 noremap <C-i> :bn<cr>
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+" tab splits
 noremap <C-m> :split<cr>
 noremap <C-n> :vsplit<cr>
-" moves cursor through tabs
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-" resize current window by +/- 1
-noremap <C-y> :vertical resize -1<cr>
-noremap <C-o> :vertical resize +1<cr>
-" }}}
-" Misc {{{
-" To save even write-protected files
-cnoremap w!! w !sudo tee % > /dev/null
-"compile pdflatex
-nnoremap <leader>l :!pdflatex %<cr>
-" execute with python
-nnoremap <leader>p :!python %<cr>
-"}}}
-
-" . should act as expected (repeat) in visual mode
-vnoremap . :normal! .<cr>
-
-" edit / source vimrc {{{
-nnoremap <leader>ev :edit $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
-" }}}
-" ctags {{{
-"map <F12> :!ctags --verbose -R --sort=yes --c++-kinds=+p --fields=iaS --extra=+q .<cr>
-set tagstack
-set tags=$HOME/git/mlr/share/tags
-" }}}
-" programming {{{
-nnoremap <F5> :Make<cr>
-"}}}
-" Auto-Commands {{{
-" spelling in tex files
-augroup tex
+" tab split resize
+noremap <C-o> :vertical resize +5<cr>
+noremap <C-y> :vertical resize -5<cr>
+"" misc mappings
+" dispatch latexmk
+noremap <leader>l :Dispatch! latexmk<cr>
+" clean latexmk junk
+noremap <leader>ò :Dispatch! latexmk -c<cr>
+" insert semi-colon at the end of the line
+nnoremap ; m`A;<esc>``
+""
+""
+"" fold methods
+function! GetVimFold(lnum)
+  if getline(a:lnum) =~? '\v^\s*$'
+    return '-1'
+  elseif getline(a:lnum) =~? '\v^""\s*$'
+    return 's1'
+  elseif getline(a:lnum) =~? '\v^""'
+    return 'a1'
+  endif
+  return '='
+endfunction
+""
+"" autocmds
+augroup ft_vim
   autocmd!
-  autocmd FileType tex setlocal spell spelllang=en_us
-  autocmd FileType tex syntax spell toplevel
+  autocmd FileType vim setlocal foldmethod=expr
+  autocmd FileType vim setlocal foldexpr=GetVimFold(v:lnum)
+  " autocmd FileType vim setlocal foldcolumn=1
 augroup END
-" set filetype for MT.cfg files
-augroup ft_mtcfg
+augroup ft_tex
   autocmd!
-  autocmd BufRead,BufNewFile MT.cfg setlocal filetype=mtcfg
+  autocmd FileType plaintex setlocal spell spelllang=en_us
+  autocmd FileType plaintex syntax spell toplevel
+  " autocmd FileType plaintex set smartindent
 augroup END
-" set filetype for less files
-augroup ft_less
+augroup ft_launch
   autocmd!
-  autocmd BufRead,BufNewFile *.less setlocal filetype=less
+  autocmd BufRead,BufNewFile *.launch set filetype=launch
+  autocmd BufReadPost *.launch set syntax=html
 augroup END
-" set filetype for Ors files
-augroup ft_ors
+augroup ft_tikz
   autocmd!
-  autocmd BufRead,BufNewFile *.ors setlocal filetype=ors
+  autocmd BufRead,BufNewFile *.tikz setlocal filetype=tex
 augroup END
-" set filetype for KeyValueGraphs
 augroup ft_kvg
   autocmd!
   autocmd BufRead,BufNewFile *.kvg setlocal filetype=kvg
 augroup END
-" return to last line when reopening file
 augroup latest_line
   autocmd!
   autocmd BufReadPost *
@@ -301,126 +166,82 @@ augroup latest_line
   \   execute 'normal! g`"zvzz' |
   \ endif
 augroup END
-" }}}
-" MLR {{{
-source ~/git/mlr/tools/ors.vim
-source ~/git/mlr/tools/kvg.vim
-" }}}
-" Git-Fugitive {{{
-noremap <leader>gs :Gstatus<cr>
-noremap <leader>gd :Gdiff<cr>
-noremap <leader>gb :Gblame<cr>
-noremap <leader>gw :Gwrite<cr>
-noremap <leader>gc :Gcommit<cr>
-"}}}
-" Syntastic {{{
-" let g:syntastic_cpp_checkers = ['gcc']
+""
+"" plugin options
+"" solarized
+set term=screen-256color
+let g:solarized_termtrans=0
+let g:solarized_termcolors=256
+set background=dark
+colorscheme solarized
+""
+"" vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+""
+"" syntastic
+"set statusline+=%=
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+" generic
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 0
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+" cpp
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_include_dirs = [ '/home/bais/git/mlr/share/src/', '/home/bais/git/mlr/share/projects/temporal_segmentation/dist/' ]
-
-" set to 1 if you want to check on open..
-" for now, just check when you press F6 or something..
-let g:syntastic_check_on_open = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_highlighting = 0
-let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_debug = 1
-" let g:syntastic_error_symbol = "E"
-" let g:syntastic_style_error_symbol = "e"
-" let g:syntastic_warning_symbol = "W"
-" let g:syntastic_style_warning_symbol = "w"
-noremap <C-[> :lprev<cr>
-noremap <C-]> :lnext<cr>
-"}}}
-" vim-commentary {{{
-augroup comments
+" python
+let g:syntastic_python_checkers = [ 'flake8' ]
+let g:syntastic_python_flake8_args = '--ignore="E501,E402"'
+""
+"" vim-commentary
+augroup commentary
   autocmd!
   autocmd FileType cpp    set commentstring=//\ %s
   autocmd FileType h      set commentstring=//\ %s
   autocmd FileType c      set commentstring=//\ %s
-  autocmd FileType css    set commentstring=//\ %s
+  autocmd FileType css    set commentstring=/\*\ %s\ \*/
   autocmd FileType less   set commentstring=//\ %s
   autocmd FileType mtcfg  set commentstring=#\ %s
   autocmd FileType ors    set commentstring=#\ %s
   autocmd FileType cf     set commentstring=#\ %s
-  autocmd FileType kvg    set commentstring=#\ %s
   autocmd FileType cmake  set commentstring=#\ %s
   autocmd FileType notes  set commentstring=#\ %s
   autocmd FileType matlab set commentstring=%\ %s
+  " autocmd FileType kv     set commentstring=#\ %s
+  autocmd FileType kvg    set commentstring=#\ %s
+  autocmd FileType launch set commentstring=<!--\ %s\ -->
+  autocmd FileType markdown set commentstring=;\ %s
 augroup END
-" }}}
-" vim-notes {{{
-let g:notes_directories = ['~/notes']
-let g:notes_suffix = '.vim-note'
-let g:notes_list_bullets = ['•', '▸', '▪']
-" }}}
-" vim-markdown {{{
-let g:vim_markdown_frontmatter=1
-let g:vim_markdown_math=1
-let g:vim_markdown_folding_disabled=1
-" }}}
-" Gundo {{{
-nnoremap <C-z> :GundoToggle<cr>
-" }}}
-" MiniBufExpl {{{
-let g:miniBufExplModSelTarget = 1
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplShowBufNumbers = 0
-" }}}
-" YouCompleteMe {{{
-" let g:ycm_server_keep_logfiles = 1
-" let g:ycm_extra_conf_globlist = ['~/git/mlr/share/*']
-" let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_show_diagnostics_ui = 0
-"noremap gd :YcmCompleter GoToDeclaration<cr>
-" let g:ycm_semantic_triggers =  {
-"   \   'c' : ['->', '.'],
-"   \   'objc' : ['->', '.'],
-"   \   'cpp,objcpp' : ['->', '.', '::'],
-"   \   'lua' : ['.', ':'],
-"   \ }
-" }}}
-" Latex {{{
-let g:tex_flavor='latex'
-" }}}
-
-" to organize {{{
-nnoremap <leader>d :read !date '+\#\#\# \%d-\%m-\%Y @ \%T'<cr>
-" }}}
-"
-" line as text object
-" call textobj#user#plugin('line', {
-" \   '-': {
-" \     'select-a-function': 'CurrentLineA',
-" \     'select-a': 'aP',
-" \     'select-i-function': 'CurrentLineI',
-" \     'select-i': 'iP',
-" \   },
-" \ })
-
-" function! CurrentLineA()
-"   normal! 0
-"   let head_pos = getpos('.')
-"   normal! $
-"   let tail_pos = getpos('.')
-"   return ['v', head_pos, tail_pos]
-" endfunction
-
-" function! CurrentLineI()
-"   normal! ^
-"   let head_pos = getpos('.')
-"   normal! g_
-"   let tail_pos = getpos('.')
-"   let non_blank_char_exists_p = getline('.')[head_pos[2] - 1] !~# '\s'
-"   return
-"   \ non_blank_char_exists_p
-"   \ ? ['v', head_pos, tail_pos]
-"   \ : 0
-" endfunction
-
-" insert mode, ctrl-u => capitalize word
-inoremap <c-u> <esc>viwUe
-
-" insert semi-colon at the end of the line
-nnoremap ; m`A;<esc>``
+""
+"" autopep8
+" nnoremap <F8> :call Autopep8()<CR>
+let g:autopep8_disable_show_diff=1
+let g:autopep8_ignore="E501"
+""
+"" vim-fugitive
+nnoremap <leader>gc :Gcommit<cr>
+nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gps :Gpush<cr>
+nnoremap <leader>gpl :Gpull<cr>
+nnoremap <leader>gw :Gwrite<cr>
+""
+"" ctrlp
+" nnoremap <F5> :CtrlPClearCache<cr>
+nnoremap <C-t> :CtrlPTag<cr>
+let g:ctrlp_cmd = 'CtrlPMixed'
+" let g:ctrlp_match_window = 'order:ttb'
+""
+"" YouCompleteMe
+let g:ycm_collect_identifiers_from_tags_files = 0
+""
+""
+" nnoremap <F12> :!ctags -R .<cr>
+set tags=./tags;
+let g:easytags_dynamic_files = 1
+let g:easytags_auto_highlight = 0

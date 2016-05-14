@@ -3,6 +3,8 @@
   name = bigblindbais
 [core]
 	editor = vim
+[push]
+  default = upstream
 [merge]
 	tool = splice
 [mergetool "splice"]

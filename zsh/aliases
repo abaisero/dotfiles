@@ -2,8 +2,10 @@
 ## FACILITY SHORTCUTS ##
 ########################
 
+alias bell='paplay /usr/share/sounds/freedesktop/stereo/complete.oga'
+
+alias ci='catkin_init_workspace'
 alias cm='catkin_make'
-alias ccp='catkin_create_pkg'
 
 function reminder() {
   sleep $1 && zenity --info --text "$2" &
@@ -13,24 +15,30 @@ alias fpdb='~/git/fpdb/run_fpdb.py'
 
 alias g4src_cfg='CreateSrcCfg'
 alias g4hub_cfg='~/bin/G4DevCfg'
+alias pr2lansetup='source /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2lansetup'
+alias pr2wlansetup='source /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2wifisetup'
+alias pr2dashboard='rosrun rqt_pr2_dashboard rqt_pr2_dashboard'
+alias pr2teleop='roslaunch pr2_teleop teleop_joystick.launch'
+
+alias baise.ro='sftp -P 2222 bais@ftp.baise.ro'
 
 function bk() {
   cp $1 $1.BK.$(date +%F@%T.%N)
 }
 
+function h() {
+  history | grep "$@"
+}
+
 alias tn='tmux new -s'
 # easy stuff
-alias h='history | grep'
-alias j='jobs -l'
 alias k='kill'
 alias o='gnome-open'
 alias u='source $HOME/.zshrc'
 alias x='exit'
-alias q='exit'
 alias gt='gnome-terminal .'
 alias nt='gnome-terminal .; exit'
 alias ack='ack-grep'
-alias mans='man -k'         # searches in the man pages
 alias up='sudo apt-get update && sudo apt-get upgrade'
 alias audio='sudo alsa force-reload'
 alias linux='lsb_release -a'
@@ -39,7 +47,6 @@ alias soff='xset dpms force off'
 alias lock='gnome-screensaver-command -l'
 alias trash='sudo rm -rf $HOME/.local/share/Trash/*'
 
-alias makegof='\make -f Makefile.gof'
 alias cmake-debug='\cmake -DCMAKE_BUILD_TYPE=Debug'
 alias cmake-release='\cmake -DCMAKE_BUILD_TYPE=Release'
 alias cmake-releasewithdebuginfo='\cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo'
@@ -48,16 +55,9 @@ alias catkin_make-debug='\catkin_make -DCMAKE_BUILD_TYPE=Debug'
 alias catkin_make-release='\catkin_make -DCMAKE_BUILD_TYPE=Release'
 alias catkin_make-releasewithdebuginfo='\cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo'
 
-alias cts='cd ~/git/mlr/share/projects/temporal_segmentation'
 alias callgrind='valgrind --tool=callgrind'
-
 # ROS
-function ros() {
-  shell=$(basename $SHELL)
-  ros_setup="/opt/ros/indigo/setup.$shell"
-  [[ -f $ros_setup ]] && source $ros_setup; echo "ROS loaded." || echo "Can not load ROS: $ros_setup does not exist."
-}
-alias rviz='rosrun rviz rviz'
+alias add_ros_package_path='export ROS_PACKAGE_PATH=$(pwd):"$ROS_PACKAGE_PATH"'
 
 alias pstop='sudo killall -s SIGKILL -u'
 alias pcont='sudo killall -s SIGCONT -u'
@@ -69,10 +69,10 @@ alias ncores='cat /proc/cpuinfo | grep processor | wc -l'
 alias nusers='who | cut -f1 -d\ | sort -u | wc -l'
 
 alias arandr='arandr --force-version'
-alias ipython='\ipython --pylab'
-alias ipython-notebook='\ipython notebook --pylab=inline'
-alias ipython-qtconsole='\ipython qtconsole --pylab=inline'
+
 alias nautilus='nautilus --no-desktop'
+alias pyprofile='python -m cProfile -o'
+alias pyprofile_grid='pyprof2calltree -k -i'
 
 function tmux-colors() {
   for i in {0..255} ; do
@@ -120,7 +120,7 @@ alias cp='cp -v'
 alias mv='mv -v'
 alias ls='ls -hl --color=auto'
 alias lt='ls -rt'
-alias ld='ls -l | grep \^d'
+alias ld='ls -l | grep \^d --color=never'
 
 alias dev='ls /dev/sd*'
 alias wan='dig +short myip.opendns.com @resolver1.opendns.com'
@@ -156,10 +156,16 @@ alias valias='vim ~/.bash_aliases'  # opens ~/.bash_aliases
 alias vbash='vim ~/.bashrc'         # opens ~/.bashrc
 alias vzsh='vim ~/.zshrc'           # opens ~/.zshrc
 alias vvim='vim ~/.vimrc'           # opens ~/.vimrc
+alias vbin='vim ~/bin/'
 alias vtmux='vim ~/.tmux.conf'      # opens ~/.tmux.conf
 alias vgit='vim ~/.gitconfig'
 alias vgdb='vim ~/.gdbinit'
+alias vros='vim ~/bin/ros'
 alias vssh='vim ~/.ssh/config'
+
+# TMUX aliases
+alias tks='tmux kill-session'
+
                                     # opens awesome config file
 alias vawesome='vim ~/.config/awesome/rc.lua'
 alias vawesome.new='vim ~/.config/awesome/rc.lua.new'
@@ -211,7 +217,9 @@ function backup() {
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # t commands
-alias t='python ~/git/t/t.py --task-dir ~/Dropbox/todo --list todo --delete-if-empty'
+alias tphd='python ~/git/t/t.py --task-dir ~/Dropbox/todo --list phd --delete-if-empty'
+alias thome='python ~/git/t/t.py --task-dir ~/Dropbox/todo --list home --delete-if-empty'
+alias twork='python ~/git/t/t.py --task-dir ~/Dropbox/todo --list work --delete-if-empty'
 
 function task_list() {
   echo $(cat ~/.bash_aliases | awk "/^alias $1=/ {split(\$0,A);print A[NF]}") | sed "s/'//g"
@@ -285,30 +293,6 @@ function repeat() {
   fi
 }
 
-# extracts a compressed file based on the extension
-ex() {
-  if [ -f $1 ]
-  then
-    case $1 in
-      *.tar.bz2)   tar -xvjf $1    ;;
-      *.tar.gz)    tar -xvzf $1    ;;
-      *.bz2)       bunzip2 $1     ;;
-      *.rar)       unrar x $1     ;;
-      *.gz)        gunzip $1      ;;
-      *.tar)       tar -xvf $1     ;;
-      *.tbz2)      tar -xvjf $1    ;;
-      *.tgz)       tar -xvzf $1    ;;
-      *.zip)       unzip $1       ;;
-      *.Z)         uncompress $1  ;;
-      *.7z)        7z x $1        ;;
-      *.exe)       cabextract $1  ;;
-      *)           echo "'$1': unrecognized file compression" ;;
-    esac
-  else
-    echo "'$1' is not a valid file"
-  fi
-}
-
 ##############
 ## NETWORKS ##
 ##############
@@ -324,16 +308,20 @@ internet() {
 ## COMMAND LINE NAVIGATION ##
 #############################
 
-# Improve this stuff
 # copy and paste from the command line
-ccopy() {
-  cp $1 /tmp/ccopy.$1;
+c() {
+  rm -r /tmp/ccopy.*
+  cp -r $1 /tmp/ccopy.$1
 }
 
-#WAS LIKE THIS
-#alias cpaste="ls /tmp/ccopy* | sed 's|[^\.]*.\.||' | xargs -I % mv /tmp/ccopy.% ./%"  
-cpaste() {
-  ls /tmp/ccopy* | sed 's|[^\.]*.\.||' | xargs -I % mv /tmp/ccopy.% ./%
+v() {
+  ccopy=$(find /tmp/ -name 'ccopy.*')
+  fname=$1
+  if [[ $# -eq 0 ]]
+  then
+    fname=$(echo $ccopy | sed 's/^[^\.]*.//')
+  fi
+  cp -r $ccopy $fname
 }
 
 # NB the next functions are supposed to work together
@@ -437,6 +425,14 @@ alias topleft='xrandr -o left'
 ###########
 
 # autolimit number of pings
-alias ping='ping -c 5'
+# alias ping='ping -c 5'
 alias google='ping www.google.com'
 
+###
+
+alias nexus-connect="mtpfs -o allow_user /media/nexus"
+alias nexus-disconnect="fusermount -u /media/nexus"
+
+### funny telnets
+
+alias nyan='telnet nyancat.dakko.us'

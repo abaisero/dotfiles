@@ -1,29 +1,5 @@
 #!/bin/bash
 
-echo "===================================="
-echo "Installing basic packages"
-echo "===================================="
-
-# TODO remove vim, install from source..
-# what about livetex-full and biblatex?
-sudo apt-get install vim-gnome zsh git git-core \
-                      build-essential g++ gdb clang cmake \
-                      python python-numpy python-scipy python-matplotlib \
-                      ipython ipython-notebook ipython-qtconsole \
-                      openjdk-7-jdk icedtea-7-plugin \
-                      octave \
-                      pdftk \
-                      libgnome2-0 \
-                      cifs-utils
-                      # livetex-full biblatex \
-
-echo
-echo "===================================="
-echo "Setting zsh"
-echo "===================================="
-usermod -s $(which zsh) bais
-chsh -s $(which zsh) bais
-
 echo
 echo "===================================="
 echo "Installing awesome-wm"
@@ -31,7 +7,7 @@ echo "===================================="
 # was build-dep?
 sudo apt-get install \
               autoconf automake libtool gperf xmlto \
-              lua5.2 lua-lgi gir1.2-pango-1.0 \
+              lua5.2 gir1.2-pango-1.0 \
               libxcb-util0-dev libxcb1-dev libxcb-randr0-dev \
               libxcb-xinerama0-dev libxcb-xtest0-dev libxcb-shape0-dev \
               libglib2.0-dev libstartup-notification0-dev libxcb-icccm4-dev \
@@ -54,34 +30,4 @@ echo "===================================="
 # cd /usr/share/xsessions/
 # sudo cp awesome.desktop awesome.desktop.BK
 # sed 's/NoDisplay=true/#NoDisplay=true/g' awesome.desktop.BK | sudo tee awesome.desktop
-
-echo
-echo "===================================="
-echo "Adding repos for additional packages"
-echo "===================================="
-echo " - skype:"
-sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
-echo " - dropbox:"
-sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 5044912E
-sudo add-apt-repository "deb http://linux.dropbox.com/ubuntu $(lsb_release -sc) main"
-echo " - spotify:"
-sudo apt-add-repository -y "deb http://repository.spotify.com stable non-free" &&
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 94558F59 &&
-sudo apt-get update 
-
-echo
-echo "===================================="
-echo "Installing additional packages"
-echo "===================================="
-sudo apt-get install skype dropbox spotify-client
-
-echo
-echo "===================================="
-echo "Installing other packages"
-echo "===================================="
-sudo apt-get install thunderbird chromium-browser \
-                      tmux arandr \
-                      sparkleshare \
-                      vlc browser-plugin-vlc \
-                      htop xournal tree
 

@@ -50,49 +50,18 @@ source $ZSH/oh-my-zsh.sh
 # export HISTFILESIZE=
 # export HISTSIZE=
 
-# BAIS - local in path
-localbin="$HOME/.local/bin"
-if [[ -d $localbin && ! ":$PATH:" == *":$localbin:"* ]]
-then
-  export PATH="$localbin:$PATH"
-fi
-
-# BAIS - external libraries
-externdir="$HOME/extern"
-if [[ -d $externdir ]]
-then
-  externdirs=$(find $externdir -mindepth 1 -maxdepth 1 -type d)
-  for libdir in $(find $externdir -mindepth 1 -maxdepth 1 -type d)
-  do
-    if [[ -d $libdir && ! ":$PATH:" == *":$libdir:"* ]]
-    then
-      export PATH="$libdir:$PATH"
-    fi
-  done
-fi
-
-# BAIS - bin in path
-homebin="$HOME/bin"
-if [[ -d $homebin && ! ":$PATH:" == *":$homebin:"* ]]
-then
-  export PATH="$homebin:$PATH"
-fi
-
-# BAIS - git/mlr/share/bin in path
-mlrbin="$HOME/git/mlr/share/bin"
-if [[ -d $mlrbin && ! ":$PATH:" == *":$mlrbin:"* ]]
-then
-  export PATH="$PATH:$mlrbin"
-fi
-
-mlrgdbaddons="$HOME/git/mlr/tools/gdb-addons"
-if [[ -d $mlrgdbaddons && ! ":$PATH:" == *":$mlrgdbaddons:"* ]]
-then
-  export PATH="$PATH:$mlrgdbaddons"
-fi
-
-# BAIS - libfreenect
-export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+# BAIS - PATH extentions
+export LD_LIBRARY_PATH="/home/bais/git/mlr/share/lib:$LD_LIBRARY_PATH"
+# export PATH="/home/bais/.local/bin:$PATH"
+export PATH="/home/bais/bin:$PATH"
+export PATH="/home/bais/bin_extern:$PATH"
+export PATH="/home/bais/git/mlr/share/bin:$PATH"
+export PATH="/home/lib/bin:$PATH"
+export PATH="/home/bais/git/mlr/tools/gdb-addons:$PATH"
+export PATH="/home/bais/git/tmuxifier/bin:$PATH"
+eval "$(tmuxifier init -)"
+export PATH="/home/bais/anaconda2/bin:$PATH"  # added by Anaconda2 4.0.0 installer
+export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"  # libfreenect
 
 # BAIS - aliases
 source ~/.bash_aliases
@@ -111,9 +80,6 @@ bindkey "^W" backward-kill-word
 bindkey "^H" backward-delete-char
 bindkey "^U" kill-line
 
-# BAIS - xterm colors for vim solarized colorscheme
-[[ -z $TMUX ]] && exec tmux -2
-
 export SVN_EDITOR="vim"
 ulimit -c unlimited
 
@@ -125,18 +91,55 @@ zstyle ':completion:*' menu select=2
 zstyle ":completion:*:descriptions" format "%B%d%b"
 
 # BAIS - MLR ENV VARIABLES
-export MLR_PATH='~/git/mlr'
-export MLR_EDITOR_CMD='vim <fname>'
+# export MLR_PATH='~/git/mlr'
+# export MLR_EDITOR_CMD='vim <fname>'
 
 # BAIS - ROS setup
-ros_file='/opt/ros/groovy/setup.zsh'
-[ -f $ros_file ] && source $ros_file
-ws_file='/home/bais/catkin_ws/devel/setup.zsh'
-[ -f $ws_file ] && source $ws_file
-# only to run local stuff
-export ROS_MASTER_URI=http://localhost:11311
-export ROS_HOSTNAME=localhost
-export ROS_IP=$(hostname -I | awk '{print $(1)}')
+export ROS_VERSION="indigo"
+export ROS_MASTER_URI="http://$HOST:11311"
+export ROS_HOSTNAME="$HOST"
+# export ROS_IP=$(hostname -I | awk '{print $(1)}')
 
 # BAIS location of the dotfiles folder
 export DOTFILES_DIR=/home/bais/git/dotfiles
+
+# BAIS - editor env
+export EDITOR=vim
+
+# BAIS - env variable for website scripts
+export IPVS=ipvs
+
+# BAIS - tex uses manually installed packages
+# export TEXINPUTS=$HOME/latex/pgfplots/tex//:
+
+export PNEUMATICBOX_IP="cookiemonster.local"
+
+# BAIS - default GPG key
+export GPGKEY=AF34AF73
+
+# source venv
+
+
+# BAIS - remove suplicates from path
+if [ -n "$PATH" ]; then
+  old_PATH=$PATH:; PATH=
+  while [ -n "$old_PATH" ]; do
+    x=${old_PATH%%:*}       # the first remaining entry
+    case $PATH: in
+      *:"$x":*) ;;         # already there
+      *) PATH=$PATH:$x;;    # not there yet
+    esac
+    old_PATH=${old_PATH#*:}
+  done
+  export PATH=${PATH#:}
+  unset old_PATH x
+fi
+
+# BAIS - bash completion script compatibility mode
+autoload bashcompinit
+bashcompinit
+
+# BAIS - conda autocomplete feature
+eval "$(register-python-argcomplete conda)"
+
+# export PYTHONNOUSERSITE=1

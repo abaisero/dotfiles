@@ -1,6 +1,6 @@
 #!/usr/bin/zsh
 
-set -A opt_printer "-p" "bw"
+set -A opt_printer "-p" "11"
 
 zparseopts -K -D -- p:=opt_printer h=opt_help
 if [[ $? != 0 || "$opt_help" != "" || "$*" == "" ]]
@@ -10,6 +10,14 @@ then
 fi
 
 case $opt_printer[2] in
+  11)
+    echo Printer: 11.
+    printer="-P php11"
+    ;;
+  kop)
+    echo Printer: KOP.
+    printer="-P kop21"
+    ;;
   bw)
     echo Printer: B/W.
     printer="-P php18"
@@ -58,7 +66,9 @@ fullfile=/tmp/fullfile.pdf
 pdftk $pdffiles cat output $fullfile
 
 # printing fullfile
-cat $fullfile | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de "lpr $printer -o sides=two-sided-long-edge"
+# job="lpr $printer -o sides=two-sided-long-edge -o page-ranges=47-59"
+job="lpr $printer -o sides=two-sided-long-edge"
+cat $fullfile | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de $job
 echo Sent.
 
 if [[ $e > 0 ]]
