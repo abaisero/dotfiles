@@ -1,0 +1,12 @@
+\pragmaonce%
+
+\newcommand\env{\varepsilon}
+\newcommand\obj{o}
+% TODO: change to newcommand
+\renewcommand\desc{\delta}
+
+\newcommand\SFeats[3]{\feats_{#3}(\obj_#1, \obj_#2; \desc)}
+\newcommand\SScore[2]{\exp \SFeats #1#2{}\T\beta}
+\newcommand\STransition[3]{\frac{\SScore{#1}{#2}}{\sum_#3 \SScore{#3}{#2}}}
+
+% TODO reorganize next

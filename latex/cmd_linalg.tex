@@ -1,0 +1,33 @@
+\pragmaonce%
+
+\usepackage{tensor}
+
+% new operators
+\DeclareMathOperator*{\diag}{diag}
+\newcommand{\kron}{\otimes}
+
+% symbol formats
+\newcommand{\vv}[1]{\boldsymbol{#1}}
+\newcommand{\mm}[1]{\boldsymbol{#1}}
+\newcommand{\seq}[1]{\boldsymbol{#1}}
+
+% special vectors and matrices
+\newcommand{\base}{\vv{e}}
+\newcommand{\eig}{\vv{v}}
+\newcommand{\ones}{\vv{1}}
+\newcommand{\Id}{\mm{I}}
+
+% matrix and vector modifiers
+\newcommand{\AST}{^\ast}
+\newcommand{\T}{^\intercal}
+\newcommand{\I}{^{-1}}
+\newcommand{\PI}{^+}
+\newcommand{\alt}[1]{\tilde{#1}}
+\newcommand{\co}[1]{{#1}^*}
+\newcommand{\conj}[1]{\bar{#1}}
+
+% derivatives
+% \newcommand{\der}[2]{\frac{\partial{}#1}{\partial{}#2}}
+\newcommand{\der}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\grad}[2][]{\nabla_{#1}#2}
+\newcommand\intd{\mathrm{d}}

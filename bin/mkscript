@@ -11,3 +11,5 @@ do
   echo "#!$SHELL\n\nexit 0" > $script
   chmod +x $script
 done
+
+vim $@

@@ -16,9 +16,11 @@ case "$ws" in
   "inria")
     source_ros_setup "$HOME/catkin/inria_ws/devel";;
   "thp")
-    source_ros_setup "$HOME/catkin/3rdhand_ws/devel";;
+    source_ros_setup "$HOME/catkin/thp_ws/devel";;
   "soft")
     source_ros_setup "$HOME/catkin/softhand_ws/devel";;
+  "voice")
+    source_ros_setup "$HOME/catkin/voice_ws/devel";;
   "pr2")
     source_ros_setup "$HOME/catkin/pr2_ws/devel";;
   "turtlesim")

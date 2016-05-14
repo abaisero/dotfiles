@@ -1,0 +1,20 @@
+\makeatletter
+
+% defines input guard
+\let\pragma@iinput=\@iinput
+\def\@iinput#1{\xdef\@pragmafile{#1}\pragma@iinput{#1}}
+\def\@pragmafile{default}
+\def\pragmaonce{%
+  \csname pragma@\@pragmafile\endcsname
+  \global\expandafter\let \csname pragma@\@pragmafile\endcsname = \endinput
+}
+
+% defines ifemptyarg macro, for commands with optional arguments
+\def\ifemptyarg#1{%
+  \if\relax\detokenize{#1}\relax % H. Oberdiek
+  \expandafter\@firstoftwo
+  \else
+  \expandafter\@secondoftwo
+\fi}
+
+\makeatother

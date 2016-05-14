@@ -1,0 +1,244 @@
+\pragmaonce
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage[makeroom]{cancel}
+
+\usepackage{paralist}
+\usepackage{xspace}
+
+\usepackage{mdframed}
+
+% \usepackage{todonotes}
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\PassOptionsToPackage{hyphens}{url}
+\usepackage{hyperref}
+
+\usepackage{wasysym}
+\usepackage{comment}
+
+% \usepackage{tabular}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+
+\usepackage{subcaption}
+
+% \usepackage{tikz-qtree}
+\usetikzlibrary{backgrounds, shapes, positioning, matrix, arrows, calc}
+
+
+% TODO complete todo commands..
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Document options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\nosubsubcounter}{\setcounter{secnumdepth}{2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Custom commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % Custom TODO commands
+% \newcommand{\intodo}[1]{\todo[inline]{{#1}}}
+% \newcommand{\intodo}[1]{TODO: {#1}}
+% \newcommand{\todopage}{
+%   \ifnum\value{@todonotes@numberoftodonotes}>0
+%     \newpage\listoftodos
+%   \fi
+% }
+
+% % Q & A commands
+% \newcommand{\q}[1]{\todo[inline]{Q. {#1}}}
+% \newcommand{\qna}[2]{\todo[inline]{Q. {#1}\\A. {#2}}}
+
+%%% Environments
+
+% Inline list
+\newenvironment{inlist}
+{\begin{inparaenum}[\itshape a\upshape)]}
+{\end{inparaenum}}
+
+% Example environment, section numbering
+\newtheorem{example}{Example}[section]
+
+% Observation environment
+% \newenvironment{obs}{\begin{mdframed}}{\env{mdframed}}
+\theoremstyle{definition}
+\newmdtheoremenv{obs}{Observation}
+\theoremstyle{plain}
+
+%%% Reference commands
+\newcommand{\EX}[1]{Ex.~\ref{ex:#1}}
+\newcommand{\EXAMPLE}[1]{Example~\ref{ex:#1}}
+\newcommand{\EQ}[1]{\eqref{eq:#1}}
+\newcommand{\EQUATION}[1]{Equation~\EQ{#1}}
+
+\newcommand{\SECTION}[1]{Section~\ref{sec:#1}}
+\newcommand{\SEC}[1]{Sec.~\ref{sec:#1}}
+
+\newcommand{\CH}[1]{Chapter~\ref{ch:#1}}
+
+\newcommand{\FIG}[1]{Fig.~\ref{fig:#1}}
+\newcommand{\FIGURE}[1]{Figure~\ref{fig:#1}}
+\newcommand{\SUBFIG}[1]{\subref{fig:#1}}
+
+\newcommand{\TABLE}[1]{Table~\ref{tab:#1}}
+
+\newcommand{\ITEM}[1]{(\ref{item:#1})}
+
+%%% Textual modifiers
+% \newcommand{\quotes}[1]{``#1''}
+
+%%% Pros and Cons
+\newcommand{\pro}{\item[$\oplus$]}
+\newcommand{\con}{\item[$\ominus$]}
+\newcommand{\neut}{\item[$\ocircle$]}
+\newcommand{\spro}{\item[\smiley{}]}
+\newcommand{\scon}{\item[\frownie{}]}
+
+%%% Common texts
+\newcommand{\aka}{a.k.a.\xspace}
+\newcommand{\etal}{et al\xspace}
+\newcommand{\iid}{i.i.d.\xspace}
+\newcommand{\ie}{i.e.\xspace}
+\newcommand{\Ie}{I.e.\xspace}
+\newcommand{\eg}{e.g.\xspace}
+\newcommand{\Eg}{E.g.\xspace}
+\newcommand{\wrt}{w.r.t\xspace}
+\newcommand{\ifff}{iff\xspace}
+\newcommand{\etc}{etc\xspace}
+\newcommand{\dash}{--}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Math Environment Common Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand\indep{\protect\mathpalette{\protect\indepT}{\perp}}
+\def\indepT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+% \renewcommand{\[}{\left[}
+% \renewcommand{\]}{\right]}
+
+% \renewcommand{\(}{\left(}
+% \renewcommand{\)}{\right)}
+
+% Common operators
+\DeclareMathOperator*{\trace}{tr}
+\DeclareMathOperator*{\rank}{rank}
+\DeclareMathOperator*{\sign}{sign}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\E}{\textbf{E}}
+\DeclareMathOperator{\V}{\textbf{V}}
+\DeclareMathOperator*{\sig}{sig}
+\DeclareMathOperator*{\Var}{Var}
+\DeclareMathOperator*{\Cov}{Cov}
+\DeclareMathOperator*{\colspace}{\mathbf{col}}
+\DeclareMathOperator*{\spanspace}{\mathbf{Span}}
+
+\newcommand{\abs}[1]{\left|\,#1\,\right|}
+\newcommand{\size}[1]{\left|\,#1\,\right|}
+\newcommand{\norm}[2][]{\left\|{#2}\right\|_{#1}}
+\newcommand{\dotp}[2]{\langle\,#1,#2\,\rangle}
+
+% Common symbols
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\DD}{\mathcal{D}}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\JJ}{\mathcal{J}}
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\NN}{\mathcal{N}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\UU}{\mathcal{U}}
+\newcommand{\XX}{\mathcal{X}}
+\newcommand{\YY}{\mathcal{Y}}
+\newcommand{\ZZ}{\mathcal{Z}}
+
+
+\newcommand{\RRR}{\mathbb{R}}
+\newcommand{\III}{\mathbb{I}}
+
+% \newcommand{\defeq}{\ensuremath{\mathrel{\stackrel{\mathrm{def}}{=}}}}
+\newcommand{\defeq}{\vcentcolon=}
+\newcommand{\seteq}{\ensuremath{\mathrel{\stackrel{\mathrm{!}}{=}}}}
+\newcommand{\npropto}{\cancel{\propto}}
+\newcommand{\pheq}{{\phantom{=}}}
+
+\newcommand{\setlt}{\ensuremath{\mathrel{\stackrel{\mathrm{!}}{<}}}}
+\newcommand{\setgt}{\ensuremath{\mathrel{\stackrel{\mathrm{!}}{>}}}}
+
+% Text in Formula commands
+\newcommand{\st}{\text{ s.t.\xspace}}
+\newcommand{\var}[1]{\texttt{#1}}
+
+% Commond symbols
+\newcommand{\featx}{\varphi}
+\newcommand{\featy}{\phi}
+\newcommand{\feat}{\phi}
+\newcommand{\feato}{{\feat_o}}
+\newcommand{\subfeat}{\psi}
+\newcommand{\feati}{\subfeat_i}
+% \newcommand{\feats}{{\subfeat_1, \ldots, \subfeat_S}}
+
+\newcommand{\symb}{\sigma}
+\newcommand{\symbo}{\symb_o}
+\newcommand{\symbi}{\symb_i}
+\newcommand{\symbk}{\symb_k}
+\newcommand{\symboi}{\symb_{o,i}}
+\newcommand{\symbI}{\symb_I}
+\newcommand{\symbIC}{\symb_{I^c}}
+
+\newcommand{\Symb}{\Sigma}
+\newcommand{\Symbo}{\Symb_o}
+\newcommand{\nSymb}{{\size{\Symb}}}
+
+\newcommand{\allsymbs}{{\symb\in\Symb}}
+
+\newcommand{\lex}{\Symb}
+\newcommand{\lexsize}{\nSymb}
+
+\newcommand{\Ci}{{\CC_i}}
+\newcommand{\CiI}{{\CC_{i1}}}
+\newcommand{\CiO}{{\CC_{i0}}}
+\newcommand{\Ck}{{\CC_k}}
+\newcommand{\CkI}{{\CC_{k1}}}
+\newcommand{\CkO}{{\CC_{k0}}}
+
+\newcommand{\desc}{\DD}
+\newcommand{\Dcard}{{\#\desc}}
+\newcommand{\Dno}{{\desc^{n,o}}}
+
+\newcommand{\Dk}{{\desc_k}}
+\newcommand{\DkI}{{\desc_{k,1}}}
+\newcommand{\DkO}{{\desc_{k,0}}}
+\newcommand{\Dnok}{{\desc^{n,o}_k}}
+\newcommand{\DnokI}{{\desc^{n,o}_{k,1}}}
+\newcommand{\DnokO}{{\desc^{n,o}_{k,0}}}
+
+\newcommand{\Di}{{\desc_i}}
+\newcommand{\DiI}{{\desc_{i,1}}}
+\newcommand{\DiO}{{\desc_{i,0}}}
+\newcommand{\Dnoi}{{\desc^{n,o}_i}}
+\newcommand{\DnoiI}{{\desc^{n,o}_{i,1}}}
+\newcommand{\DnoiO}{{\desc^{n,o}_{i,0}}}
+
+\newcommand{\BF}{{\texttt{BF}}}
+
+\newcommand{\xL}{x^L}
+\newcommand{\xH}{x^H}
+\newcommand{\xai}{x_{a, i}}
+\newcommand{\xbi}{x_{b, i}}
+\newcommand{\ri}{{r_i}}
+\newcommand{\zri}{\zeta_\ri}
+
