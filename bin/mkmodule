@@ -1,0 +1,14 @@
+#!/usr/bin/zsh
+
+usage="Usage: mkmodule <module> ..."
+[ $# -eq 0 ] && echo $usage && exit 1
+
+for module in "$@"
+do
+  [[ -e "$script" ]] && echo "File '$script' already exists. Skipping." && continue
+
+  echo Creating module $module.
+  mkdir -p $module
+  touch $module/__init__.py
+done
+

@@ -2,7 +2,7 @@
 
 url=$1
 
-tmp=$(tempfile -s .html)
+tmp=$(mktemp --tmpdir --suffix=.html uguitar.XXXXXXXXXX)
 wget -q -O $tmp $url
 taburl=$(cat $tmp | sed -n -e '/print_link/p' | sed -n -e 's/.*\(href[^ ]*\).*/\1/p' | sed -n -e 's/.*"\(.*\)".*/\1/p')
 wget -q --referer=$url -O $tmp tabs.ultimate-guitar.com/$taburl

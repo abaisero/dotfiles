@@ -94,11 +94,11 @@ zstyle ":completion:*:descriptions" format "%B%d%b"
 # export MLR_PATH='~/git/mlr'
 # export MLR_EDITOR_CMD='vim <fname>'
 
-# BAIS - ROS setup
-export ROS_VERSION="indigo"
-export ROS_MASTER_URI="http://$HOST:11311"
-export ROS_HOSTNAME="$HOST"
-# export ROS_IP=$(hostname -I | awk '{print $(1)}')
+# # BAIS - ROS setup
+# export ROS_VERSION="indigo"
+# export ROS_MASTER_URI="http://$HOST:11311"
+# export ROS_HOSTNAME="$HOST"
+# # export ROS_IP=$(hostname -I | awk '{print $(1)}')
 
 # BAIS location of the dotfiles folder
 export DOTFILES_DIR=/home/bais/git/dotfiles
@@ -120,6 +120,20 @@ export GPGKEY=AF34AF73
 # source venv
 
 
+# BAIS - bash completion script compatibility mode
+autoload bashcompinit
+bashcompinit
+
+# BAIS - conda autocomplete feature
+eval "$(register-python-argcomplete conda)"
+
+# export PYTHONNOUSERSITE=1
+
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk
+export PATH=$PATH:/usr/jvm/java-7-openjdk/bin
+
+export PATH=$PATH:$HOME/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.10.3/bin
+
 # BAIS - remove suplicates from path
 if [ -n "$PATH" ]; then
   old_PATH=$PATH:; PATH=
@@ -134,12 +148,3 @@ if [ -n "$PATH" ]; then
   export PATH=${PATH#:}
   unset old_PATH x
 fi
-
-# BAIS - bash completion script compatibility mode
-autoload bashcompinit
-bashcompinit
-
-# BAIS - conda autocomplete feature
-eval "$(register-python-argcomplete conda)"
-
-# export PYTHONNOUSERSITE=1

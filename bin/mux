@@ -1,6 +1,5 @@
 #!/usr/bin/zsh
 
-
 for SESSION_NAME in "$@"
 do
   SESSION_SCRIPT=$HOME/bin/$(basename $0)_$SESSION_NAME

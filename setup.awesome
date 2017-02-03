@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# sudo apt-get install awesome awesome-extra
+
+# sudo apt-get install \
+#               autoconf automake libtool gperf xmlto \
+#               lua5.2 lua-lgi gir1.2-pango-1.0 \
+#               libxcb-util0-dev libxcb1-dev libxcb-randr0-dev \
+#               libxcb-xinerama0-dev libxcb-xtest0-dev libxcb-shape0-dev \
+#               libglib2.0-dev libstartup-notification0-dev libxcb-icccm4-dev \
+#               libxcb-keysyms1-dev \
+#               libx11-xcb-dev \
+#               imagemagick libxdg-basedir-dev \
+#               libcairo2-dev libxcb-image0-dev \
+#               libxcursor-dev libgdk-pixbuf2.0-dev \
+#               liblua5.2-dev \
+#               lua5.1 liblua5.1-0-dev \
+#               libdbus-1-dev \
+#               asciidoc
+
+# sudo apt-get build-dep awesome
+# sudo apt-get install git-core xstow autoconf
+# [ ! -d /usr/local/stow ] && sudo mkdir -p /usr/local/stow
+
+GIT=$HOME/git
+cd $GIT
+[ ! -d awesome-configs ] && git clone http://git.sysphere.ors/awesome-configs
+[ ! -d vicious ] && git clone http://git.sysphere.org/vicious
+
+sudo apt-get install gnome-tweak-tool
+echo Disable \"Have file manager handle the desktop\"
+gnome-tweak-tool

@@ -2,14 +2,12 @@
 ## FACILITY SHORTCUTS ##
 ########################
 
+alias nb2md='jupyter nbconvert --to markdown'
+
 alias bell='paplay /usr/share/sounds/freedesktop/stereo/complete.oga'
 
 alias ci='catkin_init_workspace'
 alias cm='catkin_make'
-
-function reminder() {
-  sleep $1 && zenity --info --text "$2" &
-}
 
 alias fpdb='~/git/fpdb/run_fpdb.py'
 
@@ -20,16 +18,13 @@ alias pr2wlansetup='. /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2wifisetup
 alias pr2dashboard='rosrun rqt_pr2_dashboard rqt_pr2_dashboard'
 alias pr2teleop='roslaunch pr2_teleop teleop_joystick.launch'
 
-alias baise.ro='sftp -P 2222 bais@ftp.baise.ro'
-
-function bk() {
-  cp $1 $1.BK.$(date +%F@%T.%N)
-}
+alias baise.ro.push='ssh baise.ro "cd git/baise.ro; git pull"'
 
 function h() {
   history | grep "$@"
 }
 
+alias tmux='tmux -2'
 alias tn='tmux new -s'
 # easy stuff
 alias k='kill'
@@ -38,7 +33,7 @@ alias u='. $HOME/.zshrc'
 alias x='exit'
 alias gt='gnome-terminal .'
 alias nt='gnome-terminal .; exit'
-alias ack='ack-grep'
+alias ack='ack-grep --smart-case'
 alias up='sudo apt-get update && sudo apt-get upgrade'
 alias audio='sudo alsa force-reload'
 alias linux='lsb_release -a'
@@ -121,12 +116,18 @@ alias mv='mv -v'
 alias ls='ls -hl --color=auto'
 alias lt='ls -rt'
 alias ld='ls -l | grep \^d --color=never'
+alias li='ls -i'
 
 alias dev='ls /dev/sd*'
 alias wan='dig +short myip.opendns.com @resolver1.opendns.com'
 
 function copy() {
   cat $1 | xclip -i -selection clipboard
+}
+
+function swap() {
+  tmp=$(mktemp)
+  mv $1 $tmp && mv $2 $1 && mv $tmp $2
 }
 
 alias infvpn='sudo openconnect asa1.informatik.uni-stuttgart.de \
@@ -152,12 +153,13 @@ alias files='\du -xh -all -d 1 | sort -h'
 alias free='\free -m'
 
 # easy mod for this and other files
-alias valias='vim ~/.bash_aliases'  # opens ~/.bash_aliases
-alias vbash='vim ~/.bashrc'         # opens ~/.bashrc
-alias vzsh='vim ~/.zshrc'           # opens ~/.zshrc
-alias vvim='vim ~/.vimrc'           # opens ~/.vimrc
+alias valias='vim ~/.bash_aliases'
+alias vbash='vim ~/.bashrc'
+alias vzsh='vim ~/.zshrc'
+alias vvim='vim ~/.vimrc'
+alias vemacs='vim ~/.emacs'
 alias vbin='vim ~/bin/'
-alias vtmux='vim ~/.tmux.conf'      # opens ~/.tmux.conf
+alias vtmux='vim ~/.tmux.conf'
 alias vgit='vim ~/.gitconfig'
 alias vgdb='vim ~/.gdbinit'
 alias vros='vim ~/bin/ros'
@@ -216,10 +218,41 @@ function backup() {
 #   sleep 3 | alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# find commands
+function fback() {
+  fname=$1
+  folder=$PWD
+  while true; do
+    [ -e "$folder/$fname" ] && echo $folder && return 0
+    [[ "$folder" == / ]] && return 1
+    folder=$(dirname "$folder")
+  done
+}
+
 # t commands
-alias tphd='python ~/git/t/t.py --task-dir ~/Dropbox/todo --list phd --delete-if-empty'
-alias thome='python ~/git/t/t.py --task-dir ~/Dropbox/todo --list home --delete-if-empty'
-alias twork='python ~/git/t/t.py --task-dir ~/Dropbox/todo --list work --delete-if-empty'
+export TODO_DIR=$HOME/Dropbox/todo/
+export TODO_FNAME=todo.txt
+alias t.py='python "$HOME/git/t/t.py"'
+alias t='t.py --task-dir "$(echo $TODO_DIR | tee /dev/tty)" --list $TODO_FNAME'
+alias todo='t.py --task-dir "$(fback $TODO_FNAME || echo $PWD | tee /dev/tty)" --list $TODO_FNAME'
+
+# function todo() {
+#   fname='todo.t'
+#   todir=$(pwd)
+#   while [[ ! -e $todir/$fname ]]
+#   do
+#     if [[ "$todir" == / ]]
+#     then 
+#       todir=$(pwd)
+#       break
+#     fi
+#     todir=$(dirname $todir)
+#   done
+#   python ~/git/t/t.py --task-dir $todir --list $fname
+# }
+# alias todo='echo $(fback todo.t)'
+# alias todo='echo $(fback todo.t)'
+# python ~/git/t/t.py --list todo.t'
 
 function task_list() {
   echo $(cat ~/.bash_aliases | awk "/^alias $1=/ {split(\$0,A);print A[NF]}") | sed "s/'//g"
@@ -234,11 +267,6 @@ function task_lists() {
   do
     echo $(cat ~/.bash_aliases | awk '/^alias '$i'=/ { split($0,A); print A[NF] }') | sed s/\'//g
   done
-}
-
-# top ten commands
-function topten() {
-  history | awk '{print $2}' | awk 'BEGIN {FS="|"}{print $1}' | sort | uniq -c | sort -nr | head
 }
 
 ###################
@@ -324,88 +352,88 @@ v() {
   cp -r $ccopy $fname
 }
 
-# NB the next functions are supposed to work together
-# change to a new dir, pushing the current dir onto the stack
-pushd() {
-  export DS = "$PWD:$DS"
-  if [ -n "$1" ]
-  then
-    cd "$1"
-  else
-    cd
-  fi
-  if [ $? -ne 0 ]
-  then
-    export DS="${DS#*:}"
-  fi
-}
+# # NB the next functions are supposed to work together
+# # change to a new dir, pushing the current dir onto the stack
+# pushd() {
+#   export DS = "$PWD:$DS"
+#   if [ -n "$1" ]
+#   then
+#     cd "$1"
+#   else
+#     cd
+#   fi
+#   if [ $? -ne 0 ]
+#   then
+#     export DS="${DS#*:}"
+#   fi
+# }
 
-# pop top dir off stack and cd to it
-popd() {
-  if [ "$DS" ]
-  then
-    cd "${DS%%:*}"
-    export DS="${DS#*:}"
-  else
-    echo "$FUNCNAME: empty directory stack" >&2
-  fi
-}
+# # pop top dir off stack and cd to it
+# popd() {
+#   if [ "$DS" ]
+#   then
+#     cd "${DS%%:*}"
+#     export DS="${DS#*:}"
+#   else
+#     echo "$FUNCNAME: empty directory stack" >&2
+#   fi
+# }
 
-# print directory stack
-printd() {
-  IFS = :;
-  for each in $DS
-  do
-    echo $each;
-  done
-}
+# # print directory stack
+# printd() {
+#   IFS = :;
+#   for each in $DS
+#   do
+#     echo $each;
+#   done
+# }
 
-# flip back-and-forth between current dir and top of stack (like "cd -")
-flipd() {
-  if [ "$DS" ]
-  then
-    cd "${DS%%:*}"
-    export DS="$OLDPWD:${DS#*:}"
-  else
-    echo "$FUNCNAME: empty directory stack" >&2
-  fi
-}
+# # flip back-and-forth between current dir and top of stack (like "cd -")
+# flipd() {
+#   if [ "$DS" ]
+#   then
+#     cd "${DS%%:*}"
+#     export DS="$OLDPWD:${DS#*:}"
+#   else
+#     echo "$FUNCNAME: empty directory stack" >&2
+#   fi
+# }
 
-# rotate through directory stack (from bottom to top)
-rotd() {
-  if [ "$DS" ]
-  then
-    typeset DSr="${DS%:*:}"
-    [ "${DSr}" = "${DS}" ] || export DS="${DS##${DSr}:}$DSr:"
-    flipd
-  else
-    echo "$FUNCNAME: directory stack is empty" >&2
-  fi
-}
+# # rotate through directory stack (from bottom to top)
+# rotd() {
+#   if [ "$DS" ]
+#   then
+#     typeset DSr="${DS%:*:}"
+#     [ "${DSr}" = "${DS}" ] || export DS="${DS##${DSr}:}$DSr:"
+#     flipd
+#   else
+#     echo "$FUNCNAME: directory stack is empty" >&2
+#   fi
+# }
 
-# NB next two functions are unrelated with the above
-# save current directory for in between sessions
-saved() {
-  if [ ${PWD} != ${HOME} ]
-  then
-    pwd >~/.lastdir;
-  fi
-}
+# # NB next two functions are unrelated with the above
+# # save current directory for in between sessions
+# saved() {
+#   if [ ${PWD} != ${HOME} ]
+#   then
+#     pwd >~/.lastdir;
+#   fi
+# }
 
-# load and move to last saved directory
-lastd() {
-  cd $(cat ~/.lastdir)
-}
+# # load and move to last saved directory
+# lastd() {
+#   cd $(cat ~/.lastdir)
+# }
 
-# edit directory stack
-editd() {
-  export EDITDNO = $(${EDITDNO:=0} + 1)
-  typeset FiLe = /tmp/$(basename -- $0)$$.${EDITDNO}
-  printd >${FiLe}
-  vim ${FiLe}
-  DS=$(while read ea; do echo -n "$ea:"; done <${FiLe})
-  rm -f ${FiLe}
-}
+# # edit directory stack
+# editd() {
+#   export EDITDNO = $(${EDITDNO:=0} + 1)
+#   typeset FiLe = /tmp/$(basename -- $0)$$.${EDITDNO}
+#   printd >${FiLe}
+#   vim ${FiLe}
+#   DS=$(while read ea; do echo -n "$ea:"; done <${FiLe})
+#   rm -f ${FiLe}
+# }
 
 ########################
 ## SCREEN ORIENTATION ##
@@ -424,8 +452,8 @@ alias topleft='xrandr -o left'
 ## MISC. ##
 ###########
 
-# autolimit number of pings
-# alias ping='ping -c 5'
+###
+
 alias google='ping www.google.com'
 
 ###
@@ -436,10 +464,3 @@ alias nexus-disconnect="fusermount -u /media/nexus"
 ### funny telnets
 
 alias nyan='telnet nyancat.dakko.us'
-
-################
-## CONDA ENVS ##
-################
-
-alias eyespy='. activate eyespy'
-alias pytk='. activate pytk'

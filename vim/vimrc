@@ -5,18 +5,36 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 "" plugins
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'kien/ctrlp.vim'
+" genpurpose
 Plugin 'scrooloose/syntastic.git'
-Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-dispatch'
-Plugin 'tell-k/vim-autopep8'
-Plugin 'altercation/vim-colors-solarized'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'argtextobj.vim'
+Plugin 'vim-scripts/BufOnly.vim'
+" edit
+Plugin 'sjl/gundo.vim'
+" navigation
+Plugin 'tpope/vim-vinegar'
+Plugin 'kien/ctrlp.vim'
+" python
+Plugin 'tmhedberg/SimpylFold'
+Plugin 'tell-k/vim-autopep8'
+" latex
+Plugin 'vim-latex/vim-latex'
+" markdown
+Plugin 'tpope/vim-markdown'
+" style
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'altercation/vim-colors-solarized'
+" testing
+Plugin 'majutsushi/tagbar'
+" Plugin 'scrooloose/nerdtree'
 ""
 call vundle#end()
 filetype plugin indent on
@@ -24,6 +42,8 @@ filetype plugin indent on
 "" options
 syntax on
 let mapleader = ' '
+" sentence followed by double space
+set cpo+=J
 " change buffer without closing the previous ones
 set hidden
 " backup files
@@ -39,8 +59,6 @@ set backspace=indent,eol,start
 set autoread
 " status-line
 set laststatus=2
-set statusline=%5l/%L\ %y\ %f\ %m
-set cmdheight=2
 " show partial command while typing
 set showcmd
 " show cursor position
@@ -49,17 +67,17 @@ set cursorline
 " enables copy/paste between vim instances
 set clipboard=unnamed
 " search options
-set showmatch
-set hlsearch
-set incsearch
 set ignorecase
 set smartcase
+set incsearch
+set showmatch
+set hlsearch
 " ignore case when looking for files to open
 set wildignorecase
 " expand tabs as white-spaces
 set tabstop=2
-set shiftwidth=2
 set softtabstop=2
+set shiftwidth=2
 set expandtab
 " cursor always in the middle of the screen
 set scrolloff=999
@@ -71,94 +89,86 @@ set shell=/bin/zsh
 " indentation
 set autoindent
 " set smartindent
-set cindent
-" visually see the 81st column
-set colorcolumn=81
+" set cindent
+" visually see the 80st column
+set colorcolumn=80
 " tab-completion behaves as in the terminal
 set wildmenu
-" tex_flavor
+" more natural split directions
+set splitbelow
+set splitright
+" tex
 let g:tex_flavor='latex'
 ""
 "" mappings
 " edit/re-load vimrc file
 nnoremap <leader>ev :edit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+" very magic search
+nnoremap / /\v
+vnoremap / /\v
 " never go in ex mode again
 noremap Q <nop>
+noremap gQ <nop>
 " exit insert mode
 inoremap kj <esc>
-inoremap <esc> <nop>
 " file movement
-noremap j gj
-noremap k gk
+nnoremap j gj
+nnoremap k gk
 noremap J <C-d>
 noremap K <C-u>
-"noremap J <C-D>
-"noremap K <C-U>
 " line formatting
-nnoremap <leader>j J
-nnoremap <leader>k vipgq
-set cpo+=J
-" tab movements
+noremap <leader>i mmvip=`m
+noremap <leader>j J
+noremap <leader>k mmvipgq`m
+" edit
+noremap <leader>u :GundoToggle<cr>
+" reselect text that was just pasted
+noremap <leader>v V`]
+" buffer and window movements
 noremap <C-u> :bp<cr>
 noremap <C-i> :bn<cr>
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
-" tab splits
-noremap <C-m> :split<cr>
-noremap <C-n> :vsplit<cr>
-" tab split resize
-noremap <C-o> :vertical resize +5<cr>
-noremap <C-y> :vertical resize -5<cr>
-"" misc mappings
-" dispatch latexmk
-noremap <leader>l :Dispatch! latexmk<cr>
-" clean latexmk junk
-noremap <leader>ò :Dispatch! latexmk -c<cr>
-" insert semi-colon at the end of the line
-nnoremap ; m`A;<esc>``
-""
-""
-"" fold methods
-function! GetVimFold(lnum)
-  if getline(a:lnum) =~? '\v^\s*$'
-    return '-1'
-  elseif getline(a:lnum) =~? '\v^""\s*$'
-    return 's1'
-  elseif getline(a:lnum) =~? '\v^""'
-    return 'a1'
-  endif
-  return '='
-endfunction
+" vim-latex uses IMAP which creates C-j mapping.
+" This changes the default 
+imap <C-b> <Plug>IMAP_JumpForward
+nmap <C-b> <Plug>IMAP_JumpForward
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+" window splits
+" noremap <C-m> :split<cr>
+" noremap <C-n> :vsplit<cr>
 ""
 "" autocmds
-augroup ft_vim
-  autocmd!
-  autocmd FileType vim setlocal foldmethod=expr
-  autocmd FileType vim setlocal foldexpr=GetVimFold(v:lnum)
-  " autocmd FileType vim setlocal foldcolumn=1
-augroup END
-augroup ft_tex
-  autocmd!
-  autocmd FileType plaintex setlocal spell spelllang=en_us
-  autocmd FileType plaintex syntax spell toplevel
-  " autocmd FileType plaintex set smartindent
-augroup END
+"" tex
+"augroup ft_tex
+"  autocmd!
+"  autocmd FileType plaintex setlocal spell spelllang=en_us
+"  autocmd FileType plaintex syntax spell toplevel
+"  " autocmd FileType plaintex set smartindent
+"augroup END
+""
+"" launch
 augroup ft_launch
   autocmd!
   autocmd BufRead,BufNewFile *.launch set filetype=launch
   autocmd BufReadPost *.launch set syntax=html
 augroup END
+""
+"" tikz
 augroup ft_tikz
   autocmd!
   autocmd BufRead,BufNewFile *.tikz setlocal filetype=tex
 augroup END
+""
+"" kvg
 augroup ft_kvg
   autocmd!
   autocmd BufRead,BufNewFile *.kvg setlocal filetype=kvg
 augroup END
+""
+"" latest_line
 augroup latest_line
   autocmd!
   autocmd BufReadPost *
@@ -166,6 +176,13 @@ augroup latest_line
   \   execute 'normal! g`"zvzz' |
   \ endif
 augroup END
+""
+"" spell
+augroup spell
+  autocmd!
+  autocmd Filetype markdown,plaintex command! -nargs=* Aspell Start aspell -l en_UK <args> -c %
+augroup END
+""
 ""
 "" plugin options
 "" solarized
@@ -211,7 +228,7 @@ augroup commentary
   autocmd FileType cmake  set commentstring=#\ %s
   autocmd FileType notes  set commentstring=#\ %s
   autocmd FileType matlab set commentstring=%\ %s
-  " autocmd FileType kv     set commentstring=#\ %s
+  autocmd FileType kv     set commentstring=#\ %s
   autocmd FileType kvg    set commentstring=#\ %s
   autocmd FileType launch set commentstring=<!--\ %s\ -->
   autocmd FileType markdown set commentstring=;\ %s
@@ -223,13 +240,13 @@ let g:autopep8_disable_show_diff=1
 let g:autopep8_ignore="E501"
 ""
 "" vim-fugitive
-nnoremap <leader>gc :Gcommit<cr>
-nnoremap <leader>gd :Gdiff<cr>
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gb :Gblame<cr>
-nnoremap <leader>gps :Gpush<cr>
-nnoremap <leader>gpl :Gpull<cr>
-nnoremap <leader>gw :Gwrite<cr>
+" nnoremap <leader>gc :Gcommit<cr>
+" nnoremap <leader>gd :Gdiff<cr>
+" nnoremap <leader>gs :Gstatus<cr>
+" nnoremap <leader>gb :Gblame<cr>
+" nnoremap <leader>gps :Gpush<cr>
+" nnoremap <leader>gpl :Gpull<cr>
+" nnoremap <leader>gw :Gwrite<cr>
 ""
 "" ctrlp
 " nnoremap <F5> :CtrlPClearCache<cr>
@@ -237,11 +254,30 @@ nnoremap <C-t> :CtrlPTag<cr>
 let g:ctrlp_cmd = 'CtrlPMixed'
 " let g:ctrlp_match_window = 'order:ttb'
 ""
+"" tagbar
+" nnoremap <leader>t :TagbarToggle<cr>
+nnoremap <leader>t :TagbarOpenAutoClose<cr>
+""
 "" YouCompleteMe
-let g:ycm_collect_identifiers_from_tags_files = 0
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_collect_identifiers_from_tags_files = 1
+map <leader>g :YcmCompleter GoTo<cr>
 ""
+"" SimpylFold
+let g:SimpylFold_fold_import = 0
 ""
-" nnoremap <F12> :!ctags -R .<cr>
+"" vim-easytags
 set tags=./tags;
 let g:easytags_dynamic_files = 1
 let g:easytags_auto_highlight = 0
+""
+"" gundo
+let g:gundo_preview_bottom=1
+""
+""
+
+" testing... from steve losh
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+set colorcolumn=80

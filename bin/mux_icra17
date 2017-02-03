@@ -1,0 +1,16 @@
+#!/usr/bin/zsh
+
+SESSION_NAME="icra17"
+
+tmux has-session -t ${SESSION_NAME}
+if [ $? != 0 ]
+then
+  tmux new-session -n paper -s ${SESSION_NAME} -d
+  tmux send-keys -t ${SESSION_NAME} 'cd /home/bais/SparkleShare/mlr\ documents/papers/17-andrea-icra' C-m
+  tmux send-keys -t ${SESSION_NAME} 'vim paper.tex paper_abstract.tex paper_introduction.tex paper_previous_work.tex paper_rfde.tex paper_evaluation.tex paper_conclusions.tex' C-m
+
+  tmux select-window -t paper
+fi
+tmux -2 attach -t ${SESSION_NAME}
+
+exit 0

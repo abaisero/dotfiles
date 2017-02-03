@@ -10,6 +10,8 @@ function source_ros_setup() {
 ws_df="indigo"
 [[ $# -gt 0 ]] && ws=$1 || ws=$ws_df
 case "$ws" in
+  "rfde")
+    source_ros_setup "$HOME/catkin/rfde_ws/devel";;
   "mlr")
     source_ros_setup "$HOME/catkin/mlr_ws/devel";;
   "inria")

@@ -1,0 +1,9 @@
+#!/usr/bin/zsh
+
+delay=$1
+shift
+msg=$@
+
+sleep $delay && zenity --info --text $msg &
+
+exit 0
