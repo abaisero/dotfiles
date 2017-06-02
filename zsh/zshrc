@@ -48,7 +48,9 @@ ZLE_RPROMPT_INDENT=0
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git)
+# plugins=(git colorized-man-pages command-not-found)
+plugins=(git git-extras)
+
 
 source $ZSH/oh-my-zsh.sh
 
@@ -57,23 +59,23 @@ source $ZSH/oh-my-zsh.sh
 # export HISTSIZE=
 
 # BAIS - PATH extentions
-export LD_LIBRARY_PATH="/home/bais/git/mlr/share/lib:$LD_LIBRARY_PATH"
-# export PATH="/home/bais/.local/bin:$PATH"
+export LD_LIBRARY_PATH="/home/bais/git/mlr/share/lib:$LD_LIBRARY_PATH" # REMOVE THIS
+# export PATH="/home/bais/.local/bin:$PATH" # REMOVE THIS
 export PATH="/home/bais/bin:$PATH"
 export PATH="/home/bais/bin_extern:$PATH"
-export PATH="/home/bais/git/mlr/share/bin:$PATH"
-export PATH="/home/lib/bin:$PATH"
-export PATH="/home/bais/git/mlr/tools/gdb-addons:$PATH"
+export PATH="/home/bais/git/mlr/share/bin:$PATH" # REMOVE THIS
+export PATH="/home/lib/bin:$PATH" # REMOVE THIS
+export PATH="/home/bais/git/mlr/tools/gdb-addons:$PATH" # REMOVE THIS
 export PATH="/home/bais/git/tmuxifier/bin:$PATH"
 eval "$(tmuxifier init -)"
-export PATH="/home/bais/anaconda2/bin:$PATH"  # added by Anaconda2 4.0.0 installer
-export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"  # libfreenect
+export PATH="/home/bais/anaconda2/bin:$PATH"  # added by Anaconda2 4.0.0 installer # REMOVE THIS
+export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"  # libfreenect # REMOVE THIS
 
 # BAIS - aliases
 source ~/.bash_aliases
 
 # BAIS - keyboard layout options
-setxkbmap -option 'grp:shifts_toggle' 'it,de'
+setxkbmap -option grp:shifts_toggle it,de
 
 # BAIS - Completion for ..
 zstyle ':completion:*' special-dirs true
@@ -86,7 +88,7 @@ bindkey "^W" backward-kill-word
 bindkey "^H" backward-delete-char
 bindkey "^U" kill-line
 
-export SVN_EDITOR="vim"
+export SVN_EDITOR="vim" # REMOVE THIS
 ulimit -c unlimited
 
 # BAIS - update fpath for completion scripts
@@ -96,9 +98,9 @@ compinit
 zstyle ':completion:*' menu select=2
 zstyle ":completion:*:descriptions" format "%B%d%b"
 
-# BAIS - MLR ENV VARIABLES
-# export MLR_PATH='~/git/mlr'
-# export MLR_EDITOR_CMD='vim <fname>'
+# BAIS - MLR ENV VARIABLES # REMOVE THIS
+# export MLR_PATH='~/git/mlr' # REMOVE THIS
+# export MLR_EDITOR_CMD='vim <fname>' # REMOVE THIS
 
 # # BAIS - ROS setup
 # export ROS_VERSION="indigo"
@@ -107,23 +109,22 @@ zstyle ":completion:*:descriptions" format "%B%d%b"
 # # export ROS_IP=$(hostname -I | awk '{print $(1)}')
 
 # BAIS location of the dotfiles folder
-export DOTFILES_DIR=/home/bais/git/dotfiles
+export DOTFILES_DIR=/home/bais/git/dotfiles # REMOVE THIS (?)
 
 # BAIS - editor env
 export EDITOR=vim
+export BROWSER=firefox
 
 # BAIS - env variable for website scripts
-export IPVS=ipvs
+export IPVS=ipvs # REMOVE THIS
 
 # BAIS - tex uses manually installed packages
 # export TEXINPUTS=$HOME/latex/pgfplots/tex//:
 
-export PNEUMATICBOX_IP="cookiemonster.local"
+export PNEUMATICBOX_IP="cookiemonster.local" # REMOVE THIS
 
 # BAIS - default GPG key
-export GPGKEY=AF34AF73
-
-# source venv
+export GPGKEY=AF34AF73 # REMOVE THIS (?)
 
 
 # BAIS - bash completion script compatibility mode
@@ -133,20 +134,20 @@ bashcompinit
 # BAIS - conda autocomplete feature
 eval "$(register-python-argcomplete conda)"
 
-# export PYTHONNOUSERSITE=1
+# export PYTHONNOUSERSITE=1  # REMOVE THIS
 
-export JAVA_HOME=/usr/lib/jvm/java-7-openjdk
-export PATH=$PATH:/usr/jvm/java-7-openjdk/bin
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk #REMOVE THIS
+export PATH=$PATH:/usr/jvm/java-7-openjdk/bin #REMOVE THIS
 
-export PATH=$PATH:$HOME/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.10.3/bin
+export PATH=$PATH:$HOME/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.10.3/bin #REMOVE THIS
 
-# BAIS - remove suplicates from path
+# BAIS - remove duplicates from path
 if [ -n "$PATH" ]; then
   old_PATH=$PATH:; PATH=
   while [ -n "$old_PATH" ]; do
     x=${old_PATH%%:*}       # the first remaining entry
     case $PATH: in
-      *:"$x":*) ;;         # already there
+      *:"$x":*) ;;          # already there
       *) PATH=$PATH:$x;;    # not there yet
     esac
     old_PATH=${old_PATH#*:}
@@ -154,3 +155,5 @@ if [ -n "$PATH" ]; then
   export PATH=${PATH#:}
   unset old_PATH x
 fi
+
+# source $HOME/git/fabric-completion/fabric-completion.bash  # REMOVE THIS

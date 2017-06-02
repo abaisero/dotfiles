@@ -2,6 +2,7 @@
 ## FACILITY SHORTCUTS ##
 ########################
 
+alias swim='vim ~/notes/{pools,swimming}.vim-note -c vsplit -c bn'
 alias nb2md='jupyter nbconvert --to markdown'
 
 alias bell='paplay /usr/share/sounds/freedesktop/stereo/complete.oga'
@@ -17,8 +18,6 @@ alias pr2lansetup='. /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2lansetup'
 alias pr2wlansetup='. /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2wifisetup'
 alias pr2dashboard='rosrun rqt_pr2_dashboard rqt_pr2_dashboard'
 alias pr2teleop='roslaunch pr2_teleop teleop_joystick.launch'
-
-alias baise.ro.push='ssh baise.ro "cd git/baise.ro; git pull"'
 
 function h() {
   history | grep "$@"

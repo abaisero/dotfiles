@@ -1,0 +1,54 @@
+#!/usr/bin/zsh
+
+# scp baise.ro:/var/log/a.baise.ro.access.log .
+
+access="a.baise.ro.access.log"
+myip=$(ip)
+
+containsElement() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
+
+typeset -a seenip
+typeset -a botip
+
+while IFS= read -r line
+do
+  access_ip=$(echo $line | cut -f1  -d- | xargs)
+  # access_date=$(echo $line | cut -f3  -d- | sed 's/".*"//g')
+  access_date=$(echo $line | cut -f3  -d- | cut -f 2-3 -d ' ')
+  access_id=$(echo $line | cut -f 6 -d \")
+
+  access_loc=$(geoiplookup -f /usr/share/GeoIP/GeoLiteCity.dat $access_ip | cut -f 2 -d : | tr '\n' ' ')
+
+  # echo $access_date $access_loc $access_id
+  # echo $access_date
+  # if [[ $myip != *"$access_ip"* ]] then
+  if true; then
+
+    if ! containsElement "$access_ip" "${seenip[@]}"; then
+      content=$(wget bot.myip.ms/$access_ip -q -O -)
+      if ! [[ 'Not Listed' == *"$content"* ]] then
+        botip+=("$access_ip")
+      fi
+      seenip+=("$access_ip")
+    fi
+
+    # echo $seenip
+    # echo $botip
+
+    # if ! containsElement "$access_ip" "${botip[@]}"; then
+    if true; then
+      # echo "$access_date\t $access_ip\t $access_loc\t $access_id"
+      echo "$access_id"
+    fi
+  fi
+  # echo $line
+done < $access
+
+unset seenip
+unset botip
+
+exit 0

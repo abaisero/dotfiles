@@ -20,7 +20,7 @@ Plugin 'vim-scripts/BufOnly.vim'
 Plugin 'sjl/gundo.vim'
 " navigation
 Plugin 'tpope/vim-vinegar'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 " python
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'tell-k/vim-autopep8'
@@ -35,6 +35,16 @@ Plugin 'altercation/vim-colors-solarized'
 " testing
 Plugin 'majutsushi/tagbar'
 " Plugin 'scrooloose/nerdtree'
+Plugin 'vimwiki/vimwiki'
+Plugin 'jceb/vim-orgmode'
+Plugin 'tpope/vim-speeddating'
+" util
+Plugin 'vim-scripts/utl.vim'
+Plugin 'tpope/vim-repeat'
+Plugin 'chrisbra/NrrwRgn'
+Plugin 'mattn/calendar-vim'
+"
+" notes
 ""
 call vundle#end()
 filetype plugin indent on
@@ -42,6 +52,7 @@ filetype plugin indent on
 "" options
 syntax on
 let mapleader = ' '
+let maplocalleader = ','
 " sentence followed by double space
 set cpo+=J
 " change buffer without closing the previous ones
@@ -231,7 +242,7 @@ augroup commentary
   autocmd FileType kv     set commentstring=#\ %s
   autocmd FileType kvg    set commentstring=#\ %s
   autocmd FileType launch set commentstring=<!--\ %s\ -->
-  autocmd FileType markdown set commentstring=;\ %s
+  autocmd FileType markdown set commentstring=;;\ %s
 augroup END
 ""
 "" autopep8
@@ -253,6 +264,8 @@ let g:autopep8_ignore="E501"
 nnoremap <C-t> :CtrlPTag<cr>
 let g:ctrlp_cmd = 'CtrlPMixed'
 " let g:ctrlp_match_window = 'order:ttb'
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=40
 ""
 "" tagbar
 " nnoremap <leader>t :TagbarToggle<cr>
@@ -267,12 +280,15 @@ map <leader>g :YcmCompleter GoTo<cr>
 let g:SimpylFold_fold_import = 0
 ""
 "" vim-easytags
-set tags=./tags;
+set tags=./tags;..
 let g:easytags_dynamic_files = 1
 let g:easytags_auto_highlight = 0
 ""
 "" gundo
 let g:gundo_preview_bottom=1
+""
+"" vimorg
+let g:org_heading_shade_leading_stars = 0
 ""
 ""
 
@@ -281,3 +297,22 @@ set wrap
 set textwidth=79
 set formatoptions=qrn1
 set colorcolumn=80
+
+" autocmd InsertEnter * set list
+" autocmd InsertLeave * set list listchars=trail:☠ 
+
+" highlight ExtraWhitespace ctermbg=red guibg=red
+" match ExtraWhitespace /\s\+$/
+" autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+" autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+" autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+" autocmd BufWinLeave * call clearmatches()
+
+"" functions
+" remove trailing whitespace
+fun! TrimWhitespace()
+  let l:save = winsaveview()
+  %s/\s\+$//e
+  call winrestview(l:save)
+endfun
+""

@@ -50,26 +50,48 @@ e=0
 #   fi
 # done
 
+# OLD
+#
+# for fname in $*; do
+#   ispdf=$(file $fname | grep -q PDF)
+#   if [ ! $ispdf ]; then
+#     echo Error: $fname not a PDF. Ignoring.
+#     e+=1
+#   else
+#     pdffiles+=($fname)
+#     # npages=$(pdftk $fname dump_data | grep NumberOfPages | sed 's/[^0-9]*//')
+#     # let evenpages=$npages%2
+#     # [ ! $evenpages ] && pdffiles+=($blank)
+#   fi
+# done
+
+# # concatenating all pdf (with blank pages) into one file
+# fullfile=$(mktemp --tmpdir mlr_print.XXXXXXXXXX)
+# pdftk $pdffiles cat output $fullfile
+
+# # printing fullfile
+# job="lpr $printer -o sides=two-sided-long-edge"
+# cat $fullfile | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de $job
+# echo Sent.
+
+# if [[ $e > 0 ]]
+# then
+#   echo Files not printed: $e
+# fi
+
+# return $e
+
+
+# NEW
+
 for fname in $*; do
-  ispdf=$(file $fname | grep -q PDF)
-  if [ ! $ispdf ]; then
-    echo Error: $fname not a PDF. Ignoring.
-    e+=1
-  else
-    pdffiles+=($fname)
-    npages=$(pdftk $fname dump_data | grep NumberOfPages | sed 's/[^0-9]*//')
-    let evenpages=$npages%2
-    [ ! $evenpages ] && pdffiles+=($blank)
-  fi
+  job="lpr $printer -o sides=two-sided-long-edge"
+  cat $fname | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de $job
+  echo Sent: $fname
+  sleep 1
 done
 
 # concatenating all pdf (with blank pages) into one file
-fullfile=$(mktemp --tmpdir mlr_print.XXXXXXXXXX)
-pdftk $pdffiles cat output $fullfile
-
-# printing fullfile
-job="lpr $printer -o sides=two-sided-long-edge"
-cat $fullfile | ssh baiseraa@ipvslogin.informatik.uni-stuttgart.de $job
 echo Sent.
 
 if [[ $e > 0 ]]
