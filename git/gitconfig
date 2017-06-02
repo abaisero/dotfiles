@@ -1,17 +1,17 @@
 [user]
-	email = andrea.baisero@gmail.com
+  email = andrea.baisero@gmail.com
   name = abaisero
 [core]
-	editor = vim
+  editor = vim
 [push]
   default = upstream
 [merge]
-	tool = splice
+  tool = splice
 [mergetool "splice"]
   cmd = "vim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
   trustExitCode = true
 [credential]
-	helper = cache --timeout=3600
+  helper = cache --timeout=3600
 [alias]
   br = branch
   co = checkout
