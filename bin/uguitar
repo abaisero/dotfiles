@@ -3,9 +3,9 @@
 url=$1
 
 tmp=$(mktemp --tmpdir --suffix=.html uguitar.XXXXXXXXXX)
-wget -q -O $tmp $url
+wget -q -U 'Mozilla/5.0 (X11; Linux x86_64; rv:30.0) Gecko/20100101 Firefox/30.0' -O $tmp $url
 taburl=$(cat $tmp | sed -n -e '/print_link/p' | sed -n -e 's/.*\(href[^ ]*\).*/\1/p' | sed -n -e 's/.*"\(.*\)".*/\1/p')
-wget -q --referer=$url -O $tmp tabs.ultimate-guitar.com/$taburl
+wget -q -U 'Mozilla/5.0 (X11; Linux x86_64; rv:30.0) Gecko/20100101 Firefox/30.0' --referer=$url -O $tmp tabs.ultimate-guitar.com$taburl
 fname=$(cat $tmp | sed -n 's/<title>\(.*\)<\/title>/\1/p' | tr -dc '[[:print:]]' | xargs | tr " " _).pdf
 wkhtmltopdf -q $tmp $fname > /dev/null
 echo $fname

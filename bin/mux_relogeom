@@ -31,6 +31,6 @@ then
 
   tmux select-window -t vim
 fi
-tmux -2 attach -t ${SESSION_NAME}
+tmux attach -t ${SESSION_NAME}
 
 exit 0

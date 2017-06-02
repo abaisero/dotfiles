@@ -5,4 +5,9 @@ setlocal shiftwidth=4
 setlocal foldexpr=SimpylFold(v:lnum)
 setlocal foldmethod=expr
 normal zR
-"
+""
+
+""
+" remove trailing whitespace on write
+autocmd BufWritePre * :call TrimWhitespace()
+""
