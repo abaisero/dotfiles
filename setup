@@ -37,13 +37,16 @@ ln -f -s git/dotfiles/vim/vimrc .vimrc
 ln -f -s git/dotfiles/vim .vim
 if [ ! -d .vim/bundle/vundle ]
 then
-  git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+  # OLD REPO
+  # git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 fi
-vim +BundleInstall +qall!
+# OLD REPO
+# vim +BundleInstall +qall!
 
 if [ -f ycm_core.so ]
 then
   cd .vim/bundle/YouCompleteMe
+# old install script
   ./install.sh --clang-completer
   cd -
 fi

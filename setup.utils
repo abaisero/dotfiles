@@ -8,19 +8,29 @@ echo "===================================="
 # what about livetex-full and biblatex?
 sudo apt-get install git git-core ack-grep \
                       build-essential g++ gdb clang cmake \
-                      python python-numpy python-scipy python-matplotlib \
-                      ipython ipython-notebook ipython-qtconsole \
-                      openjdk-7-jdk icedtea-7-plugin \
                       octave \
                       pdftk \
-                      libgnome2-0 \
                       cifs-utils
+                      # libgnome2-0 \
                       # livetex-full biblatex \
+                      # python python-numpy python-scipy python-matplotlib \
+                      # ipython ipython-notebook ipython-qtconsole \
+                      # openjdk-7-jdk icedtea-7-plugin \
 
 echo
 echo "===================================="
 echo "Installing other packages"
 echo "===================================="
-sudo apt-get install thunderbird chromium-browser tmux arandr sparkleshare \
-                      vlc browser-plugin-vlc htop xournal tree keepass2
+sudo apt-get install \
+  thunderbird \
+  tmux \
+  arandr \
+  vlc \
+  htop \
+  tree \
+  keepass2
+  # chromium-browser \
+  # sparkleshare \
+  # browser-plugin-vlc \
+  # xournal \
 
