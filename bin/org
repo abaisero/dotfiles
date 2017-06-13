@@ -1,0 +1,14 @@
+#!/usr/bin/zsh
+
+# TODO multiple arguments
+
+fname=$1
+
+if [ "${fname:e}" != "org" ]; then
+  fname=$fname.org
+fi
+
+fdir=$(fback --default . $fname)
+vim $fdir/$fname
+
+exit 0

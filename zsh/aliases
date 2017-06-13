@@ -19,9 +19,8 @@ alias pr2wlansetup='. /home/bais/SparkleShare/mlr_documents/doc/pr2/pr2wifisetup
 alias pr2dashboard='rosrun rqt_pr2_dashboard rqt_pr2_dashboard'
 alias pr2teleop='roslaunch pr2_teleop teleop_joystick.launch'
 
-function h() {
-  history | grep "$@"
-}
+function h() { history | grep "$@" }
+
 
 alias tmux='tmux -2'
 alias tn='tmux new -s'
@@ -30,6 +29,7 @@ alias k='kill'
 alias o='gnome-open'
 alias u='. $HOME/.zshrc'
 alias x='exit'
+
 alias gt='gnome-terminal .'
 alias nt='gnome-terminal .; exit'
 alias ack='ack-grep --smart-case'
@@ -154,7 +154,7 @@ alias free='\free -m'
 # easy mod for this and other files
 alias valias='vim ~/.bash_aliases'
 alias vbash='vim ~/.bashrc'
-alias vzsh='vim ~/.zshrc'
+alias vzsh='vim ~/.zshrc ~/.zshenv'
 alias vvim='vim ~/.vimrc'
 alias vemacs='vim ~/.emacs'
 alias vbin='vim ~/bin/'
@@ -218,40 +218,29 @@ function backup() {
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # find commands
-function fback() {
-  fname=$1
-  folder=$PWD
-  while true; do
-    [ -e "$folder/$fname" ] && echo $folder && return 0
-    [[ "$folder" == / ]] && return 1
-    folder=$(dirname "$folder")
-  done
-}
+# function fback() {
+#   fname=$1
+#   folder=$PWD
+#   while true; do
+#     [ -e "$folder/$fname" ] && echo $folder && return 0
+#     [[ "$folder" == / ]] && return 1
+#     folder=$(dirname "$folder")
+#   done
+# }
 
 # t commands
-export TODO_DIR=$HOME/Dropbox/todo/
+export TODO_DIR=~/Dropbox/todo/
 export TODO_FNAME=todo.txt
-alias t.py='python "$HOME/git/t/t.py"'
 alias t='t.py --task-dir "$(echo $TODO_DIR | tee /dev/tty)" --list $TODO_FNAME'
-alias todo='t.py --task-dir "$(fback $TODO_FNAME || echo $PWD | tee /dev/tty)" --list $TODO_FNAME'
 
-# function todo() {
-#   fname='todo.t'
-#   todir=$(pwd)
-#   while [[ ! -e $todir/$fname ]]
-#   do
-#     if [[ "$todir" == / ]]
-#     then 
-#       todir=$(pwd)
-#       break
-#     fi
-#     todir=$(dirname $todir)
-#   done
-#   python ~/git/t/t.py --task-dir $todir --list $fname
-# }
-# alias todo='echo $(fback todo.t)'
-# alias todo='echo $(fback todo.t)'
-# python ~/git/t/t.py --list todo.t'
+# alias todo='t.py --task-dir "$(fback $TODO_FNAME || echo $PWD | tee /dev/tty)" --list $TODO_FNAME'
+function todo() {
+  dirname=$(fback --default "$PWD" "$TODO_FNAME")
+  if [ $? -eq 0 ]; then
+    echo file: $dirname/$TODO_FNAME
+    t.py --task-dir "$dirname" --list "$TODO_FNAME"
+  fi
+}
 
 function task_list() {
   echo $(cat ~/.bash_aliases | awk "/^alias $1=/ {split(\$0,A);print A[NF]}") | sed "s/'//g"

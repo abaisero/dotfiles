@@ -1,0 +1,32 @@
+#!/usr/bin/zsh
+
+function errcho() { echo >&2 "$@" }
+
+script=$(basename $0)
+
+
+zparseopts -D -E -A opts -default:
+default=${opts[--default]}
+fname=$1
+
+if [[ $# -ne 1 ]]; then
+  errcho "$script: a single argument is required ($# given)."
+  exit 1
+fi
+
+folder=$PWD
+while [ ! -e "$folder/$fname" ]; do
+  if [[ "$folder" == / ]]; then
+    if [ ! -z "$default" ]; then
+      folder=$(realpath -s $default)
+      break
+    fi
+    errcho "$script: the root folder has been reached and file '$fname' has not been found."
+    exit 2
+  fi
+  folder=$(dirname "$folder")
+done
+
+echo $folder
+
+exit 0

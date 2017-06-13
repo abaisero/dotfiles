@@ -1,3 +1,0 @@
-#compdef wiki
-
-_values 'files' $(basename -a $(dir $HOME/vimwiki/*.wiki))
