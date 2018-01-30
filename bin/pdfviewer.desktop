@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name="Pdf Viewer"
+Comment="Opens FoxitReader for Zotero documents, otherwise Evince
+TryExec=pdfviewer
+Exec=pdfviewer %U
+Terminal=false
+Type=Application

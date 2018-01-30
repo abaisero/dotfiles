@@ -1,10 +1,47 @@
 #!/usr/bin/zsh
 
-energy_now=$(cat /sys/class/power_supply/BAT0/energy_now)
-energy_full=$(cat /sys/class/power_supply/BAT0/energy_full)
-energy_status=$(cat /sys/class/power_supply/BAT0/status)
 
-energy_perc=$(gnome-calculator -s "100*$energy_now/$energy_full" 2&>/dev/null)
-echo $energy_status $energy_perc | awk '{printf("Status: %s\nCurrent: %.2f%%\n", $1, $2)}'
+function bat_mains() {
+  local batpath=$1
+  local batname=$(basename $batpath)
+
+  local energy_type=$(cat "$batpath/type")
+  local energy_online=$(cat $batpath/online)
+
+  printf "%s\t%s\tOnline\t%s\n" $energy_type $batname $energy_online
+}
+
+
+function bat_battery() {
+  local batpath=$1
+  local batname=$(basename $batpath)
+
+  local energy_type=$(cat "$batpath/type")
+  local energy_status=$(cat "$batpath/status")
+  local energy_now=$(cat "$batpath/energy_now")
+  local energy_full=$(cat "$batpath/energy_full")
+  local energy_perc=$(gnome-calculator -s "100*$energy_now/$energy_full")
+
+  printf "%s\t%s\tStatus\t%s\n" $energy_type $batname $energy_status
+  printf "%s\t%s\tCurrent\t%.2f%%\n" $energy_type $batname $energy_perc
+}
+
+
+for batpath in /sys/class/power_supply/*; do
+  energy_type=$(cat $batpath/type)
+
+  case "$energy_type" in
+    Mains)
+      bat_mains $batpath
+      ;;
+    Battery)
+      bat_battery $batpath
+      ;;
+    *)
+      echo "Energy type \"$energy_type\" not recognized."
+      ;;
+  esac
+done
+
 
 exit 0

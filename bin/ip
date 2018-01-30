@@ -1,6 +1,0 @@
-#!/usr/bin/zsh
-
-iface=$1
-ifconfig $iface | grep inet | awk '{print $2}' | sed 's/addr://' | grep .
-
-exit 0

@@ -34,7 +34,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'altercation/vim-colors-solarized'
 " testing
 Plugin 'majutsushi/tagbar'
-" Plugin 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
 Plugin 'vimwiki/vimwiki'
 Plugin 'jceb/vim-orgmode'
 Plugin 'tpope/vim-speeddating'
@@ -315,4 +315,22 @@ fun! TrimWhitespace()
   %s/\s\+$//e
   call winrestview(l:save)
 endfun
+""
+
+"" enable project-specific vim config files
+set exrc
+set secure
+""
+
+"" NERDTree
+""" open NERDTree
+map <C-n> :NERDTreeToggle<CR>
+"""
+""" close vim if only window remaining
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"""
+""" open NERDTree automatically when no file specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"""
 ""

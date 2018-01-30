@@ -2,6 +2,26 @@
 ## FACILITY SHORTCUTS ##
 ########################
 
+alias permissions='stat -c "0%a"'
+
+function restore_permissions() {
+  for fname in $@; do
+    if [ -f "$fname" ]; then
+      pold=$(permissions "$fname")
+      pnew=$(printf "%04d\n" "$((0666 - $(umask)))")
+      echo "'$fname' (regular file).  Changing permissions $pold -> $pnew."
+      chmod $pnew $fname
+    elif [ -d "$fname" ]; then
+      pold=$(permissions "$fname")
+      pnew=$(printf "%04d\n" "$((0777 - $(umask)))")
+      echo "'$fname' (folder).  Changing permissions $pold -> $pnew."
+      chmod $pnew $fname
+    else
+      print "'$fname' (neither regular file nor folder).  Doing nothing."
+    fi
+  done
+}
+
 alias swim='vim ~/notes/{pools,swimming}.vim-note -c vsplit -c bn'
 alias nb2md='jupyter nbconvert --to markdown'
 
@@ -26,16 +46,15 @@ alias tmux='tmux -2'
 alias tn='tmux new -s'
 # easy stuff
 alias k='kill'
-alias o='gnome-open'
+alias o='xdg-open'
 alias u='. $HOME/.zshrc'
 alias x='exit'
 
 alias gt='gnome-terminal .'
 alias nt='gnome-terminal .; exit'
-alias ack='ack-grep --smart-case'
+# alias ack='ack-grep --smart-case'
 alias up='sudo apt-get update && sudo apt-get upgrade'
 alias linux='lsb_release -a'
-alias help='apropos'
 alias soff='xset dpms force off'
 alias lock='gnome-screensaver-command -l'
 alias trash='sudo rm -rf $HOME/.local/share/Trash/*'
@@ -168,7 +187,7 @@ alias tks='tmux kill-session'
 
                                     # opens awesome config file
 alias vawesome='vim ~/.config/awesome/rc.lua'
-alias vawesome.new='vim ~/.config/awesome/rc.lua.new'
+alias vawesome.test='vim ~/.config/awesome/test.lua'
 
 # command-line matlab
 alias methlab='matlab -nodesktop -nosplash'
@@ -237,7 +256,7 @@ function todo() {
   dirname=$(fback --default "$PWD" "$TODO_FNAME")
   if [ $? -eq 0 ]; then
     echo file: $dirname/$TODO_FNAME
-    t.py --task-dir "$dirname" --list "$TODO_FNAME"
+    t.py --task-dir "$dirname" --list "$TODO_FNAME" $*
   fi
 }
 

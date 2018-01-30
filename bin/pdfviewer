@@ -1,0 +1,14 @@
+#!/usr/bin/zsh
+
+# Check if the pdf is in the Zotero folder.
+if [[ "$1" == */zotero/storage/* ]]
+then
+    # Replace all / with \ (needed for the windows program Foxit Reader)
+    # f="z:${1//\//\\}"
+    # /usr/share/playonlinux/playonlinux --run "Foxit Reader" "$f"
+    FoxitReader "$1"
+else
+    evince "$1"
+fi
+
+exit 0
