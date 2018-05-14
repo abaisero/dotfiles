@@ -58,17 +58,17 @@ source $ZSH/oh-my-zsh.sh
 # export HISTSIZE=
 
 # BAIS - PATH extentions
-export LD_LIBRARY_PATH="/home/bais/git/mlr/share/lib:$LD_LIBRARY_PATH" # REMOVE THIS
-# export PATH="/home/bais/.local/bin:$PATH" # REMOVE THIS
-export PATH="/home/bais/bin:$PATH"
-export PATH="/home/bais/bin_extern:$PATH"
-export PATH="/home/bais/git/mlr/share/bin:$PATH" # REMOVE THIS
+export LD_LIBRARY_PATH="/home/$USER/git/mlr/share/lib:$LD_LIBRARY_PATH" # REMOVE THIS
+# export PATH="/home/$USER/.local/bin:$PATH" # REMOVE THIS
+export PATH="/home/$USER/bin:$PATH"
+export PATH="/home/$USER/bin_extern:$PATH"
+export PATH="/home/$USER/git/mlr/share/bin:$PATH" # REMOVE THIS
 export PATH="/home/lib/bin:$PATH" # REMOVE THIS
-export PATH="/home/bais/git/mlr/tools/gdb-addons:$PATH" # REMOVE THIS
-export PATH="/home/bais/git/tmuxifier/bin:$PATH"
+export PATH="/home/$USER/git/mlr/tools/gdb-addons:$PATH" # REMOVE THIS
+export PATH="/home/$USER/git/tmuxifier/bin:$PATH"
 eval "$(tmuxifier init -)"
-# export PATH="/home/bais/anaconda2/bin:$PATH"  # added by Anaconda2 4.0.0 installer # REMOVE THIS
-export PATH="/home/bais/anaconda3/bin:$PATH"  # added by Anaconda3 4.4.0 installer # REMOVE THIS
+# export PATH="/home/$USER/anaconda2/bin:$PATH"  # added by Anaconda2 4.0.0 installer # REMOVE THIS
+export PATH="/home/$USER/anaconda3/bin:$PATH"  # added by Anaconda3 4.4.0 installer # REMOVE THIS
 export PKG_CONFIG_PATH="/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH"  # libfreenect # REMOVE THIS
 
 # BAIS - aliases
@@ -109,7 +109,7 @@ zstyle ":completion:*:descriptions" format "%B%d%b"
 # # export ROS_IP=$(hostname -I | awk '{print $(1)}')
 
 # BAIS location of the dotfiles folder
-export DOTFILES_DIR=/home/bais/git/dotfiles # REMOVE THIS (?)
+export DOTFILES_DIR=/home/$USER/git/dotfiles # REMOVE THIS (?)
 
 # BAIS - editor env
 export EDITOR=vim
