@@ -1,0 +1,13 @@
+[user]
+  email = andrea.baisero@gmail.com
+  name = abaisero
+[alias]
+  br = branch
+  co = checkout
+  st = status
+  l = log --graph --decorate --oneline
+[color]
+  ui = true
+[log]
+  stat = true
+  graph = true

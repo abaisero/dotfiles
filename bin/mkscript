@@ -8,7 +8,13 @@ do
   [[ -e "$script" ]] && echo "File '$script' already exists. Skipping." && continue
 
   echo Creating $script.
-  echo "#!$SHELL\n\nexit 0" > $script
+  echo "#!/bin/bash
+#!/usr/bin/zsh
+#!/usr/bin/env python
+
+
+exit 0" > $script
+
   chmod +x $script
 done
 

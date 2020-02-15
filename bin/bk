@@ -1,9 +1,0 @@
-#!/usr/bin/zsh
-
-date=$(date +%F@%T.%N)
-for fname in $@; do
-  fname_bk=$fname.BK.$date
-  cp -r $fname $fname_bk
-done
-
-exit 0

@@ -1,5 +1,7 @@
 #!/usr/bin/zsh
 
+# finds closest ancestor folder which has the given filename
+
 function errcho() { echo >&2 "$@" }
 
 script=$(basename $0)
