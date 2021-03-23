@@ -15,15 +15,18 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
 " Plugin 'tpope/vim-unimpaired'
 Plugin 'Valloric/YouCompleteMe'
-Plugin 'w0rp/ale'
+Plugin 'dense-analysis/ale'
 Plugin 'argtextobj.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'milkypostman/vim-togglelist'
 Plugin 'junegunn/vim-easy-align'
+" Plugin 'python-rope/ropevim'
 
 " files
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
 
 " markup
 Plugin 'tpope/vim-markdown'
@@ -31,9 +34,12 @@ Plugin 'lervag/vimtex'
 Plugin 'esalter-va/vim-checklist'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-notes'
+Plugin 'cespare/vim-toml'
+" Plugin 'gu-fan/riv.vim'
 
 " python
 Plugin 'python-mode/python-mode'
+Plugin 'cjrh/vim-conda'
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'heavenshell/vim-pydocstring'
 
@@ -119,8 +125,12 @@ nnoremap <C-o> :bn<cr>
 set hidden
 
 " move across jump locations
-nnoremap <leader>i <C-i>
-nnoremap <leader>o <C-o>
+" nnoremap <leader>i <C-i>
+" nnoremap <leader>o <C-o>
+
+" move across quickfixes
+nnoremap <leader>i :cp<cr>
+nnoremap <leader>o :cn<cr>
 
 " latex flavor
 let g:tex_flavor='latex'
@@ -179,22 +189,32 @@ let g:rainbow_active = 1
 " let g:syntastic_check_on_wq = 0
 
 " ale
-" let g:ale_open_list = 1
-" let g:ale_linters = { 'python': ['flake8', 'pylint'] } " , 'autopep8', 'mypy'] }
-let g:ale_linters = { 'python': ['pylint'], 'markdown': ['mdl'] }
-" let g:ale_fixers = { 'python': ['isort', 'trim_whitespace', 'remove_trailing_lines'] }
+let g:ale_linters = { 'python': ['pylint', 'mypy'], 'markdown': ['mdl'], 'tex': ['chktex', 'writegood'] }
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_save = 1
 let g:ale_fixers = { 'python': ['isort', 'black'] }
-let g:ale_python_black_options = '--skip-string-normalization --line-length 80'
 let g:ale_fix_on_save = 1
+
+let g:ale_python_mypy_options = '--ignore-missing-imports'
+let g:ale_python_black_options = '--skip-string-normalization --line-length 80'
+
+let g:ale_tex_chktex_options = '-I -n 1 -n 3 -n 36'
 
 " python-mode
 " let g:pymode_python = 'python3'  " cannot run :py3 after running :python
-let g:pymode_breakpoint_cmd = '__import__("ipdb").set_trace()  # XXX BREAKPOINT'
+" let g:pymode_breakpoint_cmd = '__import__("ipdb").set_trace()  # XXX BREAKPOINT'
+let g:pymode_breakpoint_cmd = 'breakpoint()  # XXX BREAKPOINT'
 let g:pymode_lint = 0
+
+" vim-conda
+let g:conda_startup_msg_suppress = 1
 
 " pydocstring
 let g:pydocstring_enable_mapping = 0
 let g:pydocstring_enable_comment = 0
+let g:pydocstring_doq_path = '/home/bais/anaconda3/bin/doq'
+let g:pydocstring_formatter = 'google'
 
 " simpylfold
 let g:SimpylFold_fold_import = 0
@@ -207,6 +227,7 @@ nnoremap <C-t> :CtrlPTag<cr>
 nnoremap <leader>t :TagbarToggle<cr>
 
 " YouCompleteMe
+"
 map <leader>yg :YcmCompleter GoTo<cr>
 map <leader>yd :YcmCompleter GetDoc<cr>
 map <leader>yt :YcmCompleter GetType<cr>
@@ -227,3 +248,19 @@ vnoremap <leader>cd :ChecklistDisableCheckbox<cr>
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+" misc
+function TODO_inc()
+  :s/XXX/DONE/e
+  :s/TODO/XXX/e
+endfunction
+
+function TODO_dec()
+  :s/XXX/TODO/e
+  :s/DONE/XXX/e
+endfunction
+
+nnoremap <leader>+ :call TODO_inc()<cr>
+nnoremap <leader>- :call TODO_dec()<cr>
+vnoremap <leader>+ :call TODO_inc()<cr>
+vnoremap <leader>- :call TODO_dec()<cr>
