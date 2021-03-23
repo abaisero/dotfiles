@@ -34,12 +34,12 @@ alias o='xdg-open'
 alias x='exit'
 
 alias linux='lsb_release -a'
-alias latexmk='latexmk -pdf'
+# alias latexmk='latexmk -pdf'
 
 alias ncores='cat /proc/cpuinfo | grep processor | wc -l'
 alias nusers='who | cut -f1 -d\ | sort -u | wc -l'
 
-alias arandr='arandr --force-version'
+# alias arandr='arandr --force-version'
 
 function note() {
   if [[ $# > 0 ]]
@@ -79,6 +79,8 @@ alias vssh='vim ~/.ssh/config'
 alias vtmux='vim ~/.tmux.conf'
 alias vvim='vim ~/.vimrc'
 alias vzsh='vim ~/.zshrc'
+
+alias rsync-a='rsync -avR'
 
 # opens awesome config file
 alias vawesome='vim ~/.config/awesome/rc.lua'

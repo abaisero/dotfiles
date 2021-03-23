@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/bais/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -69,9 +69,14 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+# plugins=(git git-extras tmux zsh_reload colored-man-pages colorize extract zsh-autosuggestions)
 plugins=(git git-extras tmux zsh_reload colored-man-pages colorize extract)
 
+fpath+=$HOME/git/conda-zsh-completion
+
 source $ZSH/oh-my-zsh.sh
+
+compinit conda
 
 # User configuration
 
@@ -104,19 +109,23 @@ bindkey "^W" backward-kill-word
 bindkey "^H" backward-delete-char
 bindkey "^U" kill-line
 
+# BAIS - search history backwards
+bindkey "^J" history-search-forward
+bindkey "^K" history-search-backward
+
 # BAIS - rlpo experiments bin
-export PATH="$PATH:/home/bais/git/rlpo/experiments/bin"
+export PATH="$PATH:$HOME/git/rlpo/experiments/bin"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/bais/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/bais/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/bais/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/bais/anaconda3/bin:$PATH"
+        export PATH="$HOME/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -134,3 +143,20 @@ export ip_rlpo_experiments=$ip_rlpo/experiments
 export ip_cml=$HOME/NU/courses/cs7290_causal_modeling_in_machine_learning
 
 export BACKUP_DEST="nymph.proxy:backup/$(hostname)"
+export DISCOVERY_SCRATCH="discovery-xfer:scratch"
+export NYMPH_DISCOVERY="nymph.proxy:scratch"
+
+export PYTHONBREAKPOINT=ipdb.set_trace
+
+# installing texlive from source
+export PATH="/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
+export MANPATH="/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH"
+export INFOPATH="/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# fixing gnome-control-center issue
+# from https://bugzilla.redhat.com/show_bug.cgi?id=1645664
+export XDG_CURRENT_DESKTOP=GNOME
+
+[ -f ~/.private.sh ] && source ~/.private.sh
