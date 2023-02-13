@@ -1,0 +1,20 @@
+#!/bin/bash
+
+source ~/anaconda3/etc/profile.d/conda.sh
+
+envs=$(conda env list \
+  | tail -n +3 \
+  | head -n -1 \
+  | cut -d ' ' -f 1)
+
+backup_folder=/home/bais/backup-conda-requirements
+mkdir -p "$backup_folder"
+
+for env in $envs; do
+  echo "backing up environment '$env'"
+  conda deactivate
+  conda activate $env
+  python -m pip freeze >"$backup_folder/requirements-$env.txt"
+done
+
+exit 0

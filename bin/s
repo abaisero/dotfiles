@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# if the given session exists, attach to it if it does not exist, create it and
+# initialize it with the respective session source-file
+
+if [ $# != 1 ]; then
+  echo "script requires exactly one argument --- the session name"
+  exit 1
+fi
+
+session=$1
+shift
+
+session_source_file="$HOME/.tmux.sessions/$session.conf"
+
+if ! tmux attach-session -d -t $session  &>/dev/null; then
+  tmux new -s $session \; source-file -q "$session_source_file"
+fi

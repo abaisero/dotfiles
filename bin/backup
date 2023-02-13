@@ -1,12 +1,21 @@
-#!/usr/bin/zsh
+#!/bin/bash
 
-if [ -z "$BACKUP_DEST" ]; then
-  >&2 echo "Backup script requires environment variable \"BACKUP_DEST\""
-  exit 1
-fi
+# temporary, just to make sure those things are backed up
+backup-conda-envs
 
-eval `keychain --noask --eval id_rsa`
+options=(
+  --archive --compress
+  --recursive --relative
+  --partial --progress
+  --copy-links
+  --keep-dirlinks
+  --human-readable
+  --verbose
+)
 
-function dobackup() {
-  rsync -aR --delete --quiet "$@" "$BACKUP_DEST"
-}
+FILES_FROM=$DOTFILES/backupfiles.conf
+timestamp=$(date +%F.%T.%N)
+DEST=$HOME/backups/$timestamp
+LOGFILE=$HOME/backups/backup.log
+
+rsync ${options[@]} --files-from=$FILES_FROM / $DEST | tee $LOGFILE

@@ -13,14 +13,16 @@ Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-fugitive'
+" Plugin 'xolox/vim-easytags'
+" Plugin 'xolox/vim-misc'
 " Plugin 'tpope/vim-unimpaired'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'dense-analysis/ale'
-Plugin 'argtextobj.vim'
+Plugin 'vim-scripts/argtextobj.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'milkypostman/vim-togglelist'
 Plugin 'junegunn/vim-easy-align'
-" Plugin 'python-rope/ropevim'
+Plugin 'python-rope/ropevim'
 
 " files
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -32,8 +34,7 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'tpope/vim-markdown'
 Plugin 'lervag/vimtex'
 Plugin 'esalter-va/vim-checklist'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-notes'
+" Plugin 'xolox/vim-notes'
 Plugin 'cespare/vim-toml'
 " Plugin 'gu-fan/riv.vim'
 
@@ -107,6 +108,9 @@ inoremap kj <esc>
 " file movement
 nnoremap j gj
 nnoremap k gk
+
+" vim reload
+nnoremap <leader>sv <cmd>source $MYVIMRC<CR>
 
 " toggle linewrap
 noremap <leader>w :set wrap!<cr>
@@ -189,7 +193,7 @@ let g:rainbow_active = 1
 " let g:syntastic_check_on_wq = 0
 
 " ale
-let g:ale_linters = { 'python': ['pylint', 'mypy'], 'markdown': ['mdl'], 'tex': ['chktex', 'writegood'] }
+let g:ale_linters = { 'python': ['flake8', 'mypy'], 'markdown': ['mdl'], 'tex': ['chktex', 'writegood'] }
 let g:ale_linters_explicit = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_save = 1
@@ -197,7 +201,7 @@ let g:ale_fixers = { 'python': ['isort', 'black'] }
 let g:ale_fix_on_save = 1
 
 let g:ale_python_mypy_options = '--ignore-missing-imports'
-let g:ale_python_black_options = '--skip-string-normalization --line-length 80'
+" let g:ale_python_black_options = '--skip-string-normalization --line-length 80'
 
 let g:ale_tex_chktex_options = '-I -n 1 -n 3 -n 36'
 
@@ -226,8 +230,11 @@ nnoremap <C-t> :CtrlPTag<cr>
 " tagbar
 nnoremap <leader>t :TagbarToggle<cr>
 
+" vim-easytags
+:set tags=./tags;$HOME
+:let g:easytags_dynamic_files = 1
+
 " YouCompleteMe
-"
 map <leader>yg :YcmCompleter GoTo<cr>
 map <leader>yd :YcmCompleter GetDoc<cr>
 map <leader>yt :YcmCompleter GetType<cr>
@@ -264,3 +271,30 @@ nnoremap <leader>+ :call TODO_inc()<cr>
 nnoremap <leader>- :call TODO_dec()<cr>
 vnoremap <leader>+ :call TODO_inc()<cr>
 vnoremap <leader>- :call TODO_dec()<cr>
+
+" nocommit
+let g:nocommit_tag = 'TODO NOCOMMIT'
+
+fun! NoCommit(lnum)
+    let line = getline(a:lnum)
+    if strridx(line, g:nocommit_tag) != -1
+        normal dd
+    else
+        let plnum = prevnonblank(a:lnum)
+        if &expandtab
+            let indents = repeat(' ', indent(plnum))
+        else
+            let indents = repeat("\t", plnum / &shiftwidth)
+        endif
+
+        call append(line('.')-1, indents.g:nocommit_tag)
+        normal k
+        :Commentary
+    endif
+
+    " Save file without any events
+    noautocmd write
+
+endfunction
+
+nnoremap <silent> <buffer> <leader>n :call NoCommit(line('.'))<CR>

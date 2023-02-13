@@ -1,0 +1,5 @@
+#!/bin/bash
+
+$HOME/bin/sabaki-v0.52.2-linux-x64.AppImage --no-sandbox "$@"
+
+exit 0

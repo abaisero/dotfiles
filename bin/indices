@@ -2,7 +2,8 @@
 
 import sys
 
-if __name__ == '__main__':
+
+def main():
     indices = sys.argv[1:]
     indices = ' '.join(indices).replace(',', ' ')
 
@@ -10,9 +11,15 @@ if __name__ == '__main__':
         try:
             index_from = int(token)
         except ValueError:
-            index_from, index_to = map(int, token.split('-'))
+            index_from, index_to = map(
+                int, token.split('-')
+            )
         else:
             index_to = index_from
 
         for index in range(index_from, index_to + 1):
             print(index)
+
+
+if __name__ == '__main__':
+    main()

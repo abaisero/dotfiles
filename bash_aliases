@@ -53,10 +53,11 @@ function note() {
 alias mkdir='mkdir -p'
 alias cp='cp -v'
 alias mv='mv -v'
-alias ls='ls -hl --color=auto'
-alias lt='ls -rt'
-alias ld='ls -l | grep \^d --color=never'
-alias li='ls -i'
+alias ls='ls --hyperlink=auto -hl --color=auto'
+alias lt='ls --hyperlink=auto -rt'
+alias ld='ls --hyperlink=auto -l | grep \^d --color=never'
+alias li='ls --hyperlink=auto -i'
+alias icat='kitty +kitten icat'
 
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 
@@ -68,6 +69,7 @@ alias free='\free -m'
 alias g='\git'
 
 # easy mod for this and other files
+alias vim='nvim'
 alias valias='vim ~/.bash_aliases'
 alias vbackup='vim ~/bin/backup'
 alias vbash='vim ~/.bashrc'
@@ -76,8 +78,8 @@ alias vgdb='vim ~/.gdbinit'
 alias vgit='vim ~/.gitconfig'
 alias vpylint='vim ~/.pylintrc'
 alias vssh='vim ~/.ssh/config'
-alias vtmux='vim ~/.tmux.conf'
-alias vvim='vim ~/.vimrc'
+alias vtmux='vim ~/.tmux.conf ~/.tmux.sessions/*.conf'
+alias vvim='vim ~/.config/nvim/init.vim'
 alias vzsh='vim ~/.zshrc'
 
 alias rsync-a='rsync -avR'
@@ -85,6 +87,8 @@ alias rsync-a='rsync -avR'
 # opens awesome config file
 alias vawesome='vim ~/.config/awesome/rc.lua'
 alias vawesome.test='vim ~/.config/awesome/test.lua'
+
+alias init-env='python -m pip install pynvim ropevim'
 
 # alert comand. Visualizes alert window when command ends.
 # Use like so:
@@ -124,3 +128,5 @@ function repeat() {
     done
   fi
 }
+
+alias bell='paplay /usr/share/sounds/freedesktop/stereo/complete.oga'

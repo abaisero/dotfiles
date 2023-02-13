@@ -70,7 +70,7 @@ ZSH_THEME="agnoster"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(git git-extras tmux zsh_reload colored-man-pages colorize extract zsh-autosuggestions)
-plugins=(git git-extras tmux zsh_reload colored-man-pages colorize extract)
+plugins=(git git-extras tmux zsh_reload colored-man-pages colorize extract z)
 
 fpath+=$HOME/git/conda-zsh-completion
 
@@ -99,7 +99,7 @@ export EDITOR=vim
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-source ~/.bash_aliases
+[ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
 # BAIS - vi key bindings
 bindkey -v
@@ -113,34 +113,39 @@ bindkey "^U" kill-line
 bindkey "^J" history-search-forward
 bindkey "^K" history-search-backward
 
-# BAIS - rlpo experiments bin
-export PATH="$PATH:$HOME/git/rlpo/experiments/bin"
+# installing texlive from source
+export PATH="/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
+export MANPATH="/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH"
+export INFOPATH="/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH"
+
+export DOTFILES="$HOME/git.new/dotfiles"
+
+[ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
+. $DOTFILES/completions/s-completion.sh
+
+# needed for nvim-lsp-pyright stuff
+[ -d "$HOME/node_modules/.bin" ] && export PATH="$HOME/node_modules/.bin:$PATH"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/bais/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/anaconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/bais/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/bais/anaconda3/etc/profile.d/conda.sh"
     else
-        export PATH="$HOME/anaconda3/bin:$PATH"
+        export PATH="/home/bais/anaconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+# BAIS - rlpo experiments bin
+[ -d "$HOME/git/rlpo/experiments/bin" ] && export PATH="$HOME/git/rlpo/experiments/bin:$PATH"
+
 # BAIS - keychain
 eval `keychain --eval --agents ssh id_rsa`
-
-export ip_awesome=$HOME/.config/awesome
-export ip_awesome_theme=$ip_awesome/themes/powerarrow-dark
-
-export ip_rlpo=$HOME/git/rlpo
-export ip_rlpo_experiments=$ip_rlpo/experiments
-
-export ip_cml=$HOME/NU/courses/cs7290_causal_modeling_in_machine_learning
 
 export BACKUP_DEST="nymph.proxy:backup/$(hostname)"
 export DISCOVERY_SCRATCH="discovery-xfer:scratch"
@@ -148,15 +153,38 @@ export NYMPH_DISCOVERY="nymph.proxy:scratch"
 
 export PYTHONBREAKPOINT=ipdb.set_trace
 
-# installing texlive from source
-export PATH="/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
-export MANPATH="/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH"
-export INFOPATH="/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH"
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # fixing gnome-control-center issue
 # from https://bugzilla.redhat.com/show_bug.cgi?id=1645664
 export XDG_CURRENT_DESKTOP=GNOME
 
-[ -f ~/.private.sh ] && source ~/.private.sh
+# manual golang installation
+[ -d "/usr/local/go/bin" ] && export PATH="/usr/local/go/bin:$PATH"
+[ -d "$HOME/go/bin" ] && export PATH="$HOME/go/bin:$PATH"
+
+# ruby gem path
+# [ -d "$HOME/.gem/ruby/3.0.0/bin" ] && export PATH="$HOME/.gem/ruby/3.0.0/bin:$PATH"
+
+[ -f "$HOME/.private.sh" ] && source "$HOME/.private.sh"
+
+. $HOME/bin/z.sh
+
+if test -n "$KITTY_INSTALLATION_DIR"; then
+  export KITTY_SHELL_INTEGRATION="enabled"
+  autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
+  kitty-integration
+  unfunction kitty-integration
+fi
+
+# Created by `pipx` on 2022-06-03 22:29:03
+export PATH="$PATH:/home/bais/.local/bin"
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+PS1="(\$(~/.rvm/bin/rvm-prompt)) $PS1"

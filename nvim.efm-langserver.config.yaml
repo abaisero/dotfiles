@@ -1,0 +1,63 @@
+version: 2
+
+tools:
+
+    python-black: &python-black
+        format-command: 'black --quiet -'
+        format-stdin: true
+
+    python-isort: &python-isort
+        format-command: 'isort --quiet -'
+        format-stdin: true
+
+    markdown-mdl: &markdown-mdl
+        lint-command: 'mdl'
+        # lint-stdin: true
+        lint-formats:
+            - '%f:%l: %m'
+
+    markdown-pandoc: &markdown-pandoc
+        format-command: 'pandoc -f markdown -t gfm -sp --tab-stop=2'
+
+    rst-pandoc: &rst-pandoc
+        format-command: 'pandoc -f rst -t rst -s --columns=79'
+
+    yaml-yamllint: &yaml-yamllint
+        lint-command: 'yamllint -f parsable -'
+        lint-stdin: true
+
+    prose-writegood: &prose-writegood
+        lint-command: 'write-good'
+        lint-stdin: false
+        lint-formats:
+            - '%m on line %l at column %c'
+
+    prose-proselint: &prose-proselint
+        lint-command: 'proselint'
+        lint-stdin: true
+        lint-formats:
+            - '%f:%l:%c: %m'
+
+languages:
+
+    python:
+        - <<: *python-black
+        - <<: *python-isort
+
+    tex:
+        - <<: *prose-writegood
+        - <<: *prose-proselint
+
+    markdown:
+        - <<: *markdown-mdl
+        - <<: *markdown-pandoc
+        - <<: *prose-writegood
+        - <<: *prose-proselint
+
+    rst:
+        - <<: *rst-pandoc
+        - <<: *prose-writegood
+        - <<: *prose-proselint
+
+    yaml:
+        - <<: *yaml-yamllint

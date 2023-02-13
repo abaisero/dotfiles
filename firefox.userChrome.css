@@ -1,0 +1,37 @@
+/* shorter tabs */
+:root {
+  --tab-min-height: 25px !important;
+}
+
+/* remove secondary tab label */
+.tab-secondary-label:is([soundplaying], [muted], [activemedia-blocked], [pictureinpicture], [sharing]){ display: none !important; }
+ 
+/* enable audio icon */
+.tab-icon-overlay:is([soundplaying], [muted], [activemedia-blocked], [pictureinpicture], [sharing], :not([pinned])) {
+  opacity: 1 !important;
+  bottom: 12px !important;
+  padding: 0px !important;
+  fill-opacity: 1 !important;
+}
+ 
+/* color code audio icon */
+.tab-icon-overlay[soundplaying] {
+  fill: lime !important;
+}
+ 
+/* color code audio icon */
+.tab-icon-overlay[muted] {
+  fill: red !important;
+}
+
+/* ??? */
+.tab-icon-overlay:is([pinned], [sharing]):not([crashed]) {
+  opacity: 1 !important;
+  margin-top: -7px !important;
+  padding: 0px !important;
+  stroke: none !important;
+  fill-opacity: 1 !important;
+}
+ 
+/* ??? */
+#TabsToolbar:hover .tab-icon-image{ opacity: 1 !important; }

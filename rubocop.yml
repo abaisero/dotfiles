@@ -1,0 +1,7 @@
+# Metrics/MethodLength:
+#   Max: 10
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
+  Safe: true
+  SafeAutoCorrect: true
