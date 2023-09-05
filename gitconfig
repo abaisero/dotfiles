@@ -5,9 +5,11 @@
   br = branch
   co = checkout
   st = status
-  l = log --graph --decorate --oneline
+  l = log --graph --decorate --pretty=format:'%C(auto)%h%d %C(yellow)(%C(blue)%as:%an%C(yellow))%C(auto) %s'
 [color]
   ui = true
 [log]
   stat = true
   graph = true
+[core]
+	editor = nvim
