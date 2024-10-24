@@ -1,0 +1,10 @@
+[font]
+size = 11.0
+
+[font.normal]
+# family = "CommitMono"
+# family = "FiraMonoNerdFont"
+family = "FiraCodeNerdFont"
+
+[env]
+WINIT_X11_SCALE_FACTOR = "1"

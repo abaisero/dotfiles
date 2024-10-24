@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# TODO check that all +waiting tasks are also +inbox
+# TODO make sure that all +waitingfor tasks start with [xxx]
+
+RED='\033[0;31m'
+PURPLE='\033[0;35m'
+NOCOLOR='\033[0m'
+
+function echotitle_error() {
+  echo -e "# ${RED}ERROR${NOCOLOR}: $*"
+}
+
+function echotitle_reflect() {
+  echo -e "# ${PURPLE}REFLECT${NOCOLOR}: $*"
+}
+
+RC=(
+  "rc.context=none"
+  "rc.indent.report=2"
+  "rc.verbose=context,edit,header,footnote,label,new-id,project,special,sync,recur"
+)
+
+function echotasks() {
+  task "${RC[@]}" "$@" ls
+}
+
+errors=false
+
+# undertagged tasks
+ntasks=$(task "$TASK_GTD_UNDERTAGGED_FILTER" count)
+if [ "$ntasks" -ne 0 ]; then
+  errors=true
+
+  echotitle_error undertagged tasks
+  echo
+  echotasks "$TASK_GTD_UNDERTAGGED_FILTER"
+  echo
+fi
+
+# overtagged tasks
+ntasks=$(task "$TASK_GTD_OVERTAGGED_FILTER" count)
+if [ "$ntasks" -ne 0 ]; then
+  errors=true
+
+  echotitle_error overtagged tasks
+  echo
+  echotasks "$TASK_GTD_OVERTAGGED_FILTER"
+  echo
+fi
+
+# unactionable projects
+for project in $(task _unique project); do
+  ntasks=$(task "project:$project" +next count)
+  if [ "$ntasks" -eq 0 ]; then
+    errors=true
+
+    echotitle_error unactionable "project:$project"
+    echo
+    echotasks "project:$project" -next
+    echo
+  fi
+done
+
+$errors && exit
+
+projects=("")
+projects+=($(task _unique project))
+
+for project in "${projects[@]}"; do
+  echotitle_reflect "project:$project"
+  echo
+  echotasks "project:$project" "project.not:$project."
+  echo 
+done
+
+# TODO show the waiting?

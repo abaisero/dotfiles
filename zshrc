@@ -8,12 +8,11 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
 ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -24,17 +23,16 @@ ZSH_THEME="agnoster"
 # Case-sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# Uncomment one of the following lines to change the auto-update behavior
+# zstyle ':omz:update' mode disabled  # disable automatic updates
+# zstyle ':omz:update' mode auto      # update automatically without asking
+# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
+# DISABLE_MAGIC_FUNCTIONS="true"
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -46,6 +44,9 @@ ZSH_THEME="agnoster"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
+# You can also set it to another string to have that shown instead of the default red dots.
+# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
+# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -65,18 +66,27 @@ ZSH_THEME="agnoster"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-# plugins=(git git-extras tmux zsh_reload colored-man-pages colorize extract zsh-autosuggestions)
-plugins=(git git-extras tmux zsh_reload colored-man-pages colorize extract z)
-
-fpath+=$HOME/git/conda-zsh-completion
+plugins=(
+  colored-man-pages
+  colorize
+  extract
+  # git
+  git-extras
+  git-flow
+  git-flow-completion
+  git-prompt
+  python
+  rbenv
+  # ruby
+  vi-mode
+  z
+)
 
 source $ZSH/oh-my-zsh.sh
-
-compinit conda
 
 # User configuration
 
@@ -86,7 +96,11 @@ compinit conda
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-export EDITOR=vim
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -99,92 +113,59 @@ export EDITOR=vim
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-[ -f ~/.bash_aliases ] && source ~/.bash_aliases
 
-# BAIS - vi key bindings
-bindkey -v
-# BAIS - fixes certain key bindings to adhere to vim
-bindkey "^?" backward-delete-char
-bindkey "^W" backward-kill-word
-bindkey "^H" backward-delete-char
-bindkey "^U" kill-line
+# # vi key bindings
+# bindkey -v
+# # fixes certain key bindings to adhere to vim
+# bindkey "^?" backward-delete-char
+# bindkey "^W" backward-kill-word
+# bindkey "^H" backward-delete-char
+# bindkey "^U" kill-line
+# # search history backwards
+# bindkey "^P" history-search-backward
+# bindkey "^N" history-search-forward
 
-# BAIS - search history backwards
-bindkey "^J" history-search-forward
-bindkey "^K" history-search-backward
+export DOTFILES="$HOME/git/dotfiles"
+source "$DOTFILES/shell-utils"
 
-# installing texlive from source
-export PATH="/usr/local/texlive/2020/bin/x86_64-linux:$PATH"
-export MANPATH="/usr/local/texlive/2020/texmf-dist/doc/man:$MANPATH"
-export INFOPATH="/usr/local/texlive/2020/texmf-dist/doc/info:$INFOPATH"
+source-if-file "$HOME/.bash_aliases"
+source-if-file "$HOME/.private.sh"
+export-before-path-if-dir "$HOME/bin"
+source-if-file $DOTFILES/completions/*
+source-if-file "$HOME/git/tmux-sessions/s-completion"
 
-export DOTFILES="$HOME/git.new/dotfiles"
+source-if-file "$HOME/programs/z/z.sh" 
+source-if-file "$HOME/.fzf.zsh"
 
-[ -d "$HOME/bin" ] && export PATH="$HOME/bin:$PATH"
-. $DOTFILES/completions/s-completion.sh
-
-# needed for nvim-lsp-pyright stuff
-[ -d "$HOME/node_modules/.bin" ] && export PATH="$HOME/node_modules/.bin:$PATH"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/bais/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/bais/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/bais/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/bais/anaconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-# BAIS - rlpo experiments bin
-[ -d "$HOME/git/rlpo/experiments/bin" ] && export PATH="$HOME/git/rlpo/experiments/bin:$PATH"
-
-# BAIS - keychain
 eval `keychain --eval --agents ssh id_rsa`
 
-export BACKUP_DEST="nymph.proxy:backup/$(hostname)"
-export DISCOVERY_SCRATCH="discovery-xfer:scratch"
-export NYMPH_DISCOVERY="nymph.proxy:scratch"
+export-after-path-if-dir "$HOME/.local/bin"
 
-export PYTHONBREAKPOINT=ipdb.set_trace
+activate-if-venv default
+fpath+=${ZDOTDIR:-~}/.zsh_functions
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+alias luamake=/home/bais/programs/lua-language-server/3rd/luamake/luamake
 
-# fixing gnome-control-center issue
-# from https://bugzilla.redhat.com/show_bug.cgi?id=1645664
-export XDG_CURRENT_DESKTOP=GNOME
+# from rbenv init
+eval "$(rbenv init -)"
 
-# manual golang installation
-[ -d "/usr/local/go/bin" ] && export PATH="/usr/local/go/bin:$PATH"
-[ -d "$HOME/go/bin" ] && export PATH="$HOME/go/bin:$PATH"
+# to use npm -g without sudo requirements
+# to undo; remove the lines, and run
+# npm config set prefix /usr
+NPM_PACKAGES="${HOME}/.npm-packages"
+export PATH="$PATH:$NPM_PACKAGES/bin"
+# Preserve MANPATH if you already defined it somewhere in your config.
+# Otherwise, fall back to `manpath` so we can inherit from `/etc/manpath`.
+export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
 
-# ruby gem path
-# [ -d "$HOME/.gem/ruby/3.0.0/bin" ] && export PATH="$HOME/.gem/ruby/3.0.0/bin:$PATH"
+export TASK_GTD_UNDERTAGGED_FILTER="(-inbox and -calendar and -someday and -waiting and -next)"
+export TASK_GTD_OVERTAGGED_FILTER="(-inbox xor -someday xor -waiting xor -next)"
+# export TASK_GTD_OVERTAGGED_FILTER="((+inbox and +calendar) or (+inbox and +someday) or (+inbox and +waitingfor) or (+inbox and +next) or (+calendar and +someday) or (+calendar and +waitingfor) or (+calendar and +next) or (+someday and +waitingfor) or (+someday and +next) or (+waitingfor and +next))"
 
-[ -f "$HOME/.private.sh" ] && source "$HOME/.private.sh"
+autoload -U bashcompinit
+bashcompinit
+eval "$(register-python-argcomplete pipx)"
 
-. $HOME/bin/z.sh
+[ -f "/home/bais/.ghcup/env" ] && source "/home/bais/.ghcup/env" # ghcup-env
 
-if test -n "$KITTY_INSTALLATION_DIR"; then
-  export KITTY_SHELL_INTEGRATION="enabled"
-  autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
-  kitty-integration
-  unfunction kitty-integration
-fi
-
-# Created by `pipx` on 2022-06-03 22:29:03
-export PATH="$PATH:/home/bais/.local/bin"
-
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-
-PS1="(\$(~/.rvm/bin/rvm-prompt)) $PS1"
+export TMUX_SESSIONS_PATH="$DOTFILES/tmux-sessions"

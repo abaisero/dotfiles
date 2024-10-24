@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# sleep 2
+# pulseaudio -k
+#
+# sleep 5
+#
+
+# pactl unload-module module-null-sink
+# pactl unload-module module-combine-sink
+# pactl unload-module module-remap-source
+
+# sleep 5
+
+# pactl list short modules | grep "sink_name=MY-SINK-NAME" | cut -f1 | xargs -L1 pactl unload-module
+
+pactl load-module module-null-sink sink_name=spotify-sink sink_properties=device.description="Spotify-Sink"
+pactl load-module module-combine-sink sink_name=spotify-combined-sink slaves=spotify-sink,alsa_output.pci-0000_00_1f.3.analog-stereo sink_properties=device.description="Spotify-Combined-Sink"
+pactl load-module module-remap-source source_name=spotify-virtual-source master=spotify-sink.monitor
+
+pactl load-module module-null-sink sink_name=gopanda-sink sink_properties=device.description="GoPanda-Sink"
+pactl load-module module-combine-sink sink_name=gopanda-combined-sink slaves=gopanda-sink,alsa_output.pci-0000_00_1f.3.analog-stereo sink_properties=device.description="GoPanda-Combined-Sink"
+pactl load-module module-remap-source source_name=gopanda-virtual-source master=gopanda-sink.monitor
+
+# pactl load-module module-null-sink sink_name=spotify-sink
+# pactl load-module module-combine-sink sink_name=spotify-combined-sink slaves=spotify-sink,alsa_output.pci-0000_00_1f.3.analog-stereo
+# pactl load-module module-remap-source source_name=spotify-virtual-source master=spotify-sink.monitor
+
+
+exit 0

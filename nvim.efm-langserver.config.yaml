@@ -2,6 +2,14 @@ version: 2
 
 tools:
 
+    typescript-prettier: &typescript-prettier
+        format-command: 'prettier -w --parser typescript'
+        format-stdin: true
+
+    css-prettier: &css-prettier
+        format-command: 'prettier -w --parser css'
+        format-stdin: true
+
     python-black: &python-black
         format-command: 'black --quiet -'
         format-stdin: true
@@ -38,10 +46,18 @@ tools:
         lint-formats:
             - '%f:%l:%c: %m'
 
+    sh-shellcheck: &sh-shellcheck
+        lint-command: 'shellcheck -f gcc -x'
+        lint-source: 'shellcheck'
+        lint-formats:
+            - '%f:%l:%c: %trror: %m'
+            - '%f:%l:%c: %tarning: %m'
+            - '%f:%l:%c: %tote: %m'
+
 languages:
 
     python:
-        - <<: *python-black
+        # - <<: *python-black  # using ruff now
         - <<: *python-isort
 
     tex:
@@ -59,5 +75,17 @@ languages:
         - <<: *prose-writegood
         - <<: *prose-proselint
 
+    javascript:
+        - <<: *typescript-prettier
+
+    typescript:
+        - <<: *typescript-prettier
+
+    css:
+        - <<: *css-prettier
+
     yaml:
         - <<: *yaml-yamllint
+
+    sh:
+        - <<: *sh-shellcheck

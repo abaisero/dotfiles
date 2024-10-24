@@ -13,6 +13,10 @@ call plug#begin()
 " gen purpose
 Plug 'tpope/vim-sensible'
 
+" navigation
+" Plug 'tpope/vim-vinegar'
+Plug 'stevearc/oil.nvim'
+
 " lsp
 Plug 'neovim/nvim-lspconfig'
 " Plug 'williamboman/nvim-lsp-installer'
@@ -26,6 +30,7 @@ Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 " gen programming
 Plug 'tpope/vim-commentary'
 Plug 'vim-test/vim-test'
+Plug 'github/copilot.vim'
 
 Plug 'RishabhRD/popfix'
 Plug 'RishabhRD/nvim-cheat.sh'
@@ -73,8 +78,12 @@ Plug 'esalter-va/vim-checklist'
 Plug 'cespare/vim-toml'
 " Plug 'gu-fan/riv.vim'
 
-Plug 'nvim-neorg/neorg', { 'tag': '0.0.18' }
+" Plug 'nvim-neorg/neorg', { 'tag': '0.0.18' }
+Plug 'nvim-neorg/neorg'
 Plug 'nvim-neorg/neorg-telescope'
+
+" typst
+" Plug 'kaarmu/typst.vim'
 
 " python
 " Plug 'python-mode/python-mode'
@@ -103,7 +112,12 @@ Plug 'tyrannicaltoucan/vim-quantum'
 Plug 'nikolvs/vim-sunbather'
 Plug 'widatama/vim-phoenix'
 
+" has to be the last one, maybe
+Plug 'nvim-tree/nvim-web-devicons'
+
 call plug#end()
+
+let g:python3_host_prog = "/home/bais/venvs/vim/bin/python"
 
 lua <<EOF 
 
@@ -153,9 +167,14 @@ vim.diagnostic.config {
 capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 require'lspconfig'.texlab.setup { capabilities = capabilities, }
 require'lspconfig'.pyright.setup { capabilities = capabilities, }
+require'lspconfig'.ruff_lsp.setup { capabilities = capabilities, }
 require'lspconfig'.solargraph.setup { capabilities = capabilities, }
 require'lspconfig'.clangd.setup { capabilities = capabilities, }
 require'lspconfig'.clojure_lsp.setup { capabilities = capabilities, }
+require'lspconfig'.lua_ls.setup { capabilities = capabilities, }
+require'lspconfig'.tsserver.setup { capabilities = capabilities, }
+require'lspconfig'.bashls.setup { capabilities = capabilities, }
+require'lspconfig'.typst_lsp.setup { capabilities = capabilities, }
 require'lspconfig'.efm.setup { capabilities = capabilities, }
 
 -- call this before tree-sitter setup because the parser is in early stages
@@ -170,7 +189,7 @@ parser_configs.norg = {
 }
 
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "python", "norg", "norg_meta", "ruby", "clojure" },
+  ensure_installed = { "python", "norg", "norg_meta", "ruby", "lua", "javascript", "clojure" },
   highlight = {
     enable = true,
     disable = {"rst", "markdown"},
@@ -195,33 +214,98 @@ require('neorg').setup {
     -- Tell Neorg what modules to load
     load = {
         ["core.defaults"] = {}, -- Load all the default modules
-        ["core.gtd.base"] = {
-            config = {
-                displayers = {
-                    projects = {
-                        show_completed_projects = true,
-                        show_projects_without_tasks = false,
-                        },
-                    },
-                workspace = "home"
-                },
-            }, -- Load `getting things done` module
-        ["core.norg.concealer"] = {}, -- Allows for use of icons
+        -- ["core.gtd.base"] = {
+        --     config = {
+        --         displayers = {
+        --             projects = {
+        --                 show_completed_projects = true,
+        --                 show_projects_without_tasks = false,
+        --                 },
+        --             },
+        --         workspace = "home"
+        --         },
+        --     }, -- Load `getting things done` module
+        -- ["core.norg.concealer"] = {}, -- Allows for use of icons
+        ["core.concealer"] = {}, -- Allows for use of icons
         ["core.integrations.telescope"] = {}, -- Enable the telescope module
-        ["core.norg.dirman"] = { -- Manage your directories with Neorg
+        ["core.dirman"] = { -- Manage your directories with Neorg
+        -- ["core.norg.dirman"] = { -- Manage your directories with Neorg
         config = {
             workspaces = {
                 home = "~/neorg",
                 }
             }
         },
-    ["core.norg.completion"] = {
+    -- ["core.norg.completion"] = {
+    ["core.completion"] = {
         config = {
             engine = "nvim-cmp"
         }
     },
 },
 }
+
+local actions = require("telescope.actions")
+require("telescope").setup{
+  defaults = {
+    mappings = {
+      i = {
+        -- ["<cr>"] = actions.smart_send_to_qflist + actions.open_qflist,
+      },
+    },
+  }
+}
+
+-- oil
+require("oil").setup()
+vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+
+-- nvim-web-devicons
+require'nvim-web-devicons'.setup {
+ -- your personnal icons can go here (to override)
+ -- you can specify color or cterm_color instead of specifying both of them
+ -- DevIcon will be appended to `name`
+ override = {
+  zsh = {
+    icon = "",
+    color = "#428850",
+    cterm_color = "65",
+    name = "Zsh"
+  }
+ };
+ -- globally enable different highlight colors per icon (default to true)
+ -- if set to false all icons will have the default icon's color
+ color_icons = true;
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+ -- globally enable "strict" selection of icons - icon will be looked up in
+ -- different tables, first by filename, and if not found by extension; this
+ -- prevents cases when file doesn't have any extension but still gets some icon
+ -- because its name happened to match some extension (default to false)
+ strict = true;
+ -- same as `override` but specifically for overrides by filename
+ -- takes effect when `strict` is true
+ override_by_filename = {
+  [".gitignore"] = {
+    icon = "",
+    color = "#f1502f",
+    name = "Gitignore"
+  }
+ };
+ -- same as `override` but specifically for overrides by extension
+ -- takes effect when `strict` is true
+ override_by_extension = {
+  ["log"] = {
+    icon = "",
+    color = "#81e043",
+    name = "Log"
+  }
+ };
+}
+
+require("nvim-web-devicons").set_default_icon('', '#6d8086', 65)
+
 
 EOF 
 
@@ -252,7 +336,7 @@ set splitbelow
 set splitright
 
 " enables copy/paste between vim instances
-set clipboard=unnamed
+set clipboard+=unnamedplus
 
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
@@ -294,15 +378,15 @@ nnoremap <C-l> <C-w>l
 
 " move across buffers
 " smth broken in nvim doesn't allow it to differentiate between <C-i> and <Tab>
-nnoremap <Tab> :bp<cr>
+nnoremap <C-i> :bp<cr>
 nnoremap <C-o> :bn<cr>
 
 " move away from buffers without writing first
 set hidden
 
 " move across quickfixes
-nnoremap <leader>i :cp<cr>
-nnoremap <leader>o :cn<cr>
+nnoremap <leader>p :cp<cr>
+nnoremap <leader>n :cn<cr>
 
 " neorg
 nnoremap <localleader>nc <cmd>Neorg toggle-concealer<CR>
@@ -310,6 +394,13 @@ nnoremap <localleader>nc <cmd>Neorg toggle-concealer<CR>
 " latex flavor
 let g:tex_flavor='latex'
 au BufNewFile,BufRead *.tikz set filetype=tex  " treat .tikz like .tex
+
+" typst
+au BufNewFile,BufRead *.typst set filetype=typst  " treat .tikz like .tex
+au BufNewFile,BufRead *.typ set filetype=typst  " treat .tikz like .tex
+" vim.filetype.add({ extension = { typ = "typst" } })
+" vim.filetype.add({ extension = { typst = "typst" } })
+au FileType typst setlocal commentstring=//\ %s
 
 " markdown
 " let g:markdown_fenced_languages = ['html', 'python', 'r', 'bash=sh']
@@ -382,10 +473,16 @@ nnoremap <silent> <C-p> <cmd>lua vim.diagnostic.goto_prev()<CR>
 " autocmd BufWritePre *.rb lua vim.lsp.buf.formatting_seq_sync()
 " autocmd BufWritePre *.tex lua vim.lsp.buf.formatting_seq_sync()
 " " autocmd BufWritePre *.bib lua vim.lsp.buf.formatting_seq_sync()
-nnoremap <silent> F :w<CR><cmd>lua vim.lsp.buf.format()<CR>:w<CR>
+" nnoremap <silent> F :w<CR><cmd>lua vim.lsp.buf.format()<CR>:w<CR>
+nnoremap <silent> F <cmd>lua vim.lsp.buf.format({async = true})<CR>
 autocmd BufWritePre *.py lua vim.lsp.buf.format()
+" autocmd BufWritePre *.py lua vim.lsp.buf.format({async = true})
 autocmd BufWritePre *.rb lua vim.lsp.buf.format()
 autocmd BufWritePre *.tex lua vim.lsp.buf.format()
+autocmd BufWritePre *.js lua vim.lsp.buf.format()
+autocmd BufWritePre *.jsx lua vim.lsp.buf.format()
+autocmd BufWritePre *.ts lua vim.lsp.buf.format()
+autocmd BufWritePre *.tsx lua vim.lsp.buf.format()
 " autocmd BufWritePre *.bib lua vim.lsp.buf.format()
 
 " pymode
@@ -406,7 +503,7 @@ fun! OperateTag(lnum, tag)
 
         call append(line('.')-1, indents.a:tag)
         normal k
-        :Commentary
+        " :Commentary
     endif
 
     " Save file without any events
@@ -418,7 +515,7 @@ endfunction
 nmap <leader>ff <cmd>Telescope find_files<CR>
 nmap <leader>fg <cmd>Telescope live_grep<CR>
 nmap <leader>fb <cmd>Telescope buffers<CR>
-nmap <Leader>ft <cmd>lua require'telescope.builtin'.tags{}<CR>
+nmap <leader>ft <cmd>lua require'telescope.builtin'.tags{}<CR>
 
 " testing
 nmap <silent> <leader>tn <cmd>TestNearest<CR>
@@ -487,28 +584,28 @@ vnoremap <leader>+ :call TODO_inc()<cr>
 vnoremap <leader>- :call TODO_dec()<cr>
 
 " nocommit
-let g:nocommit_tag = 'TODO NOCOMMIT'
+" let g:nocommit_tag = 'TODO NOCOMMIT'
 
-fun! NoCommit(lnum)
-    let line = getline(a:lnum)
-    if strridx(line, g:nocommit_tag) != -1
-        normal dd
-    else
-        let plnum = prevnonblank(a:lnum)
-        if &expandtab
-            let indents = repeat(' ', indent(plnum))
-        else
-            let indents = repeat("\t", plnum / &shiftwidth)
-        endif
+" fun! NoCommit(lnum)
+"     let line = getline(a:lnum)
+"     if strridx(line, g:nocommit_tag) != -1
+"         normal dd
+"     else
+"         let plnum = prevnonblank(a:lnum)
+"         if &expandtab
+"             let indents = repeat(' ', indent(plnum))
+"         else
+"             let indents = repeat("\t", plnum / &shiftwidth)
+"         endif
 
-        call append(line('.')-1, indents.g:nocommit_tag)
-        normal k
-        :Commentary
-    endif
+"         call append(line('.')-1, indents.g:nocommit_tag)
+"         normal k
+"         :Commentary
+"     endif
 
-    " Save file without any events
-    noautocmd write
+"     " Save file without any events
+"     noautocmd write
 
-endfunction
+" endfunction
 
-nnoremap <leader>n <cmd>call OperateTag(line('.'), 'TODO NOCOMMIT')<CR>
+" nnoremap <leader>n <cmd>call OperateTag(line('.'), 'TODO NOCOMMIT')<CR>

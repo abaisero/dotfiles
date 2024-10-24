@@ -1,0 +1,27 @@
+#!/bin/bash
+
+python -m pip install --upgrade pip
+
+libpaths=(
+  "$HOME/git/one-to-one/"
+  "$HOME/git/rl-parsers/"
+  "$HOME/git/gym-pomdps/"
+  "$HOME/git/gym-gridverse/"
+)
+
+for libpath in "${libpaths[@]}"; do
+  (
+    cd "$libpath" || return
+    python -m pip install -e .
+  )
+done
+
+(
+  cd "$HOME/git/gym-gridverse/" || return
+  python -m pip install -r requirements-dev.txt
+)
+
+(
+  cd "$HOME/git/asym-rlpo/" || return
+  python -m pip install -r requirements.txt
+)

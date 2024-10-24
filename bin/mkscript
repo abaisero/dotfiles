@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 usage="Usage: mkscript <script> ..."
-[ $# -eq 0 ] && echo $usage && exit 1
+[ $# -eq 0 ] && echo $usage && (exit 1)
 
 for script in "$@"
 do
@@ -12,8 +12,7 @@ do
 #!/usr/bin/zsh
 #!/usr/bin/env python
 
-
-exit 0" > $script
+" > $script
 
   chmod +x $script
 done

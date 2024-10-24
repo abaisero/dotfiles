@@ -13,9 +13,9 @@ options=(
   --verbose
 )
 
-FILES_FROM=$DOTFILES/backupfiles.conf
+FILES_FROM=$HOME/git/dotfiles/backupfiles.conf
 timestamp=$(date +%F.%T.%N)
 DEST=$HOME/backups/$timestamp
 LOGFILE=$HOME/backups/backup.log
 
-rsync ${options[@]} --files-from=$FILES_FROM / $DEST | tee $LOGFILE
+rsync "${options[@]}" --files-from="$FILES_FROM" / "$DEST" | tee "$LOGFILE"

@@ -1,25 +1,47 @@
 #!/usr/bin/env python
 
-import sys
+import argparse
+import re
+from typing import Iterable
 
 
-def main():
-    indices = sys.argv[1:]
-    indices = ' '.join(indices).replace(',', ' ')
+def regex_type(pattern: str | re.Pattern):
+    """Argument type for matching a regex pattern."""
 
-    for token in indices.split():
-        try:
-            index_from = int(token)
-        except ValueError:
-            index_from, index_to = map(
-                int, token.split('-')
-            )
-        else:
-            index_to = index_from
+    def closure_check_regex(arg_value):
+        if not re.match(pattern, arg_value):
+            raise argparse.ArgumentTypeError("invalid value")
+        return arg_value
 
-        for index in range(index_from, index_to + 1):
+    return closure_check_regex
+
+
+def process(input: str) -> Iterable[int]:
+    try:
+        index_from = int(input)
+    except ValueError:
+        index_from, index_to = map(int, input.split("-"))
+    else:
+        index_to = int(input)
+
+    return range(index_from, index_to + 1)
+
+
+def process_inputs(inputs: list[str]):
+    for input in inputs:
+        for index in process(input):
             print(index)
 
 
-if __name__ == '__main__':
+def main():
+    input_type = regex_type(r"^\d+|\d+-\d+$")
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("inputs", type=input_type, nargs="+")
+
+    args = parser.parse_args()
+    process_inputs(args.inputs)
+
+
+if __name__ == "__main__":
     main()

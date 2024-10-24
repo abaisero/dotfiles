@@ -1,0 +1,23 @@
+#!/bin/bash
+
+mkdir -p "$HOME/bin"
+
+# shellcheck disable=SC1091
+source "$HOME/git/dotfiles/shell-utils"
+
+find "$HOME/bin/" -type l -print0 | while IFS= read -r -d '' script; do
+  path=$(readlink -f "$script")
+  dir=$(dirname "$path")
+
+  if [ "$dir" = "$HOME/git/dotfiles/bin" ] && [ ! -e "$path" ]; then
+    echo_warning "$script is a broken softlink ($path does not exist)"
+  fi
+done
+
+(
+  cd "$HOME/git/dotfiles/bin" || exit
+  for script in *; do
+    path=$(realpath "$script")
+    ln -sf "$path" "$HOME/bin/"
+  done
+)

@@ -1,5 +1,4 @@
 #!/bin/bash
 
-java -jar ~/bin/cgoban.jar
-
-exit 0
+[ -f "$HOME/bin/cgoban.jar" ] || wget -O "$HOME/bin/cgoban.jar" https://files.gokgs.com/javaBin/cgoban.jar
+java -jar "$HOME/bin/cgoban.jar"

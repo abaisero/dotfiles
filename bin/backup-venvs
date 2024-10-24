@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# shellcheck disable=SC1091
+source "$HOME/git/dotfiles/shell-utils"
+
+for venv in $(list-venvs); do
+  (
+    activate-if-venv "$venv"
+    echo "writing $venv-version.txt"
+    python --version > "$venv-version.txt"
+    echo "writing $venv-requirements.txt"
+    python -m pip freeze > "$venv-requirements.txt"
+  )
+done

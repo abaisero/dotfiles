@@ -1,0 +1,51 @@
+#!/bin/bash
+
+function source-if-file() {
+  for filename in "$@"; do
+    # shellcheck disable=SC1090
+    test -f "$filename" && source "$filename"
+  done
+}
+
+function export-before-path-if-dir() {
+  for dirname in "$@"; do
+    test -d "$dirname" && export PATH="$dirname:$PATH"
+  done
+}
+
+function export-after-path-if-dir() {
+  for dirname in "$@"; do
+    test -d "$dirname" && export PATH="$PATH:$dirname"
+  done
+}
+
+function make-venv() {
+  mkdir -p "$HOME/venvs"
+  for name in "$@"; do
+    python -m venv "$HOME/venvs/$name"
+  done
+}
+
+function activate-if-venv() {
+  venv=$1
+  source-if-file "$HOME/venvs/$venv/bin/activate"
+}
+
+alias aiv="activate-if-venv"
+
+RED='\033[0;31m'
+ORANGE='\033[0;33m'
+BLUE='\033[0;34m'
+WHITE='\033[0;37m' 
+
+function echo_error() {
+  echo -e "${RED}[ERROR]${WHITE} $*"
+}
+
+function echo_warning() {
+  echo -e "${ORANGE}[WARNING]${WHITE} $*"
+}
+
+function echo_info() {
+  echo -e "${BLUE}[INFO]${WHITE} $*"
+}

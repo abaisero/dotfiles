@@ -1,0 +1,6 @@
+#!/bin/bash
+
+ndeleted=$(task +DELETED count)
+
+[[ $ndeleted -ne 0 ]] && task rc.bulk=0 +DELETED purge
+task rc.gc=on rc.verbose=nothing // list >/dev/null
