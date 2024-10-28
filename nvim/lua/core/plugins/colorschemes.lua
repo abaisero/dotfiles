@@ -6,11 +6,9 @@ return {
   { 'tyrannicaltoucan/vim-quantum', enabled = false },
   { 'nikolvs/vim-sunbather', enabled = false },
   { 'widatama/vim-phoenix', enabled = false },
-  -- { 'tjdevries/colorbuddy.nvim', branch = 'dev' },
   { 'jesseleite/nvim-noirbuddy',
     dependencies = {
-    -- 'tjdevries/colorbuddy.nvim'
-    { 'tjdevries/colorbuddy.nvim', branch = 'dev' },
+      { 'tjdevries/colorbuddy.nvim' },
     },
     lazy = false,
     priority = 1000,

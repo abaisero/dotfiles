@@ -115,6 +115,7 @@ return {
     },
     event = 'InsertEnter',
   },
+  "kkoomen/vim-doge",
 
   'SirVer/ultisnips',
   'honza/vim-snippets',
