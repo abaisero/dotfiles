@@ -19,7 +19,7 @@ return {
       lspconfig.hls.setup { capabilities = capabilities, }
       lspconfig.texlab.setup { capabilities = capabilities, }
       lspconfig.pyright.setup { capabilities = capabilities, }
-      lspconfig.ruff_lsp.setup { capabilities = capabilities, }
+      lspconfig.ruff.setup { capabilities = capabilities, }
       lspconfig.solargraph.setup { capabilities = capabilities, }
       lspconfig.clangd.setup { capabilities = capabilities, }
       lspconfig.clojure_lsp.setup { capabilities = capabilities, }
