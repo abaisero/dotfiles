@@ -35,7 +35,7 @@ return {
       }
       lspconfig.ts_ls.setup { capabilities = capabilities, }
       lspconfig.bashls.setup { capabilities = capabilities, }
-      lspconfig.typst_lsp.setup { capabilities = capabilities, }
+      -- lspconfig.typst_lsp.setup { capabilities = capabilities, }
       lspconfig.efm.setup { capabilities = capabilities, }
 
       -- TODO: move this to keymaps file?
