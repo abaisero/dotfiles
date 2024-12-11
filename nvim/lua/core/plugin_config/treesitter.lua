@@ -23,7 +23,7 @@ require'nvim-treesitter.configs'.setup {
     "bash",
     "toml",
     "norg",
-    "norg_meta",
+    -- "norg_meta",
   },
 
   sync_install = false,

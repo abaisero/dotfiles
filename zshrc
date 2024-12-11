@@ -80,7 +80,7 @@ plugins=(
   git-flow-completion
   git-prompt
   python
-  rbenv
+  # rbenv
   # ruby
   vi-mode
   z
@@ -137,7 +137,7 @@ source-if-file "$HOME/git/tmux-sessions/s-completion"
 source-if-file "$HOME/programs/z/z.sh" 
 source-if-file "$HOME/.fzf.zsh"
 
-eval `keychain --eval --agents ssh id_rsa`
+eval `keychain --eval --agents ssh id_ed25519`
 
 export-after-path-if-dir "$HOME/.local/bin"
 
@@ -147,7 +147,7 @@ fpath+=${ZDOTDIR:-~}/.zsh_functions
 alias luamake=/home/bais/programs/lua-language-server/3rd/luamake/luamake
 
 # from rbenv init
-eval "$(rbenv init -)"
+# eval "$(rbenv init -)"
 
 # to use npm -g without sudo requirements
 # to undo; remove the lines, and run
@@ -168,4 +168,6 @@ eval "$(register-python-argcomplete pipx)"
 
 [ -f "/home/bais/.ghcup/env" ] && source "/home/bais/.ghcup/env" # ghcup-env
 
-export TMUX_SESSIONS_PATH="$DOTFILES/tmux-sessions"
+export TMUX_SESSIONS_PATH="$HOME/git/tmux-sessions/configs"
+
+export PYTHONBREAKPOINT='ipdb.set_trace'
