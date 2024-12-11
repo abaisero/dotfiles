@@ -74,10 +74,10 @@ return {
 
   -- integration with external programs
   'tpope/vim-fugitive',
-  {
-    'python-rope/ropevim',
-    ft = 'python',
-  },
+  -- {
+  --   'python-rope/ropevim',
+  --   ft = 'python',
+  -- },
   'tpope/vim-dispatch',
 
   -- navigation

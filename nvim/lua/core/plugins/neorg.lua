@@ -4,22 +4,25 @@ return {
     'nvim-lua/plenary.nvim',
     'nvim-neorg/neorg-telescope',
   },
+  lazy = false,
+  version = "*",
   ft = 'norg',
   build = ':Neorg sync-parsers',
   opts = {
     load = {
       ['core.defaults'] = {},
       ['core.concealer'] = {},
-      ["core.integrations.telescope"] = {}, -- Enable the telescope module
+      -- ['core.latex.renderer'] = {},
+      ['core.integrations.telescope'] = {}, -- Enable the telescope module
       ['core.dirman'] = {
         config = {
           workspaces = {
             main = '~/neorg',
           },
         },
-      ["core.completion"] = {
+        ['core.completion'] = {
           config = {
-              engine = "nvim-cmp"
+            engine = "nvim-cmp"
           }
         },
       },
