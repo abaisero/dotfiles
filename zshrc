@@ -1,11 +1,11 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
-# Path to your oh-my-zsh installation.
+# Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
+# load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="agnoster"
@@ -74,14 +74,11 @@ plugins=(
   colored-man-pages
   colorize
   extract
-  # git
+  git
   git-extras
   git-flow
-  git-flow-completion
-  git-prompt
+  # git-flow-completion
   python
-  rbenv
-  # ruby
   vi-mode
   z
 )
@@ -99,73 +96,51 @@ source $ZSH/oh-my-zsh.sh
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+#   export EDITOR='nvim'
 # fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+# export ARCHFLAGS="-arch $(uname -m)"
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# Set personal aliases, overriding those provided by Oh My Zsh libs,
+# plugins, and themes. Aliases can be placed here, though Oh My Zsh
+# users are encouraged to define aliases within a top-level file in
+# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
+# - $ZSH_CUSTOM/aliases.zsh
+# - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# # vi key bindings
-# bindkey -v
-# # fixes certain key bindings to adhere to vim
-# bindkey "^?" backward-delete-char
-# bindkey "^W" backward-kill-word
-# bindkey "^H" backward-delete-char
-# bindkey "^U" kill-line
-# # search history backwards
-# bindkey "^P" history-search-backward
-# bindkey "^N" history-search-forward
-
 export DOTFILES="$HOME/git/dotfiles"
 source "$DOTFILES/shell-utils"
 
+export-before-path-if-dir "$HOME/bin"
+
 source-if-file "$HOME/.bash_aliases"
 source-if-file "$HOME/.private.sh"
-export-before-path-if-dir "$HOME/bin"
 source-if-file $DOTFILES/completions/*
-source-if-file "$HOME/git/tmux-sessions/s-completion"
 
-source-if-file "$HOME/programs/z/z.sh" 
+export TMUX_SESSIONS_PATH="$DOTFILES/tmux-sessions"
+source-if-file "$HOME/git/tmux-sessions/s-completion"
+source <(eww shell-completions --shell zsh)
+
+source-if-file "$HOME/programs/z/z.sh"
 source-if-file "$HOME/.fzf.zsh"
 
-eval `keychain --eval --agents ssh id_rsa`
-
 export-after-path-if-dir "$HOME/.local/bin"
+export-after-path-if-dir "$HOME/.cargo/bin"
 
-activate-if-venv default
-fpath+=${ZDOTDIR:-~}/.zsh_functions
-
-alias luamake=/home/bais/programs/lua-language-server/3rd/luamake/luamake
-
-# from rbenv init
-eval "$(rbenv init -)"
-
-# to use npm -g without sudo requirements
-# to undo; remove the lines, and run
-# npm config set prefix /usr
-NPM_PACKAGES="${HOME}/.npm-packages"
-export PATH="$PATH:$NPM_PACKAGES/bin"
-# Preserve MANPATH if you already defined it somewhere in your config.
-# Otherwise, fall back to `manpath` so we can inherit from `/etc/manpath`.
-export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
-
-export TASK_GTD_UNDERTAGGED_FILTER="(-inbox and -calendar and -someday and -waiting and -next)"
-export TASK_GTD_OVERTAGGED_FILTER="(-inbox xor -someday xor -waiting xor -next)"
-# export TASK_GTD_OVERTAGGED_FILTER="((+inbox and +calendar) or (+inbox and +someday) or (+inbox and +waitingfor) or (+inbox and +next) or (+calendar and +someday) or (+calendar and +waitingfor) or (+calendar and +next) or (+someday and +waitingfor) or (+someday and +next) or (+waitingfor and +next))"
+eval `keychain --eval --agents ssh id_rsa`
 
 autoload -U bashcompinit
 bashcompinit
 eval "$(register-python-argcomplete pipx)"
 
-[ -f "/home/bais/.ghcup/env" ] && source "/home/bais/.ghcup/env" # ghcup-env
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-export TMUX_SESSIONS_PATH="$DOTFILES/tmux-sessions"
+activate-if-venv default

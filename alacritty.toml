@@ -1,10 +1,11 @@
+[general]
+import = ["~/.config/alacritty/cyberdream.toml"]
+
 [font]
-size = 11.0
+size = 11
 
 [font.normal]
-# family = "CommitMono"
-# family = "FiraMonoNerdFont"
-family = "FiraCodeNerdFont"
+family = "FiraMonoNerdFont"
 
 [env]
-WINIT_X11_SCALE_FACTOR = "1"
+WINIT_X11_SCALE_FACTOR = "1.05"

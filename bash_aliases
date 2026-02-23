@@ -2,14 +2,11 @@
 ## FACILITY SHORTCUTS ##
 ########################
 
+alias vpn-uci='/opt/cisco/secureclient/bin/vpnui'
+
 # VPN
 alias vpn-beehive-up='sudo wg-quick up wg-bumblebee'
 alias vpn-beehive-down='sudo wg-quick down wg-bumblebee'
-
-# GTD alias
-alias capture="task gtd-capture"
-
-# alias swim='vim ~/notes/{pools,swimming}.vim-note -c vsplit -c bn'
 
 alias h='history | grep'
 
@@ -33,15 +30,16 @@ alias free='\free -m'
 
 # easy mod for this and other files
 # alias vim='nvim'
+alias voil='vim -c Oil'
 alias valiases='vim ~/.bash_aliases'
-alias vtask='vim ~/.config/task/taskrc'
-alias vvit='vim ~/.config/vit/config.ini'
+alias vi3='(cd ~/.config/i3; vim config)'
+alias vpolybar='(cd ~/.config/polybar; vim)'
 alias vbackup='vim ~/bin/backup'
 alias vbash='vim ~/.bashrc'
 alias vgitconfig='vim ~/.gitconfig'
 alias vpylint='vim ~/.pylintrc'
 alias vssh='vim ~/.ssh/config'
-alias vtmux='vim ~/.tmux.conf ~/.tmux.sessions/*.conf'
+alias vtmux='vim ~/.tmux.conf ~/.tmux-sessions/*.conf'
 alias vvim='(cd ~/.config/nvim; vim init.lua)'
 alias valacritty='vim ~/.config/alacritty/alacritty.*'
 alias vzsh='vim ~/.zshrc'
@@ -66,3 +64,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 alias bell='paplay /usr/share/sounds/freedesktop/stereo/complete.oga'
 
 alias gnome-control-center-reset="dconf reset -f /org/gnome/control-center/"
+
+alias vsway='(cd ~/.config/sway; vim config)'
+alias vbar='(cd ~/.config/waybar; vim)'

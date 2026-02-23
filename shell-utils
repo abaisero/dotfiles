@@ -2,20 +2,22 @@
 
 function source-if-file() {
   for filename in "$@"; do
-    # shellcheck disable=SC1090
-    test -f "$filename" && source "$filename"
+    test -f "$filename" || continue
+    source "$filename"
   done
 }
 
 function export-before-path-if-dir() {
   for dirname in "$@"; do
-    test -d "$dirname" && export PATH="$dirname:$PATH"
+    test -d "$dirname" || continue
+    export PATH="$dirname:$PATH"
   done
 }
 
 function export-after-path-if-dir() {
   for dirname in "$@"; do
-    test -d "$dirname" && export PATH="$PATH:$dirname"
+    test -d "$dirname" || continue
+    export PATH="$PATH:$dirname"
   done
 }
 
@@ -29,6 +31,15 @@ function make-venv() {
 function activate-if-venv() {
   venv=$1
   source-if-file "$HOME/venvs/$venv/bin/activate"
+}
+
+function bk() {
+  for filename in "$@"; do
+    test -e "$filename" || continue
+    tmp=$(mktemp)
+    mv --backup=numbered --no-target-directory "$tmp" "$filename"
+    rm "$filename"
+  done
 }
 
 alias aiv="activate-if-venv"

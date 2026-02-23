@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -x
+
+# view fonts at
+# https://www.nerdfonts.com/font-downloads
+
+mkdir -p $HOME/.fonts
+
+(
+  cd $HOME/.fonts
+
+  wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/FiraMono.zip
+  extract FiraMono.zip
+  mv FiraMono/*.otf .
+  rm -r FiraMono
+
+)
+
+sudo fc-cache -fv

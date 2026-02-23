@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 mkdir -p "$HOME/bin"
 
 # shellcheck disable=SC1091
