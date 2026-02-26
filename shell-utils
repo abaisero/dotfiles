@@ -21,6 +21,20 @@ function export-after-path-if-dir() {
   done
 }
 
+function export-before-pythonpath-if-dir() {
+  for dirname in "$@"; do
+    test -d "$dirname" || continue
+    export PYTHONPATH="$dirname:$PYTHONPATH"
+  done
+}
+
+function export-after-pythonpath-if-dir() {
+  for dirname in "$@"; do
+    test -d "$dirname" || continue
+    export PYTHONPATH="$PYTHONPATH:$dirname"
+  done
+}
+
 function make-venv() {
   mkdir -p "$HOME/venvs"
   for name in "$@"; do
