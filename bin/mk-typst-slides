@@ -1,0 +1,46 @@
+#!/bin/bash
+set -euo pipefail
+
+LOCAL=0
+NAME=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --local)
+      LOCAL=1
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      echo "Unknown flag: $1" >&2
+      echo "Usage: $(basename "$0") [--local] <name>" >&2
+      exit 1
+      ;;
+    *)
+      if [ -n "$NAME" ]; then
+        echo "Unexpected argument: $1" >&2
+        exit 1
+      fi
+      NAME="$1"
+      shift
+      ;;
+  esac
+done
+
+if [ -z "$NAME" ]; then
+  echo "Usage: $(basename "$0") [--local] <name>" >&2
+  exit 1
+fi
+
+TEMPLATE="abaisero/abaisero-typst-slides"
+NAME="$(date +%Y-%m)-$NAME"
+
+if [ "$LOCAL" -eq 1 ]; then
+  gh repo clone "$TEMPLATE" "$NAME"
+  rm -rf "$NAME/.git"
+else
+  gh repo create "$NAME" --template "$TEMPLATE" --private --clone
+fi
