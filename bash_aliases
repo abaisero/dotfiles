@@ -2,6 +2,8 @@
 ## FACILITY SHORTCUTS ##
 ########################
 
+alias restart-audio='systemctl --user restart pipewire pipewire-pulse wireplumber'
+
 alias vpn-uci='/opt/cisco/secureclient/bin/vpnui'
 
 # VPN

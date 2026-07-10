@@ -9,3 +9,8 @@ family = "FiraMonoNerdFont"
 
 [env]
 WINIT_X11_SCALE_FACTOR = "1.05"
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
