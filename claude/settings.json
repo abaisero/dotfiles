@@ -1,0 +1,38 @@
+{
+  "model": "fable",
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude Code' 'Waiting for permission' && paplay /usr/share/sounds/freedesktop/stereo/message.oga 2>/dev/null || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude Code' 'Waiting for input' && paplay /usr/share/sounds/freedesktop/stereo/message.oga 2>/dev/null || true"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/home/abaisero/.claude/plugins/cache/caveman/caveman/0d95a81d35a9/src/hooks/caveman-statusline.sh\""
+  },
+  "enabledPlugins": {
+    "skill-creator@claude-plugins-official": true,
+    "caveman@caveman": true
+  },
+  "env": {
+    "CAVEMAN_DEFAULT_MODE": "lite"
+  },
+  "effortLevel": "high",
+  "tui": "fullscreen"
+}

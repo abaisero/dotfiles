@@ -1,0 +1,12 @@
+#!/bin/bash
+
+SOURCE="$HOME/.claude"
+TARGET="$DOTFILES/claude"
+rsync -av --relative \
+  "$SOURCE/./CLAUDE.md" \
+  "$SOURCE/./settings.json" \
+  "$SOURCE/./commands" \
+  "$SOURCE/./agents" \
+  "$SOURCE/./skills" \
+  "$SOURCE/./rules" \
+  "$TARGET/"
