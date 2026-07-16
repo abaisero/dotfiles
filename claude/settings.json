@@ -1,5 +1,8 @@
 {
-  "model": "fable",
+  "env": {
+    "CAVEMAN_DEFAULT_MODE": "lite"
+  },
+  "model": "opus",
   "hooks": {
     "PermissionRequest": [
       {
@@ -20,18 +23,40 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "_tag": "ccstatusline-managed",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ccstatusline --hook"
+          }
+        ],
+        "matcher": "Skill"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "_tag": "ccstatusline-managed",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "ccstatusline --hook"
+          }
+        ]
+      }
     ]
   },
   "statusLine": {
     "type": "command",
-    "command": "bash \"/home/abaisero/.claude/plugins/cache/caveman/caveman/0d95a81d35a9/src/hooks/caveman-statusline.sh\""
+    "command": "ccstatusline",
+    "padding": 0,
+    "refreshInterval": 10
   },
   "enabledPlugins": {
     "skill-creator@claude-plugins-official": true,
     "caveman@caveman": true
-  },
-  "env": {
-    "CAVEMAN_DEFAULT_MODE": "lite"
   },
   "effortLevel": "high",
   "tui": "fullscreen"
