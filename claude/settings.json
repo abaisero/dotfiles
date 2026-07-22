@@ -8,7 +8,7 @@
       "WebSearch"
     ]
   },
-  "model": "fable",
+  "model": "opus",
   "hooks": {
     "PermissionRequest": [
       {
