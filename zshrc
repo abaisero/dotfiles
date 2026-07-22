@@ -146,4 +146,5 @@ export NVM_DIR="$HOME/.nvm"
 eval "$(uv generate-shell-completion zsh)"
 eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv zsh)"
 
+source <(JUST_COMPLETE=zsh just)
 activate-if-venv default
