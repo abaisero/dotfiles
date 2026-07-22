@@ -2,7 +2,13 @@
   "env": {
     "CAVEMAN_DEFAULT_MODE": "lite"
   },
-  "model": "opus",
+  "permissions": {
+    "allow": [
+      "WebFetch",
+      "WebSearch"
+    ]
+  },
+  "model": "fable",
   "hooks": {
     "PermissionRequest": [
       {
@@ -26,19 +32,17 @@
     ],
     "PreToolUse": [
       {
-        "_tag": "ccstatusline-managed",
+        "matcher": "Skill",
         "hooks": [
           {
             "type": "command",
             "command": "ccstatusline --hook"
           }
-        ],
-        "matcher": "Skill"
+        ]
       }
     ],
     "UserPromptSubmit": [
       {
-        "_tag": "ccstatusline-managed",
         "hooks": [
           {
             "type": "command",
@@ -59,5 +63,6 @@
     "caveman@caveman": true
   },
   "effortLevel": "high",
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "editorMode": "vim"
 }

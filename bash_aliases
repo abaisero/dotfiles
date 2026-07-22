@@ -45,6 +45,7 @@ alias vtmux='vim ~/.tmux.conf ~/.tmux-sessions/*.conf'
 alias vvim='(cd ~/.config/nvim; vim init.lua)'
 alias valacritty='vim ~/.config/alacritty/alacritty.*'
 alias vzsh='vim ~/.zshrc'
+alias vclaude='vim ~/.claude/CLAUDE.md ~/.claude/settings.json'
 
 alias rsync-a='rsync -avR'
 
