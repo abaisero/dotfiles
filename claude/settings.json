@@ -8,6 +8,11 @@
       "WebSearch"
     ]
   },
+  "sandbox": {
+    "enabled": true,
+    "failIfUnavailable": true,
+    "autoAllowBashIfSandboxed": false
+  },
   "model": "opus",
   "hooks": {
     "PermissionRequest": [
